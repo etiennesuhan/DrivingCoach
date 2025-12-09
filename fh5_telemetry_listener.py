@@ -9,6 +9,8 @@ from typing import Iterable
 UDP_IP = "0.0.0.0"  # lauscht auf allen Netzwerkinterfaces
 UDP_PORT = 5300     # muss mit dem in FH5 eingestellten Port uebereinstimmen
 DB_FILE = "telemetry.db"
+MAX_PACKETS_PER_SECOND = 20
+MIN_SAVE_INTERVAL = 1.0 / MAX_PACKETS_PER_SECOND  # mindestens 50 ms zwischen zwei gespeicherten Paketen
 
 # Zwei bekannte Dash-Formate:
 # - fh5_dash_324: aktuelles FH5-Format (324 Byte, inkl. 3 zusaetzlicher Floats nach num_cylinders)
@@ -220,6 +222,7 @@ def main() -> None:
     print("aktiviert ist und auf diese IP/Port zeigt.\n")
 
     last_print = 0.0
+    last_saved = 0.0
 
     try:
         while True:
@@ -234,13 +237,18 @@ def main() -> None:
                 # Ignoriere fruehe/ungenutzte Pakete ohne RPM-Daten.
                 continue
 
+            now = time.monotonic()
+            if now - last_saved < MIN_SAVE_INTERVAL:
+                # Zu viele Pakete pro Sekunde: dieses Paket ueberspringen.
+                continue
+            last_saved = now
+
             timestamp_utc = (
                 datetime.datetime.utcnow().isoformat(timespec="milliseconds") + "Z"
             )
             insert_sample(conn, timestamp_utc, data, schema_name, parsed)
 
             # Alle 0,5 s eine Kurzinfo fuer Sichtkontrolle.
-            now = time.monotonic()
             if now - last_print >= 0.5:
                 last_print = now
                 speed_kmh = parsed["speed"] * 3.6  # Speed ist m/s im Forza-Paket.
