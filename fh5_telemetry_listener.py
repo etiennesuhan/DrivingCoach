@@ -230,6 +230,9 @@ def main() -> None:
                 print(f"Ignoriere Paket mit {len(data)} Bytes (unbekannte Laenge).")
                 continue
             schema_name, parsed = parsed_result
+            if parsed.get("engine_max_rpm", 0) == 0:
+                # Ignoriere fruehe/ungenutzte Pakete ohne RPM-Daten.
+                continue
 
             timestamp_utc = (
                 datetime.datetime.utcnow().isoformat(timespec="milliseconds") + "Z"
