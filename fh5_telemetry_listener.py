@@ -6,15 +6,12 @@ import time
 from typing import Iterable
 
 
-UDP_IP = "0.0.0.0"  # lauscht auf allen Netzwerkinterfaces
-UDP_PORT = 5300     # muss mit dem in FH5 eingestellten Port uebereinstimmen
-DB_FILE = "telemetry.db"
+UDP_IP = "0.0.0.0"
+UDP_PORT = 5300
+DB_FILE = "test.db"
 MAX_PACKETS_PER_SECOND = 20
-MIN_SAVE_INTERVAL = 1.0 / MAX_PACKETS_PER_SECOND  # mindestens 50 ms zwischen zwei gespeicherten Paketen
+MIN_SAVE_INTERVAL = 1.0 / MAX_PACKETS_PER_SECOND
 
-# Zwei bekannte Dash-Formate:
-# - fh5_dash_324: aktuelles FH5-Format (324 Byte, inkl. 3 zusaetzlicher Floats nach num_cylinders)
-# - fh4_dash_312: aelteres FH4/FH5-Format (312 Byte)
 FORZA_FIELDS_DASH_324: list[tuple[str, str]] = [
     ("is_race_on", "i"),
     ("timestamp_ms", "I"),
@@ -74,7 +71,7 @@ FORZA_FIELDS_DASH_324: list[tuple[str, str]] = [
     ("car_performance_index", "i"),
     ("drivetrain_type", "i"),
     ("num_cylinders", "i"),
-    ("extra_unknown_1", "f"),  # FH5 sendet hier 3 zusaetzliche Floats
+    ("extra_unknown_1", "f"),
     ("extra_unknown_2", "f"),
     ("extra_unknown_3", "f"),
     ("position_x", "f"),
@@ -106,7 +103,6 @@ FORZA_FIELDS_DASH_324: list[tuple[str, str]] = [
     ("normalized_ai_brake_diff", "B"),
 ]
 
-# Aelteres 312-Byte-Schema ohne die drei Extra-Floats.
 FORZA_FIELDS_DASH_312 = [f for f in FORZA_FIELDS_DASH_324 if not f[0].startswith("extra_unknown_")]
 
 SCHEMAS = [
@@ -114,21 +110,18 @@ SCHEMAS = [
     ("fh4_dash_312", FORZA_FIELDS_DASH_312, struct.calcsize("<" + "".join(fmt for _, fmt in FORZA_FIELDS_DASH_312))),
 ]
 
-# Superset fuer die Tabelle: wir nehmen das groesste (324-Byte) Schema.
 BASE_FIELDS = FORZA_FIELDS_DASH_324
 BASE_STRUCT_FORMAT = "<" + "".join(fmt for _, fmt in BASE_FIELDS)
 EXPECTED_PACKET_SIZE = SCHEMAS[0][2]
 
 
 def create_socket(ip: str, port: int) -> socket.socket:
-    """Erzeuge und binde einen UDP-Socket fuer die Forza-Telemetrie."""
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind((ip, port))
     return sock
 
 
 def ensure_columns(conn: sqlite3.Connection, table: str, columns: Iterable[tuple[str, str]]) -> None:
-    """Stellt sicher, dass alle benoetigten Spalten existieren (fuer Upgrades alter DBs)."""
     existing = {row[1] for row in conn.execute(f"PRAGMA table_info({table})")}
     for name, sql_type in columns:
         if name not in existing:
@@ -137,10 +130,8 @@ def ensure_columns(conn: sqlite3.Connection, table: str, columns: Iterable[tuple
 
 
 def init_db(db_path: str) -> sqlite3.Connection:
-    """Erzeuge/aktualisiere eine SQLite-Datenbank mit allen Forza-Feldern und Raw-Paket."""
     conn = sqlite3.connect(db_path)
 
-    # Tabellenschema dynamisch aus der groessten Feldliste erzeugen.
     db_types = {"f": "REAL", "i": "INTEGER", "I": "INTEGER", "H": "INTEGER", "B": "INTEGER"}
     column_defs = [
         "id INTEGER PRIMARY KEY AUTOINCREMENT",
@@ -160,7 +151,6 @@ def init_db(db_path: str) -> sqlite3.Connection:
         """
     )
 
-    # Falls bereits eine alte Tabelle existiert, fehlende Spalten sukzessive anlegen.
     ensure_columns(
         conn,
         "telemetry_samples",
@@ -172,15 +162,10 @@ def init_db(db_path: str) -> sqlite3.Connection:
         ]
         + [(name, db_types[fmt]) for name, fmt in BASE_FIELDS],
     )
-
     return conn
 
 
 def parse_telemetry(data: bytes) -> tuple[str, dict] | None:
-    """
-    Liest alle bekannten Felder aus dem Forza-Telemetriepaket.
-    Parst nur, wenn die Laenge exakt zum Schema passt (sonst None).
-    """
     for schema_name, fields, size in SCHEMAS:
         if len(data) != size:
             continue
@@ -193,7 +178,6 @@ def parse_telemetry(data: bytes) -> tuple[str, dict] | None:
 def insert_sample(
     conn: sqlite3.Connection, timestamp_utc: str, raw: bytes, schema_name: str, parsed: dict
 ) -> None:
-    """Speichert einen kompletten Telemetrie-Datensatz inklusive Raw-BLOB."""
     columns = ["timestamp_utc", "packet_length", "packet_schema", "raw"] + [name for name, _ in BASE_FIELDS]
     placeholders = ", ".join(["?"] * len(columns))
     values = [
@@ -202,7 +186,6 @@ def insert_sample(
         schema_name,
         sqlite3.Binary(raw),
     ]
-    # Fuer Felder, die in einem kleineren Schema fehlen, Null/0 als Platzhalter.
     for name, _ in BASE_FIELDS:
         values.append(parsed.get(name, 0))
 
@@ -214,13 +197,10 @@ def insert_sample(
 
 
 def main() -> None:
-    print(f"Erwartete Paketlaenge fh5_dash_324: {EXPECTED_PACKET_SIZE} Bytes")
+    print(f"Erwartete Paketlänge fh5_dash_324: {EXPECTED_PACKET_SIZE} Bytes")
     conn = init_db(DB_FILE)
     sock = create_socket(UDP_IP, UDP_PORT)
     print(f"Lausche auf UDP {UDP_IP}:{UDP_PORT} ...")
-    print("Stelle sicher, dass in Forza Horizon 5 'Data Out / Telemetrie'")
-    print("aktiviert ist und auf diese IP/Port zeigt.\n")
-
     last_print = 0.0
     last_saved = 0.0
 
@@ -229,17 +209,14 @@ def main() -> None:
             data, _ = sock.recvfrom(512)
             parsed_result = parse_telemetry(data)
             if not parsed_result:
-                # Unbekannte Laenge: Hinweis ausgeben und Paket ueberspringen.
-                print(f"Ignoriere Paket mit {len(data)} Bytes (unbekannte Laenge).")
+                print(f"Ignoriere Paket mit {len(data)} Bytes (unbekannte Länge).")
                 continue
             schema_name, parsed = parsed_result
             if parsed.get("engine_max_rpm", 0) == 0:
-                # Ignoriere fruehe/ungenutzte Pakete ohne RPM-Daten.
                 continue
 
             now = time.monotonic()
             if now - last_saved < MIN_SAVE_INTERVAL:
-                # Zu viele Pakete pro Sekunde: dieses Paket ueberspringen.
                 continue
             last_saved = now
 
@@ -251,10 +228,11 @@ def main() -> None:
             # Alle 0,5 s eine Kurzinfo fuer Sichtkontrolle.
             if now - last_print >= 0.5:
                 last_print = now
+                steer = parsed['steer']
                 speed_kmh = parsed["speed"] * 3.6  # Speed ist m/s im Forza-Paket.
                 rpm = parsed["current_engine_rpm"]
                 print(
-                    f"{timestamp_utc} | {speed_kmh:6.1f} km/h | {rpm:6.0f} RPM | len={len(data)} | schema={schema_name}"
+                    f"{steer} | {speed_kmh:6.1f} km/h | {rpm:6.0f} RPM"
                 )
     except KeyboardInterrupt:
         print("\nBeende Listener...")
