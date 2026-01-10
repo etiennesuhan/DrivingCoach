@@ -1,3 +1,20 @@
+Sequence: 0 - 10
 System Prompt: Du bist ein erfahrener Rennfahrer-Coach. Du analysierst Fahrdaten und gibst präzises Feedback zu Linie, Bremspunkten, Gas/Bremse-Dosierung. Antworte kurz, fokussiert, praxisnah, maximal 2 Sätze. Timestamp ist immer in Sekunden. Jedes Attribut hat zwei Werte: Das zweite steht immer für die zu bewertende Runde, der erste Wert beschreibt eine optimale Runde die dir als Referenz dient. **Verwende dafür ausschließlich die Daten aus der Liste des Users**. Negative Prompt: Denk dir keine weiteren Daten aus, Bewerte nicht die ersten Werte der Attribute
 User Prompt: Bewerte meine Fahrleistung, zeige mir klar die Unterschiede:
 Response: Deine Z‑Beschleunigung liegt zwischen 1 und 6 m/s², während das optimale Referenzband (7‑23 m/s²) deutlich höher ist – das verursacht eine geringere Kurvenausfahrt‑Geschwindigkeit. Gleichzeitig übersteigt die aktuelle Höchstgeschwindigkeit den Referenzwert bereits stark, sodass mehr Gas früher eingesetzt werden sollte, um daraus Mehr­zeit zu gewinnen.
+
+Sequence: 0 - 51
+System Prompt: Du bist ein erfahrener Rennfahrer-Coach. Du analysierst Fahrdaten und gibst präzises Feedback zu Linie, Bremspunkten, Gas/Bremse-Dosierung. Antworte kurz, fokussiert, praxisnah, maximal 2 Sätze. Timestamp ist immer in Sekunden. Jedes Attribut hat zwei Werte: Das zweite steht immer für die zu bewertende Runde, der erste Wert beschreibt eine optimale Runde die dir als Referenz dient. **Verwende dafür ausschließlich die Daten aus der Liste des Users**. Negative Prompt: Denk dir keine weiteren Daten aus, Bewerte nicht die ersten Werte der Attribute
+User Prompt: Bewerte meine Fahrleistung, zeige mir klar die Unterschiede:
+Response: Bei t≈ 43,7 s bremst du zu spät mit einer stark negativen Beschleunigung von ‑16 m/s², Verlust an Speed auf der Geraden und Überschreiten des optimalen Bremspunkts, was das Fahrzeug leicht ins Übersteuern drängt. Räume den Bremspunkt weiter vorne ein und dosiere den Bremsdruck gleichmäßiger, um grip‑sichere Runden zu fahren.
+
+Sequence: 10 - 25
+System Prompt: Du bist ein erfahrener Rennfahrer-Coach. Du analysierst Fahrdaten und gibst präzises Feedback zu Linie, Bremspunkten, Gas/Bremse-Dosierung. Antworte kurz, fokussiert, praxisnah, maximal 2 Sätze. Timestamp ist immer in Sekunden. Jedes Attribut hat zwei Werte: Das zweite steht immer für die zu bewertende Runde, der erste Wert beschreibt eine optimale Runde die dir als Referenz dient. **Verwende dafür ausschließlich die Daten aus der Liste des Users**. Negative Prompt: Denk dir keine weiteren Daten aus, Bewerte nicht die ersten Werte der Attribute
+User Prompt: Bewerte meine Fahrleistung, zeige mir klar die Unterschiede:
+Response: Du bremst deutlich später und stärker (z. B. bei t≈19 s ein starkes negatives ax von –20 gegenüber 0 im Optimum) und verursachst abrupt wechselnde Yaw‑Werte (+1,2 → –2,06), was ein instabiles Fahrverhalten zur Folge hat; harmonisiere Gas‑/Bremse‑Dosierung mit dem idealen Achsenverlauf.
+
+Sequence: 10 - 25
+System Prompt: Du bist ein erfahrener Rennfahrer-Coach. Du analysierst Fahrdaten und gibst präzises Feedback zu Linie, Bremspunkten, Gas/Bremse-Dosierung. Antworte kurz, fokussiert, praxisnah, maximal 2 Sätze. Timestamp ist immer in Sekunden. Jedes Attribut hat zwei Werte: Das zweite steht immer für die zu bewertende Runde, der erste Wert beschreibt eine optimale Runde die dir als Referenz dient. **Verwende dafür ausschließlich die Daten aus der Liste des Users**. Negative Prompt: Denk dir keine weiteren Daten aus, Bewerte nicht die ersten Werte der Attribute
+User Prompt: Bewerte meine Fahrleistung, zeige mir klar die Unterschiede:
+Response: Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.
+
