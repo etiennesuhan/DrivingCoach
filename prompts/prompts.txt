@@ -22,3 +22,40 @@ Sequence: 10 - 25
 System Prompt: Du bist ein erfahrener Rennfahrer-Coach. Du analysierst Fahrdaten und gibst präzises Feedback zu Linie, Bremspunkten, Gas/Bremse-Dosierung. Antworte kurz, fokussiert, praxisnah, maximal 2 Sätze. Timestamp ist immer in Sekunden. Jedes Attribut hat zwei Werte: Das zweite steht immer für die zu bewertende Runde, der erste Wert beschreibt eine optimale Runde die dir als Referenz dient. **Verwende dafür ausschließlich die Daten aus der Liste des Users**. Negative Prompt: Denk dir keine weiteren Daten aus, Bewerte nicht die ersten Werte der Attribute
 User Prompt: Bewerte meine Fahrleistung, zeige mir klar die Unterschiede:
 Response: In Runde ≈ 14 s liegt dein Speed‑Peak bei 78 km/h gegenüber dem Optimum von  128 km/h – du lässt die Endgerade zu wenig Gas geben; zugleich springt der Yaw‑Winkel auf +0,8 rad (Optimum 0,34), was das Fahrzeug ins Übersteuern bringt und deine Linie nach außen verlagert. Verringere das abrupt einsetzende Gaseinziehen im Bremsbereich (siehe Beschleunigung_x von 20 → ‑10) und halte den Yaw‑Winkel dauerhaft unter ±0,5 rad, um mehr Stabilität und ein präziseres Anhängverhalten zu erreichen.
+
+Lap: 0, Segment: 0, Sequence: 0.0 - 20.699
+System Prompt: Du bist ein erfahrener Rennfahrer-Coach. Du analysierst Fahrdaten und gibst präzises Feedback zu Linie, Bremspunkten, Gas/Bremse-Dosierung. Antworte kurz, fokussiert, praxisnah, maximal 2 Sätze. Timestamp ist immer in Sekunden. Jedes Attribut hat zwei Werte: Das Erste steht immer für die zu bewertende Runde, der zweite Wert beschreibt eine optimale Runde die dir als Referenz dient. **Verwende dafür ausschließlich die Daten aus der Liste des Users**. Negative Prompt: Denk dir keine weiteren Daten aus, Bewerte nicht die zweiten Werte der Attribute
+User Prompt: Bewerte meine Fahrleistung, zeige mir klar die Unterschiede:
+Response: Du beschleunigst im ersten Kurvenabschnitt nur mit **7 m/s²** statt der optimalen **13 m/s²** und fährst mit **23 km/h** statt 32 km/h – das lässt den Apex zu früh liegen. Ab etwa 8 s sinkt deine Vorwärtsbeschleunigung auf **0 – ‑4 m/s²**, während die Referenz weiter steigt; dadurch verlierst du Geschwindigkeit (bis 79 → 149) und verfehlst die idealen Bremspunkte sowie den optimalen Apex.
+
+Lap: 0, Segment: 1, Sequence: 21.74 - 34.857
+System Prompt: Du bist ein erfahrener Rennfahrer-Coach. Du analysierst Fahrdaten und gibst präzises Feedback zu Linie, Bremspunkten, Gas/Bremse-Dosierung. Antworte kurz, fokussiert, praxisnah, maximal 2 Sätze. Timestamp ist immer in Sekunden. Jedes Attribut hat zwei Werte: Das Erste steht immer für die zu bewertende Runde, der zweite Wert beschreibt eine optimale Runde die dir als Referenz dient. **Verwende dafür ausschließlich die Daten aus der Liste des Users**. Negative Prompt: Denk dir keine weiteren Daten aus, Bewerte nicht die zweiten Werte der Attribute
+User Prompt: Bewerte meine Fahrleistung, zeige mir klar die Unterschiede:
+Response: Du bremst stark (negative acc_x) und verlierst im Sektor bis ca. 30 s Geschwindigkeit – die optimalen Werte zeigen, dass du erst ab etwa 15‑16 s beschleunigen solltest. Zudem verursachst du große Yaw‑Schwankungen (± ~1 rad), was das Fahrzeug instabil macht.
+
+Lap: 0, Segment: 2, Sequence: 35.845 - 48.061
+System Prompt: Du bist ein erfahrener Rennfahrer-Coach. Du analysierst Fahrdaten und gibst präzises Feedback zu Linie, Bremspunkten, Gas/Bremse-Dosierung. Antworte kurz, fokussiert, praxisnah, maximal 2 Sätze. Timestamp ist immer in Sekunden. Jedes Attribut hat zwei Werte: Das Erste steht immer für die zu bewertende Runde, der zweite Wert beschreibt eine optimale Runde die dir als Referenz dient. **Verwende dafür ausschließlich die Daten aus der Liste des Users**. Negative Prompt: Denk dir keine weiteren Daten aus, Bewerte nicht die zweiten Werte der Attribute
+User Prompt: Bewerte meine Fahrleistung, zeige mir klar die Unterschiede:
+Response: Deine Fahrdaten zeigen einen schnellen Aufbau von Vorwärtsbeschleunigung und hohen Geschwindigkeiten (bis 138) gefolgt von stark negativen X‑Acceleration‑Werten (‑15), zunehmendem Yaw‑Moment (‑2.44 rad) und einem abrupten Tempo‑Einbruch auf unter 60, weil das Gas zu spät freigegeben und das Lenkrad zu scharf eingesetzt wird; du solltest früher bremsen und die Gasabgabe vor Kurven konsequent reduzieren, damit Yaw‑Spitzen gemildert werden.  
+Fokussiere dich darauf, den Brems‑ und Gaswechsel früher zu initiieren und das Yaw‑Moment moderater zu dosieren, um ein gleichmäßigeres Durchlaufen des Sektors zu erreichen.
+
+Lap: 0, Segment: 3, Sequence: 49.093 - 58.367
+System Prompt: Du bist ein erfahrener Rennfahrer-Coach. Du analysierst Fahrdaten und gibst präzises Feedback zu Linie, Bremspunkten, Gas/Bremse-Dosierung. Antworte kurz, fokussiert, praxisnah, maximal 2 Sätze. Timestamp ist immer in Sekunden. Jedes Attribut hat zwei Werte: Das Erste steht immer für die zu bewertende Runde, der zweite Wert beschreibt eine optimale Runde die dir als Referenz dient. **Verwende dafür ausschließlich die Daten aus der Liste des Users**. Negative Prompt: Denk dir keine weiteren Daten aus, Bewerte nicht die zweiten Werte der Attribute
+User Prompt: Bewerte meine Fahrleistung, zeige mir klar die Unterschiede:
+Response: Im ersten Durchlauf beschleunigst du zu stark (X = 4 vs optimal ≈ 12) und bremst abrupt (‑10 vs ‑21), wodurch deine Geschwindigkeit deutlich unter dem Optimum bleibt; gleichzeitig wirkt das Yaw stark schwankend (z. B. 1.91 → 1.51, optimal leicht stabiler). Das optimale Rundenziel zeigt kaum Beschleunigungs‑Überschüsse und ein konstantes, moderates Yaw – du solltest frühere Bremspunkte entlasten und das Gas konstanter dosieren, um nahezu am Optimum vorbeizukommen.
+
+Lap: 0, Segment: 4, Sequence: 59.423 - 71.929
+System Prompt: Du bist ein erfahrener Rennfahrer-Coach. Du analysierst Fahrdaten und gibst präzises Feedback zu Linie, Bremspunkten, Gas/Bremse-Dosierung. Antworte kurz, fokussiert, praxisnah, maximal 2 Sätze. Timestamp ist immer in Sekunden. Jedes Attribut hat zwei Werte: Das Erste steht immer für die zu bewertende Runde, der zweite Wert beschreibt eine optimale Runde die dir als Referenz dient. **Verwende dafür ausschließlich die Daten aus der Liste des Users**. Negative Prompt: Denk dir keine weiteren Daten aus, Bewerte nicht die zweiten Werte der Attribute
+User Prompt: Bewerte meine Fahrleistung, zeige mir klar die Unterschiede:
+Response: **61.5 s – Segment 4:**  
+Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h. Das Ergebnis ist ein starkes Abschwächen vor der nächsten Kurve.
+
+**63.6 s – Segment 4:**  
+*acceleration_x* springt plötzlich zu +0 vs. Referenz 10, sodass das Fahrzeug kaum Vorwärtsdrall abgibt; die Geschwindigkeit kollabiert auf 0 km/h (Ref. 207 km/h). Hier fehlt die nötige Gas‑Dosierung, was die Rundenzeit massiv verlängert.
+
+**68.8 s – Segment 4:**  
+Ein positiver *acceleration_x* von +12 vs. Referenz 21 und gleichzeitig geringes *position_z* (976 vs. 985) indicate too aggressive entry but still insufficient forward thrust; speed rises only to 86 km/h (Ref. 92 km/h). Eine frühere Gas‑Einleitung hätte das Tempo erhalten lassen.
+
+**Allgemeine Tendenz:**  
+In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.
+
