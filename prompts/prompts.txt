@@ -59,3 +59,1012 @@ Ein positiver *acceleration_x* von +12 vs. Referenz 21 und gleichzeitig geri
 **Allgemeine Tendenz:**  
 In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.
 
+Lap: 0, Segment: 0, Sequence: 0.0 - 20.699
+System Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+User Prompt: 
+Response: **Kurz‑Analyse**
+
+- **Startphase (0 – 2 s)**  
+  - Deine Geschwindigkeit bleibt praktisch bei 0 km/h, während die Referenz bereits ≈ 23 km/h erreicht. Öffne das Gas früher (≈ 10 % mehr) und halte den Pedalweg gleichmäßig, um nicht im „Leerlauf“ zu hängen.
+
+- **Phase 4 – 6 s (Beschleunigung _z  > 5 m/s²)**  
+  - Der vertikale Beschleunigungswert liegt rund **2‑3‑facher** über dem Referenzwert. Das senkt den Grip und reduziert die möglichen Kurvengeschwindigkeiten. Leite das Auto sanft ein und reduziere die Gaspedal‑Last, um die Front‑Drevlänge zu schonen.
+
+- **Kurveneingang (≈ 8‑9 s, Y‑Akkeleration)**  
+  - Deine Y‑Beschleunigung springt von 0/‑2 bis **+6/-3** whereas die Referenz fast immer im 0‑±1‑Bereich liegt. Das erzeugt starkes Unter‑ bzw. Übersteuern und zwingt dich zu abruptem Gegenlenken. Nahmt earlier ein (ca. +2‑3 m/s²) und halte den Lenkwinkel später konstanter.
+
+- **Übergang zum Geradenabschnitt (≈ 15‑17 s, Yaw & signwechselnder *acceleration_x*)**  
+  - Yaw‑Rate wechselt plötzlich von –2° auf fast 0°, während *acceleration_x* von +12 → 10 auf 1 km/h abfällt. Das bedeutet ein zu spätes Bremsen/Einlenken und führt zu abrupten Geschwindigkeitsabfällen (von ~176 → 97 km/h). Ziel: glattes Einleiten des Bremsens etwas früher, damit die Yaw‑Rate erst am Apex nachlässt.
+
+- **Allgemeine Tendenz**  
+  - In den ersten Minuten dominieren übermäßig negative *acceleration_x* (zu starkes Bremsen) und größere Schwankungen in **yaw** (‑0,5 → –2 rad). Das zwingt zu häufigem „Abschwächen“. Reduziere das Bremskraft‑Aufkommen um 10‑15 % im kritischen Abschnitt (≈ 70–80 s) und halte den Yaw‑Winkel im Optimum (‑2° bis –2,2°), damit die Geschwindigkeit wieder auf ~ 225 km/h steigen kann.
+
+**Fazit:**  
+Du verlierst Zeit durch zu langsame Beschleunigung am Anfang, überhöhte vertikale Belastung und unnötige Y‑Kräfte beim Kurveneingang. Glättere das Fahrpedal, moderniere den Einlenkwinkel und passe das Bremsen‑Timing an die Referenz‑Yaw‑Werte an – dann kannst du fast jeden Segment mit einem höheren Endgeschwindigkeit und geringerer Abnutzung fahren.
+
+Lap: 0, Segment: 1, Sequence: 21.74 - 34.857
+System Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+User Prompt: 
+Response: **Segment 1 – Was ist noch nicht im Soll‑Zustand?**
+
+| Timestamp (s) | Kardiovaskuläre Belastung & Fahrstil | Warum das Problem entsteht (Vergleich mit Referenz) |
+|---------------|--------------------------------------|------------------------------------------------------|
+| **27‑30 s**   | `acceleration_x` = **–19 … –21 m/s²**, Speed fällt von **≈155 → 124 km/h**. Yaw‑Winkel steigt auf **+1,1 rad** (‑0.73 ° – +0.39 ° in der Referenz). | Sehr starkes Bremsen verursacht ein abruptes Abbremsen und lässt das Fahrzeug hinten aus der Ideallinie geraten. Die Referenzrunde bremst kaum stärker als **‑2 m/s²** und hält den Yaw unter **±0,5 rad**. |
+| **31‑34 s**   | Negative `acceleration_x` von **–21 → –14 m/s²**, Speed von **≈131 → 97 km/h**. Yaw wechselt zu **–0,64 rad bis –1,57 rad**. | Wieder übermäßiges Bremsen, nur noch 2‑3 s bevor die optimale Höchstgeschwindigkeit (≈160 km/h) erreicht werden könnte. Der Fahrzeugkörper dreht sich mehr als doppelt so stark (±1,5 °) – das erzeugt Understeer/Oversteer und zwingt dich, später zu korrigieren. |
+| **28‑32 s**   | `yaw` wandert von **+0,97 rad → +1,57 rad** (≈+56° bis +90°) während die Referenz nur zwischen **+0,3 rad und 0,5 rad** liegt. | Zu aggressives Lenken in dieser Phase lässt das Auto “übersteuern”. Das optimale Fahrverhalten würde einen kleineren Lenkwinkel bzw. eine frühere Einlenkung erwarten – dadurch bleibt Yaw im gewünschten kleinen Bereich und du kannst die Höchstgeschwindigkeit besser halten. |
+| **21‑24 s**   | Speed steigt nur von **92→130 km/h**, aber `acceleration_x` liegt bereits bei **+7 bis +9 m/s²** – das ist schneller als im Vergleichszeitraum (Referenz ≈ +3…+5 m/s²). | Das frühe starke Gasgeben lässt die Fahrlinie nach außen laufen, was später zu mehr Kurvenradius und höheren Bremsbedarf führt. Reduziere hier etwas das Gas‑Aufkommen, um besser in die laterale Linie zu finden. |
+| **Lateral‑Beschleunigung** (`acceleration_y`) | Immer 0 (m/s²) gemessen. | Das ist unrealistisch – in einer echten Kurve entsteht ein kleiner (±0,5 m/s²), der dir sagt, dass du noch rechtzeitig einlenken musst. Erhöhe das Y‑Signal früh, um den optimalen Pfad zu verfolgen und einen “Cut” über die Strecke zu vermeiden. |
+
+### Was du jetzt tun kannst (kurz)
+
+1. **Bremspunkte nach vorne schieben** – Ziel: `acceleration_x` nicht stärker als –6 m/s² bis etwa 27 s, dann sanft auf das Soll‑Niveau von +3…+5 m/s² zurücksteuern, wenn du die Kurve verlassen willst. Das verhindert den großen Speed‑Abfall (179→120 km/h) und hält die Yaw‑Werte unter ±0,6 rad.
+2. **Frühere Lenkeingabe** – Beginne das Einlenken bereits beim ersten positiven `acceleration_x`‑Spike (≈+7 m/s²). So bleibt der Fahrzeugkopf im „sanften“ Übergangsbereich und Yaw‑Peaks reduzieren sich auf die Referenz‑Grenze.
+3. **Leichtes Seitenbeschleunigungs‑Signal einbauen** – Setze klein positive/negative `acceleration_y` (≈ ±0,3…0,5 m/s²) sobald du dich in der Kurve befindest; das gibt dem Fahrzeug die nötige laterale Stabilität und verhindert ein reines „Starr‑im‑Geraden‑Fahren“.
+4. **Zielgeschwindigkeit im Auge behalten** – Versuche den Soll‑Speed von **≈160 km/h** bereits vor 28 s zu erreichen (nach dem Bremsen). Der aktuelle Peak von 155–179 km/h ist gut, aber er muss *ohne abruptes Runterfallen* nach unten gehalten werden.
+5. **Yaw‑Kurve glätten** – Halte die Yaw‑Werte zwischen **+0,3 rad und –0,4 rad**; das entspricht dem Referenzbereich von +≈+0,5 rad bis -≈-0,6 rad. Dazu muss die Lenkung früher und nicht so stark ausgelenkt werden.
+
+---
+
+**Kurzfassung:**  
+Du bremst zu spät (Acc‑X > –14 m/s²) und verursachst ein starkes Abschwächen, das gleichzeitig den Yaw auf über +1 rad (bzw. –1,5 rad) treibt. Das führt zu hohen Untersteuer‑/Übersteuer‑Effekten und verhindert die geforderte Höchstgeschwindigkeit von ≈ 160 km/h in diesem Segment. Frühzeitige Gas‑Reduktion, ein früheres Lenken mit moderatem Eingriff und ein leichtes Seitenbeschleunigungs‑Signal werden dich dem optimalen Fahrstil näher bringen.  
+
+Weiter so – aber bitte etwas sanftere Brems‑und Lenk‑Eingaben im kritischen Segment!
+
+Lap: 0, Segment: 2, Sequence: 35.845 - 48.061
+System Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+User Prompt: 
+Response: **Segment 2 – Kurzanalyse**
+
+| Attribut | Dein Wert (Durchschnitt) | Referenz‑Trend (typisch) | Was das bedeutet |
+|----------|--------------------------|--------------------------|-------------------|
+| **speed in km/h** | ≈ 84 km/h (ab 40 s sinkt auf 63 → 48) | 95‑105 km/h im optimalen Teilbereich | Du verlierst zu schnell an Vortrieb, weil du zu spät bremst/zu stark abschaltest. |
+| **acceleration_x in m/s²** | +2 → -9 (nach 40 s) | meist +8‑12 bis ≈ 35 s, bleibt dann leicht positiv | Gegen Ende des Abschnitts schwingst du stark nach negativ; das bremst die Beschleunigung ab und senkt Geschwindigkeit. |
+| **acceleration_y in m/s²** | 0–2 (max +2) | Ziel: 0 ± 1 | Ein kleiner positiver Yaw‑Winkel (≈ -2,4° bis -3,0°) zeigt, dass du das Lenkungspotenzial noch nicht optimal nutzt. |
+| **yaw in degrees** | ‑2.5 → +2.6 (± ≈ 1° Bereich) | Zielbereich ≈ ‑1° bis +1° | Außerhalb dieses Bereichs wird die Gerade‑Linie länger und der Grip sinkt – du fährst seitlich mehr als nötig. |
+| **position_x / y** | x ≈ 460–542 m, y ≈ 267‑278 m (leicht nach außen) | Optimaler Pfad bleibt im zentralen Korridor | Du verlässt etwas zu weit außen; das erhöht den Weg und reduziert Grip. |
+| **segment** | 2 (Konstant) | – | Ziel: Durch konsequente Linienführung in diesem Abschnitt die Höchstgeschwindigkeit erreichen. |
+
+### Was du ändern solltest
+1. **Bremse früher** – Beginne das Abdämpfen etwa bei ≈ 38 s, sobald du noch ≈ 90‑95 km/h erreichst anstatt erst bei 40,15 s, wo die Geschwindigkeit auf 63 km/h fällt.  
+2. **Lenke früher und stärker nach innen** – Schon ab ~ 38 s kannst du das Fahrzeug mit einer leicht negativeren Lenkwinkel (Yaw um ≈ ‑1°) einfangen, sodass der Positionswert nicht weiter nach außen wandert. Das verkürzt den Weg und gibt mehr Seitengrip für die nächste Kurve.  
+3. **Buchse den Beschleunigungs‑Aufbau** – Halte den *acceleration_x* im Bereich +8 bis +12 m/s², bis du die Referenzgeschwindigkeit von ~95–105 km/h erreicht hast; danach erst vorsichtig in den leichten Negativbereich gehen.  
+4. **Kontrolliere Yaw** – Bleibe nach Möglichkeit zwischen ‑1° und +1°. Wenn du bereits bei −2,4° startest, korrigiere durch frühzeitiges Auflenken, bevor der Fahrzeugschwenk zu stark wird.
+
+> **Kurz gesagt:** In Abschnitt 2 verlierst du zu schnell Tempo, weil du zu spät bremst und aus einer leicht außen geratenen Linie herausfährst. Frühere Bremspunkte, ein zentraleres Lenkwinkel‑Fenster und das Bewahren des Yaw‑Bands von –1° bis +1° bringen dich zurück in den optimalen Geschwindigkeits‑ und Linienbereich.  
+
+**Weiter:** Wenn du die beschriebenen Anpassungen umsetzt, wirst du merken, dass du nach ≈ 42 s wieder auf 95‑105 km/h beschleunigst – genau dort, wo deine Referenzrunde liegt. Viel Erfolg!
+
+Lap: 0, Segment: 3, Sequence: 49.093 - 58.367
+System Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+User Prompt: 
+Response: **Kurz‑ und Präzisantwort (Segment 3 – ca. 33 – 42 s)**  
+
+- **Bremse zu früh / zu stark:** Dein *acceleration_x* springt von **+4 → –22 m/s²**, während die Referenz praktisch gleich 0 bleibt (‑2 → +6 m/s²). Das führt zu einem abrupten Geschwindigkeitsverlust von **182 km/h → 109 km/h**. Bremsen Sie erst kurz vor dem Einlenken und reduzieren Sie das Bremspedal‑Pedal früher, um die Geschwindigkeit besser zu halten.  
+
+- **Lateralbeschleunigung** bleibt nahezu null – das ist korrekt für dieses Teilstück.  
+
+- **Yaw‑Abweichung** liegt bei **+1,57°**, also leicht über dem Referenzwert von ca. +1,2°. Das kann ein erstes Anzeichen von Untersteuern sein; lenken Sie etwas früher und weniger stark ein, um die Drehzahl zu reduzieren.  
+
+- **Geschwindigkeit nach der Kurve:** Nach dem starken Bremse‑Impuls steigt die Geschwindigkeit erst wieder auf **165 km/h** (Referenz ≈ 203 km/h). Halten Sie leichtes Gegenlenken und geben Sie früher Gas, um die Zielgeschwindigkeit von ca. **228 km/h** zu erreichen.  
+
+- **Kurzzeit‑Positivbeschleunigung:** Ab etwa 54 s zeigt *acceleration_x* bereits **+6 m/s²**, während Referenz‑Werte leicht positiv (+4) sind. Das ist ein gutes Timing, aber achten Sie darauf, nicht wieder zu stark zu bremsen, sobald die Kurve verlassen ist.  
+
+**Handlungsempfehlung:**  
+1️⃣ Verzögern Sie das Bremsmanöver um 0,2–0,3 s später und dosieren Sie es sanfter (‑2  bis ‑5 m/s² statt –22 m/s²).  
+2️⃣ Lenken Sie etwas früher ein, um die Yaw‑Abweichung von +1,57° zu reduzieren.  
+3️⃣ Geben Sie Gas, sobald das Fahrzeug stabil ist, um beschleunigen zu können und die Zielgeschwindigkeit von 203 km/h (Referenz) zu erreichen.  
+
+Durch diese Anpassungen halten Sie die optimale Fahrlinie und steigern Ihre Endgeschwindigkeit im Segment deutlich. 🚀
+
+Lap: 0, Segment: 0, Sequence: 0.0 - 20.699
+System Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+User Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+Response: **Kurz‑Feedback:**
+
+- Im Anfangsabschnitt (0 – 6 s) kommt die Geschwindigkeit kaum über 100 km/h, weil du kaum Beschleunigung aus dem Stand erzeugst – hier fehlt noch das kräftige „Gas‑Aufziehen“ der Referenz.  
+- Ab etwa 8 s startest du, die Kurve zu verlassen, aber deine **acceleration_x** bleibt fast bei 0, während die Referenz bereits **+3 m/s²** erreicht; das führt dazu, dass dein Durchkommen langsamer wird und du mit ~110 km/h anstatt den geplanten 225 km/h aus der Kurve kommst.  
+- In den Bereichen **8‑12 s** zeigen sowohl deine **acceleration_z** als auch das **yaw‑Verhalten** (immer noch leicht negativ) ein zu spätes Lenken – du fährst außen herum, was die zurückgelegte Strecke erhöht und dadurch Grip reduziert. Frühere Einlenkpunkte hätten den Innenradius verkleinert und die Kurvengeschwindigkeit (ca. 230 km/h bei 11‑12 s Referenz) ermöglicht.  
+- Zwischen **12 – 16 s** entsteht ein starker Negativimpuls in *acceleration_x* (‑4 bis ‑10 m/s²), kombiniert mit zunehmender **yaw‑Drehung**; das ist das typische „Abschwächen“ im Bremzonenbereich. Hier solltest du die Bremswirkung reduzieren, damit du mit einer Geschwindigkeit von etwa 235 km/h (Referenz) durch den Sektor fahren kannst, anstatt auf nur ~108 km/h zu fallen.  
+- Ab **~19 s** wird das Fahrverhalten wieder flüssiger: deine **acceleration_x** steigt stark (+18‑20 m/s²), du erreichst 137 km/h und hältst den Yaw im positiven Bereich (‑0,4 bis ‑0,8°). Das entspricht bereits dem Rhythmus der Referenz – halte diese positive Tendenz bis zum nächsten Abschnitt, um die Höchstgeschwindigkeit von etwa **250 km/h** zu erreichen.  
+
+**Zusammengefasst:** Starte früher mit kräftigem Gas‑Aufziehen, lenke etwas früher ein und lass das Bremsen erst nach dem kritischen Sektor (ca. 12–16 s) wirken. So bringst du deine Geschwindigkeit schneller in den mittleren 200er‑Bereich und vermeidest das unnötige Ausschwenken, das die Referenzrunde vermeidet.
+
+Lap: 0, Segment: 1, Sequence: 21.74 - 34.857
+System Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+User Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+Response: Segment 1: Du bremst zu spät und verlierst zwischen ≈ 27 s und 30 s stark an Geschwindigkeit (von ~155 km/h auf ~98–114 km/h). Das ist zusammen mit den starken negativen *acceleration_x*‑Werten und den abrupten Yaw‑Spitzen (-0.64 ° bis -1.57 °) das Untersteuern verursacht, das dich aus der optimalen Fahrlinie bringt. Versuche, früher einzulenken und das Bremspedal sanfter abzuregulieren – so bleibt dein *speed* besser im mittleren 150‑km/h‑Bereich und die yaw‑Abweichungen bleiben klein. Das gibt dir mehr Grip und eine stabilere Linie durch den gesamten Abschnitt.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Lap: 0, Segment: 0, Sequence: 0.0 - 20.699
+System Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+User Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+Response: **Abschnitt 1 (0–5 s) – zu langsame Anfahrt**  
+Du erreichst in den ersten Sekunden kaum Beschleunigung (*speed* 1 km/h vs. Referenz 0 → 32 km/h). Das führt dazu, dass du die gewünschte Höchstgeschwindigkeit von ~200 km/h nie erreichst.
+
+**Abschnitt 2 (6–9 s) – fehlende positive *acceleration_x***  
+Dein *acceleration_x* bleibt fast immer 0, während die Referenz bereits positive Werte (bis +14 m/s²) aufweist. Ohne zusätzliches Antriebs‑Boost kannst du die Geschwindigkeit nur bis ~236 km/h steigern.
+
+**Abschnitt 3 (9–13 s) – Überbremsen im Z‑Achsen‑Blick**  
+Dein *acceleration_z* ist bei +5 m/s² (oder leicht positiv), jedoch wird im Vergleich die Referenz‑Z‑Werte bis +20 m/s² überschritten. Das erzeugt starkes Bremsen, das deine Geschwindigkeit auf ~108–134 km/h limitiert, statt den optimalen 225–235 km/h.
+
+**Abschnitt 4 (13–16 s) – Untersteuern und abruptes Abschalten**  
+Bei *acceleration_x* ≈ ‑3 bis ‑10 m/s² und gleichzeitig hohen positiven Z‑Werten (‑20 bis +5) entsteht starker Untersteuern. Das Ergebnis: Geschwindigkeitsabfälle von 200 km/h auf nur ~96–149 km/h.  
+
+**Abschnitt 5 (17–20 s) – Lateral- und Yaw‑Probleme**  
+Lateralbeschleunigung (*acceleration_y*) erreicht Werte von +2 bis ‑3, während die Referenz im Bereich 0‑5 bleibt – das erzeugt instabiles Unter‑/Übersteuern. zudem dreht sich der Yaw von ≈ ‑1.9° zu stärkeren negativen Werten (bis ‑2.5) und verursacht eine Abweichung der Fahrzeuglinie.
+
+**Kurzfassung:**  
+- Frühzeitig mehr positiven *acceleration_x* erzeugen, um die Geschwindigkeit schneller zu steigern.  
+- Bremsvorgänge im Z‑Achsen‑Blick reduzieren; die Referenz nutzt größere positive Werte für Beschleunigung statt starkem Bremsen.  
+- Untersteuern durch gleichzeitig negative *acceleration_x* und große positive *acceleration_z* vermeiden – das führt zu abrupten Geschwindigkeitsverlusten.  
+- Lateral‑Beschleunigungen und Yaw‑Werte näher an die Referenz halten, um stabile Kurvenlinien und höhere Endgeschwindigkeiten zu erreichen.  
+
+Folge dieser Punkte, und du wirst die optimale Rundenzeit deutlich schneller alcan gen können.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Lap: 0, Segment: 1, Sequence: 21.74 - 34.857
+System Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+User Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+Response: Du befindest dich in einem kritischen Abschnitt, in dem das Fahrzeug stark gebremst wird (negative *acceleration_x* bis –21 m/s²) und gleichzeitig große yaw‑Winkel (≥ –1,57°) erzeugt werden. Das führt zu einem schnellen Speed‑Abfall von 160 km/h auf nur noch ~98 km/h und lässt dich aus der idealen Korbenline herauslaufen. Gleichzeitig bleiben *acceleration_y* fast permanent 0 m/s² – das bedeutet, du fährst geradeaus, aber mit zu hoher Bremskraft und einem nicht optimal ausgerichteten Fahrzeug (hoher Z‑Wert).  
+
+**Kurz gesagt:**  
+- **Bremse früher und weniger stark dosieren**, damit du mit einer höheren Geschwindigkeit (≈ 150–160 km/h) in die Kurve eintrittst.  
+- **Reduziere den yaw‑Winkel** – zielgerade sollte um ±0,3° liegen, nicht über –1°. Das minimiert Unter‑/Übersteuern.  
+- **Achte auf eine flüssigere Übergabe von Bremse zu Gas**, sodass *acceleration_x* nach dem Tiefpunkt wieder positiv wird und du wieder beschleunigen kannst (wie in der Referenz mit +7 m/s² → +12 m/s²).  
+
+Durch diese Anpassungen erreichst du eine bessere Kurvenlinie, geringeren Zeitverlust und higher top‑speed durch den Abschnitt.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Lap: 0, Segment: 2, Sequence: 35.845 - 48.061
+System Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+User Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+Response: **Segment 2 – schnelle Analyse der ersten 13 Datenpunkte**
+
+| Timestamp (s) | Was fehlt / war zu stark im Vergleich zur Referenz |
+|---------------|---------------------------------------------------|
+| **≈ 35.8‑36.8** | Noch positives *acceleration_x* in der Referenz, aber du bist bereits mit –15 … –19 m/s² stark bremsend. Ergebnis: Geschwindigkeit fällt von 63 → 48 km/h (zu wenig Endgeschwindigkeit). |
+| **≈ 37‑38**    | *acceleration_z* wird plötzlich sehr negativ (‑24 vs ‑12 m/s²) → zu viel Abtrieb, Grip verliert → weitere Geschwindigkeitseinbußen. |
+| **≈ 39‑40**    | Du hältst weiter starkes negatives *acceleration_x* (–15…‑19) und ein sehr positives *acceleration_z* (+4 +10) → Auto wird ins Hintere gedrückt, untersteuert. Geschwindigkeit sinkt bis 62 km/h. |
+| **≈ 41‑42**    | *yaw* beginnt leicht zu drehen (‑1.37 → ‑2.44°), die Referenz bleibt kaum bewegt. Das führt zu unnötiger Rotation und erhöhtem Untersteuern. Gleichzeitig springt das Fahrzeug von 75 km/h wieder nur leicht auf 74‑75 km/h – du hast noch immer zu wenig Vortrieb. |
+| **≈ 43‑46**    | Mehrere Male *acceleration_x* stark negativ (–13…‑19) und gleichzeitig ein zunehmendes *yaw* (bis –2.9°). Das kostet sowohl Grip als auch Endgeschwindigkeit (nur 71‑89 km/h statt desReferenzwertes in diesem Abschnitt). |
+| **≈ 48+**      | Du beginnst wieder zu beschleunigen (+6 … +... *acceleration_x*), aber die bereits verlorene Geschwindigkeit ist noch nicht zurückgeholt; du fährst nur bis 125 km/h nach einem langen Durchlauf von 63 km/h. |
+
+### Kernbotschaft
+- **Zu frühes, starkes Bremsen** (negative *acceleration_x*) lässt deine Geschwindigkeit in diesem Abschnitt um bis zu 70 % gegenüber der Referenz einbrechen.
+- **Negative *acceleration_z* und große Yaw‑Abweichungen** zeigen, dass das Fahrzeug hinten ausbricht bzw. übersteuert – das kostet Grip und erhöht die Rundenzeit.
+- **Langsame Beschleunigung zurück** nach dem Tiefpunkt lässt dich nur wenig von der optimalen Höchstgeschwindigkeit (≈ 170 km/h im Referenzverlauf) erreichen.
+
+### Konkretes Ziel für den nächsten Pass
+> „Reduziere das Bremsen um mindestens 3‑4 m/s² früher, halte *acceleration_z* innerhalb des von der Referenz vorgegebenen Bereichs (‑10 bis +5 m/s²) und korrigiere die Lenkung, sobald du Yaw > ±2° spürst.“  
+
+Damit holst du sofort an der fehlenden Höchstgeschwindigkeit und dem optimalen Kurven‑Grip nach. Weiter so!
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Lap: 0, Segment: 3, Sequence: 49.093 - 58.367
+System Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+User Prompt: 
+Rolle: 
+Erfahrener Rennfahrer-Coach. 
+
+Aufgabe: 
+Analysiere Fahrdaten und gib kurzes, präzises Feedback. 
+Du erhälst eine Tabelle mit Attributen.
+Damit du deine Analyse durchführen kannst, erhälst du neben den Fahrdaten des Spielers eine optimal gefahrene Referenzrunde als Vergleich.
+Jedes Attribut in der Tabelle hat zwei Werte: erster Wert = Fahrer, zweiter Wert = Referenz.
+
+Hinweise:
+Berücksichtige die Einheiten der jeweiligen Attribute. Sie sind in der Tabelle angegeben.
+Bedenke, dass der Nutzer weder die optimale Fahrt kennt, noch Werte die sich auf x, y und z Achse beziehen. 
+Er kennt lediglich Gas, Bremse, Lenkung, Geschwindigkeit, Position auf der Strecke und Zeitstempel.
+Der Nutzer kann nicht viel mit konkreten Zeitstempeln anfangen, sondern denkt eher in Abschnitten der Strecke.
+
+Beispiele: 
+'Du bist in diesem Segment fehlerfrei gefahren, jedoch bist du im vorangegangenen Segment zu langsam gefahren und konntest nicht mehr eine ausreichende Höchstgeschwindigkeit erreichen.',
+'Deine Linie war zu weit außen, was zu einem längeren Weg und weniger Grip führte. Versuche, früher einzulenken, um eine bessere Kurvenlinie zu finden.',
+'Du musst die Kurve mit 110 statt 160 Kmh nehmen, um nicht zu crashen.',
+'Du hast diesen Abschnitt fast perfekt gefahren, weiter so!'
+
+Negativbeispiele:
+'Der stark negative *acceleration_x* (‑34 vs. Referenz 0) zusammen mit hohem Z‑Wert (‑77 vs. ‑20) zeigt übermäßiges Bremsen und Untersteuern, wodurch die Geschwindigkeit auf 96 km/h fällt statt den optimalen 228 km/h.',
+'Ab etwa 9 s erreicht du Lateralbeschleunigungen von bis +20 m/s², während die Referenzrunde nur 0‑5 m/s² vorsieht – das erzeugt starkes Unter‑/Übersteuern. Später (ab 21 s) bremst du zu spät, sodass die Geschwindigkeit abrupt von 198 → 96 km/h sinkt und das Fahrzeug bei Yaw‑Werten um –0,5 rad aus der idealen Linie gerät.'
+'In den ersten Minuten dominieren übermäßige negative *acceleration_x* und falsch dosierte Yaw‑Rotation, was zu mehrfachem Abschwächen führt; ab etwa 68 s wird die Beschleunigung positiv gewählt und die Geschwindigkeit kann wieder steigen. Ziel ist es, das Bremsen so zu reduzieren, dass das Fahrzeug mit ähnlichem *speed* wie im Referenzwert durch die Kurve (bspw. 173 km/h bei 70.9 s) fahren kann.'
+
+Response: Durch dein starkes Bremsen sinkt die Geschwindigkeit im Segment 3 von rund 170 km/h auf unter 110 km/h und bleibt zunächst niedrig.  
+Im Vergleich zur Referenz ist das *acceleration_x* hier deutlich negativer, was bedeutet, dass du zu spät abbremsst und damit die optimale Einstiegsspeed verpasst.  
+Erhöhe den Brems‑Eingriff früher und halte die Eingangsgeschwindigkeit höher – das lässt *acceleration_x* näher an den Referenzwert herankommen und bewirkt einen flüssigeren Aufschwung zum Höchst­speed.  
+Später im Abschnitt steigt deine Geschwindigkeit wieder (auf 165 km/h), jedoch ist das Timing des Bremsens noch nicht optimal; verzögere das Eingangs‑Bremspedal um ein paar Sekunden, um die Referenzgeschwindigkeit besser zu erreichen.  
+
+Insgesamt gilt: *Erkenne, wo du zu stark bremst und reduziere das Bremsen frühzeitig.* Damit bleibst du mit der Referenz‑*speed* im Einklang und kannst die Kurve mit höherer Endgeschwindigkeit befahren.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Lap: 0, Segment: 0, Sequence: 0.0 - 72.982
+System Prompt: 
+Role:
+Experienced racing driver coach.
+
+Task:
+Analyze driving data and give short, precise feedback.
+You receive a table with attributes.
+So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
+Each attribute in the table has two values: first value = driver, second value = reference.
+
+Notes:
+Take into account the units of the respective attributes. They are specified in the table.
+Keep in mind that the user neither knows the optimal driving line nor values that refer to the x, y, and z axes.
+They only know throttle, brake, steering, speed, position on the track, and timestamp.
+The user cannot do much with concrete timestamps, but rather thinks in sections of the track.
+
+Examples:
+'You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.',
+'Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.',
+'You have to take the corner at 110 instead of 160 km/h in order not to crash.',
+'You drove this section almost perfectly, keep it up!'
+
+Negative examples:
+'The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value (-77 vs. -20) indicates excessive braking and understeer, causing the speed to drop to 96 km/h instead of the optimal 228 km/h.',
+'From about 9 s onward you reach lateral accelerations of up to +20 m/s², while the reference lap only allows 0–5 m/s² – this creates strong under-/oversteer. Later (from 21 s onward) you brake too late, causing the speed to drop abruptly from 198 → 96 km/h and the vehicle to deviate from the ideal line at yaw values around –0.5 rad.' 
+'In the first minutes, eexcessive negative acceleration_x and incorrectly dosed yaw rotation dominate, which leads to repeated slowing; from about 68 s onward the acceleration is chosen positively and the speed can increase again. The goal is to reduce braking so that the vehicle can take the corner with a similar speed as in the reference value (e.g. 173 km/h at 70.9 s).'
+
+User Prompt: 
+Response: **Feedback – driver vs. optimal reference**
+
+- You entered the first sector noticeably slower than the reference (≈ 23 km/h vs. ≈ 90 km/h).  Delayed throttle application keeps you from reaching the target top‑speed of ~173 km/h that appears later (e.g., at 70.9 s).
+
+- From around **9 s onward** your lateral acceleration spikes up to **+20 m/s²**, whereas the reference never exceeds +5 m/s².  This large yaw excursion creates severe under‑/oversteer and forces you to lift off earlier than ideal – aim for a smoother, narrower line that stays within 0–5 m/s².
+
+- The corner at **≈ 160 km/h** you carry is well below the reference speed of **≈ 173 km/h** (see segment around 70.9 s).  Reduce braking torque and turn‑in earlier to keep the cornering speed closer to the target.
+
+- In several places you apply strong negative **accelerationₓ** together with high **position_z** values (‑77 vs. ‑20, ‑34 vs. 0), which produces abrupt decelerations and loss of grip.  Modulate braking so that acceleration stays near the reference’s zero‑crossing to avoid understeer.
+
+- Yaw commands are also out of sync: you reach values around **–0.5 rad** while the reference stays within a tight band, causing the vehicle to drift off the ideal line (e.g., 21 s onward).  Reduce yaw magnitude and blend it with throttle input for a smoother transition.
+
+- Overall, focus on matching the reference’s speed peaks (~170–230 km/h) early in each segment, keep lateral spikes minimal, and align your turn‑in point so that you exit corners at or above the reference speeds.  Small adjustments will bring your lap within the optimal performance envelope.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Lap: 0, Segment: 1, Sequence: 21.74 - 34.857
+System Prompt: 
+Role:
+Experienced racing driver coach.
+
+Task:
+Analyze driving data and give short, precise feedback.
+You receive a table with attributes.
+So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
+Each attribute in the table has two values: first value = driver, second value = reference.
+
+Notes:
+Take into account the units of the respective attributes. They are specified in the table.
+Keep in mind that the user neither knows the optimal driving line nor values that refer to the x, y, and z axes.
+They only know throttle, brake, steering, speed, position on the track, and timestamp.
+The user cannot do much with concrete timestamps, but rather thinks in sections of the track.
+
+Examples:
+'You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.',
+'Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.',
+'You have to take the corner at 110 instead of 160 km/h in order not to crash.',
+'You drove this section almost perfectly, keep it up!'
+
+Negative examples:
+'The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value (-77 vs. -20) indicates excessive braking and understeer, causing the speed to drop to 96 km/h instead of the optimal 228 km/h.',
+'From about 9 s onward you reach lateral accelerations of up to +20 m/s², while the reference lap only allows 0–5 m/s² – this creates strong under-/oversteer. Later (from 21 s onward) you brake too late, causing the speed to drop abruptly from 198 → 96 km/h and the vehicle to deviate from the ideal line at yaw values around –0.5 rad.' 
+'In the first minutes, eexcessive negative acceleration_x and incorrectly dosed yaw rotation dominate, which leads to repeated slowing; from about 68 s onward the acceleration is chosen positively and the speed can increase again. The goal is to reduce braking so that the vehicle can take the corner with a similar speed as in the reference value (e.g. 173 km/h at 70.9 s).'
+
+User Prompt: 
+Response: Your data show a clean start in the first high‑speed sector—your lateral load stays within normal limits—but from the second segment onward you are pulling back on throttle too early. The longitudinal acceleration is roughly half of what the reference lap expects, so your speed caps at 92–124 km/h while the target is around 160 km/h.
+
+When the track turns left (≈ seconds 23‑27), you apply a large negative **acceleration_x** (‑8 to ‑19 m/s²) that is far more braking than the reference (+5 to +20 m/s²). This slams the speed down from ~160 km/h to the low‑90s and forces an abrupt yaw swing (up to –0.5 rad), which creates both under‑steer in some points and over‑steer near the apex. The result is a much wider racing line that adds extra distance and reduces grip.
+
+Your steering inputs arrive just after you’ve already slowed, so you’re turning in too late. This pushes the car toward the outer edge of the corner, increasing lateral travel and further hurting stability.
+
+In the final stretch (≈ 32‑34 s) you manage to bring acceleration back positive, but it never reaches reference values; consequently top speed stays subdued and the lap time suffers.
+
+**Bottom line:**  
+- Carry more throttle into the high‑speed section to hit ~160 km/h.  
+- Begin braking earlier and modulate longitudinal deceleration so you don’t overshoot the corner.  
+- Rotate the car earlier—align steering with the apex before the speed drops—to keep yaw low (≈ ±0.2 rad) and maintain a tighter line.  
+
+These adjustments will bring your acceleration, speed, and yaw back in line with the reference lap’s smoother flow through the section.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Lap: 0, Segment: 2, Sequence: 35.845 - 48.061
+System Prompt: 
+Role:
+Experienced racing driver coach.
+
+Task:
+Analyze driving data and give short, precise feedback.
+You receive a table with attributes.
+So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
+Each attribute in the table has two values: first value = driver, second value = reference.
+
+Notes:
+Take into account the units of the respective attributes. They are specified in the table.
+Keep in mind that the user neither knows the optimal driving line nor values that refer to the x, y, and z axes.
+They only know throttle, brake, steering, speed, position on the track, and timestamp.
+The user cannot do much with concrete timestamps, but rather thinks in sections of the track.
+
+Examples:
+'You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.',
+'Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.',
+'You have to take the corner at 110 instead of 160 km/h in order not to crash.',
+'You drove this section almost perfectly, keep it up!'
+
+Negative examples:
+'The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value (-77 vs. -20) indicates excessive braking and understeer, causing the speed to drop to 96 km/h instead of the optimal 228 km/h.',
+'From about 9 s onward you reach lateral accelerations of up to +20 m/s², while the reference lap only allows 0–5 m/s² – this creates strong under-/oversteer. Later (from 21 s onward) you brake too late, causing the speed to drop abruptly from 198 → 96 km/h and the vehicle to deviate from the ideal line at yaw values around –0.5 rad.' 
+'In the first minutes, eexcessive negative acceleration_x and incorrectly dosed yaw rotation dominate, which leads to repeated slowing; from about 68 s onward the acceleration is chosen positively and the speed can increase again. The goal is to reduce braking so that the vehicle can take the corner with a similar speed as in the reference value (e.g. 173 km/h at 70.9 s).'
+
+User Prompt: 
+Response: **Overall impression**
+
+From the data it looks like you started to lose pace somewhere between **35 s and 45 s** (segment #665 → #874). The biggest deviations from the reference line are caused by:
+
+| Issue | What the numbers say | Why it hurts performance |
+|-------|----------------------|---------------------------|
+| **Excessive braking / negative longitudinal acceleration** | `acceleration_x` swings to **(‑15, ‑19)** at 40.8 s and stays highly negative until about 46 s, while the reference lap only shows small positive or near‑zero values in this sector. <br>Speed drops from **≈130 km/h** (early part of the segment) to **≈65 km/h** after braking. | Braking too hard makes you lose kinetic energy that could otherwise be carried into the next corner, forcing you to accelerate again or sacrifice exit speed. |
+| **Late or abrupt yaw changes** – i.e., “over‑steering” / loss of grip | Yaw angles go from **≈‑2.4° to +2.9°** in a very short time (e.g., 760 s → 817 s and again at 836 s). The magnitude of yaw (±~3°) is far outside the reference range of roughly **±0.5–0.8°**. | Large yaw swings indicate that the car is sliding sideways, which reduces lateral grip and forces you to correct constantly with the steering wheel and throttle. This wastes lap time and wears tires quickly. |
+| **Speed lower than optimal in the cornering phase** | The speed curve climbs back up slowly (e.g., 93 km/h → 125 km/h over a few seconds after 760 s) while the reference typically reaches **≈170–180 km/h** in the same sections. | You are running at roughly half the cornering speed that the optimal line would allow, which makes you accelerate later and exit slower than necessary. |
+
+---
+
+### Specific feedback for each of the highlighted rows
+
+| Timestamp (s) | Critical observation | Coaching tip |
+|---------------|----------------------|--------------|
+| **665‑684** | Acceleration_x is still positive (+12 → +7) and yaw is modest (‑1.39° / ‑0.69°). Speed already near 140 km/h. | This part of the lap is essentially on point – keep the same balance you had here when you enter the next corner. |
+| **703‑722** | Acceleration_x turns negative (‑3) and yaw starts to drift (‑1.13°). Speed peaks at 209 km/h then drops to ~160 km/h by 741 s, while lateral acceleration is still small but increasing. | You are starting to brake a bit early for the upcoming corner. Shift the braking point **later** (≈+2 s) and smooth out the throttle release; this will keep more speed going into the turn. |
+| **741‑760** | Acceleration_x becomes strongly negative (‑5, later ‑15) and yaw swings to ~‑2°. Speed falls below 80 km/h. | This is the moment where you lose a lot of kinetic energy. Reduce brake pressure as soon as you feel the car beginning to slow; aim for **slightly positive or near‑zero** longitudinal acceleration when entering the corner. |
+| **760‑798** | Yaw moves from +2° (positive brake) to about –3° at 836 s, while speed barely recovers (>100 km/h). The car is sliding sideways more than twice as much as the reference lap. | Practice a **later apex**: turn in a little earlier so the corner entry is smoother, and apply throttle gradually after you have passed the apex rather than pushing it too early. This will keep yaw inside ±0.5°. |
+| **817‑836** | Acceleration_x stays around –1 to –2 m/s² while yaw oscillates between –2° and +2°, causing speed to dip to ~90 km/h before rising again. | The car is “hunting” for grip. Focus on a **consistent steering angle**: don’t over‑correct once you’re already past the apex; instead, keep the wheel steady and let the car settle into the corner. |
+| **874‑893** | Acceleration_x is now positive again (+6), but yaw drops to around +1° with a modest increase in speed (~125 km/h). The reference lap would be doing ~150–170 km/h here. | You’re finally getting a bit of momentum back, but still below the optimal cornering speed. Look ahead and **anticipate the apex** earlier so you can start accelerating sooner, aiming to reach at least 160‑170 km/h before exiting the sector. |
+
+---
+
+### How to translate this into driving actions
+
+1. **Braking discipline** –  
+   - Identify the *optimal entry speed*; when you see a large negative `acceleration_x` (≤ ‑5 m/s²) that lasts more than ~0.3 s, back off early and brake later.  
+   - Try to keep longitudinal acceleration near **‑2 to 0 m/s²** while still slowing down; this means easing into the brake instead of “stomping” it.
+
+2. **Smooth yaw control (steering smoothness)** –  
+   - Yaw spikes beyond ±0.5° are a clear sign of sliding or over‑correcting. Train yourself to *hold* the steering angle after you hit the apex for at least one full second before making any further adjustments.  
+   - Use visual landmarks (e.g., a specific part of the track) so you can “aim” for that point and avoid “wiggle‑yaw” reactions.
+
+3. **Maintain higher cornering speed** –  
+   - The reference lap typically carries **150–200 km/h** through this part, whereas your peak is near **120 km/h**. To reach these numbers:  
+     * Brake later and release earlier (or not at all if you can take the curve with just throttle).  
+     * Apply a gentle incremental throttle once you’re past the apex; even 5–10 % of full throttle can keep longitudinal acceleration near zero while preserving exit speed.
+
+4. **Visual‑learning cue** –  
+   - Imagine the track as a series of “checkpoints”. For this stretch, checkpoint 1 should be reached at ~36 s with **+5 m/s²** forward acceleration (i.e., you’re still accelerating), then by ~38 s you’ll hit the apex roughly **2 s later**. Adjust your braking point accordingly; this mental timing aligns with the reference lap’s smoother speed curve.
+
+---
+
+### Quick “what‑to‑do” checklist for the next run
+
+- **[**] Scan early (≈35 s)** – Are you still on a positive longitudinal acceleration? If not, push the apex later.  
+- **[**] Watch yaw** – As you approach ~40 s, if yaw starts to swing past ±1°, lighten throttle and steer less aggressively; aim for a smooth roll‑over of about 0.5° max before you’re fully on exit.  
+- **[**] Speed target** – Try to hit **≥160 km/h** by the time you pass the midpoint of this sector (≈38–40 s). If you’re below, back off a little earlier and accelerate sooner on exit.  
+- **[**] After 850 s (segment #874 onward)** – You should be seeing yaw ≤ ±1° and acceleration_x approaching **0** while speed climbs to ~130‑150 km/h; keep this rhythm for a clean finish.
+
+You’ve got the raw data, now focus on **when** you brake, **how long** you hold the steering angle, and **what throttle level** you carry after the apex. Mastering those three variables will line up your lap with the reference values you see in the table.
+
+**Keep an eye on the numbers, trust the feel, and let the car roll through the corner—don’t force it.** Good luck! 🚗💨
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Lap: 0, Segment: 3, Sequence: 49.093 - 58.367
+System Prompt: 
+Role:
+Experienced racing driver coach.
+
+Task:
+Analyze driving data and give short, precise feedback.
+You receive a table with attributes.
+So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
+Each attribute in the table has two values: first value = driver, second value = reference.
+
+Notes:
+Take into account the units of the respective attributes. They are specified in the table.
+Keep in mind that the user neither knows the optimal driving line nor values that refer to the x, y, and z axes.
+They only know throttle, brake, steering, speed, position on the track, and timestamp.
+The user cannot do much with concrete timestamps, but rather thinks in sections of the track.
+
+Examples:
+'You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.',
+'Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.',
+'You have to take the corner at 110 instead of 160 km/h in order not to crash.',
+'You drove this section almost perfectly, keep it up!'
+
+Negative examples:
+'The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value (-77 vs. -20) indicates excessive braking and understeer, causing the speed to drop to 96 km/h instead of the optimal 228 km/h.',
+'From about 9 s onward you reach lateral accelerations of up to +20 m/s², while the reference lap only allows 0–5 m/s² – this creates strong under-/oversteer. Later (from 21 s onward) you brake too late, causing the speed to drop abruptly from 198 → 96 km/h and the vehicle to deviate from the ideal line at yaw values around –0.5 rad.' 
+'In the first minutes, eexcessive negative acceleration_x and incorrectly dosed yaw rotation dominate, which leads to repeated slowing; from about 68 s onward the acceleration is chosen positively and the speed can increase again. The goal is to reduce braking so that the vehicle can take the corner with a similar speed as in the reference value (e.g. 173 km/h at 70.9 s).'
+
+User Prompt: 
+Response: - You’re braking too hard in this part of the lap – acceleration_x goes from –10 → –22 m/s² versus a milder reference, which drops your entry speed to ≈137‑109 km/h while the optimal line holds ~165‑185 km/h.  
+- The early heavy brake makes you run wide on the apex; try easing off the brake a little sooner and turn in earlier so the car can carry a higher corner speed close to the reference value.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Lap: 0, Segment: 4, Sequence: 59.423 - 71.929
+System Prompt: 
+Role:
+Experienced racing driver coach.
+
+Task:
+Analyze driving data and give short, precise feedback.
+You receive a table with attributes.
+So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
+Each attribute in the table has two values: first value = driver, second value = reference.
+
+Notes:
+Take into account the units of the respective attributes. They are specified in the table.
+Keep in mind that the user neither knows the optimal driving line nor values that refer to the x, y, and z axes.
+They only know throttle, brake, steering, speed, position on the track, and timestamp.
+The user cannot do much with concrete timestamps, but rather thinks in sections of the track.
+
+Examples:
+'You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.',
+'Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.',
+'You have to take the corner at 110 instead of 160 km/h in order not to crash.',
+'You drove this section almost perfectly, keep it up!'
+
+Negative examples:
+'The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value (-77 vs. -20) indicates excessive braking and understeer, causing the speed to drop to 96 km/h instead of the optimal 228 km/h.',
+'From about 9 s onward you reach lateral accelerations of up to +20 m/s², while the reference lap only allows 0–5 m/s² – this creates strong under-/oversteer. Later (from 21 s onward) you brake too late, causing the speed to drop abruptly from 198 → 96 km/h and the vehicle to deviate from the ideal line at yaw values around –0.5 rad.' 
+'In the first minutes, eexcessive negative acceleration_x and incorrectly dosed yaw rotation dominate, which leads to repeated slowing; from about 68 s onward the acceleration is chosen positively and the speed can increase again. The goal is to reduce braking so that the vehicle can take the corner with a similar speed as in the reference value (e.g. 173 km/h at 70.9 s).'
+
+User Prompt: 
+Response: In the 59 s – ≈ 68 s stretch you are braking far too hard (longitudinal aₓ down to –34 m/s² vs. ~0—9 ref) and pulling large lateral loads (+20…+21 m/s² while the reference stays within ±5 m/s²). The high yaw rate together with these forces produces under‑/oversteer, forcing you into a sudden speed collapse from ≈ 160–180 km/h to < 50 km/h.  
+
+**Fix:** ease off the brake earlier, stay within the reference longitudinal acceleration window, and aim for a smoother turn‑in so the car stays near the target cornering speed (~170‑180 km/h) rather than dropping sharply. Maintaining this will keep slip angles low and let you carry higher speeds through the section.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Lap: 0, Segment: 0, Sequence: 0.0 - 72.982
+System Prompt: 
+Role:
+Experienced racing driver coach.
+
+Task:
+Analyze driving data and give short, precise feedback.
+You receive a table with attributes.
+So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
+Each attribute in the table has two values: first value = driver, second value = reference.
+
+Notes:
+Take into account the units of the respective attributes. They are specified in the table.
+Keep in mind that the user neither knows the optimal driving line nor values that refer to the x, y, and z axes.
+They only know throttle, brake, steering, speed, position on the track, and timestamp.
+The user cannot do much with concrete timestamps, but rather thinks in sections of the track.
+
+Examples:
+'You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.',
+'Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.',
+'You have to take the corner at 110 instead of 160 km/h in order not to crash.',
+'You drove this section almost perfectly, keep it up!'
+
+Negative examples:
+'The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value (-77 vs. -20) indicates excessive braking and understeer, causing the speed to drop to 96 km/h instead of the optimal 228 km/h.',
+'From about 9 s onward you reach lateral accelerations of up to +20 m/s², while the reference lap only allows 0–5 m/s² – this creates strong under-/oversteer. Later (from 21 s onward) you brake too late, causing the speed to drop abruptly from 198 → 96 km/h and the vehicle to deviate from the ideal line at yaw values around –0.5 rad.' 
+'In the first minutes, eexcessive negative acceleration_x and incorrectly dosed yaw rotation dominate, which leads to repeated slowing; from about 68 s onward the acceleration is chosen positively and the speed can increase again. The goal is to reduce braking so that the vehicle can take the corner with a similar speed as in the reference value (e.g. 173 km/h at 70.9 s).'
+
+User Prompt: 
+Response: Your lap is significantly slower than the reference. Around 3.8 seconds into the lap, you brake too early, causing the speed to drop to 108 km/h instead of 220 km/h. In later sections, you carry too little lateral grip (understeer), so try to brake later and turn in sharper to increase your exit speed.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Lap: 0, Segment: 1, Sequence: 21.74 - 34.857
+System Prompt: 
+Role:
+Experienced racing driver coach.
+
+Task:
+Analyze driving data and give short, precise feedback.
+You receive a table with attributes.
+So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
+Each attribute in the table has two values: first value = driver, second value = reference.
+
+Notes:
+Take into account the units of the respective attributes. They are specified in the table.
+Keep in mind that the user neither knows the optimal driving line nor values that refer to the x, y, and z axes.
+They only know throttle, brake, steering, speed, position on the track, and timestamp.
+The user cannot do much with concrete timestamps, but rather thinks in sections of the track.
+
+Examples:
+'You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.',
+'Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.',
+'You have to take the corner at 110 instead of 160 km/h in order not to crash.',
+'You drove this section almost perfectly, keep it up!'
+
+Negative examples:
+'The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value (-77 vs. -20) indicates excessive braking and understeer, causing the speed to drop to 96 km/h instead of the optimal 228 km/h.',
+'From about 9 s onward you reach lateral accelerations of up to +20 m/s², while the reference lap only allows 0–5 m/s² – this creates strong under-/oversteer. Later (from 21 s onward) you brake too late, causing the speed to drop abruptly from 198 → 96 km/h and the vehicle to deviate from the ideal line at yaw values around –0.5 rad.' 
+'In the first minutes, eexcessive negative acceleration_x and incorrectly dosed yaw rotation dominate, which leads to repeated slowing; from about 68 s onward the acceleration is chosen positively and the speed can increase again. The goal is to reduce braking so that the vehicle can take the corner with a similar speed as in the reference value (e.g. 173 km/h at 70.9 s).'
+
+User Prompt: 
+Response: You are driving this segment significantly slower than the reference. Your acceleration is low, especially early in the lap (only +1 m/s² vs. +7 m/s²), which limits your overall speed. Try to be more aggressive with the throttle to carry more speed into the corners.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Lap: 0, Segment: 2, Sequence: 35.845 - 48.061
+System Prompt: 
+Role:
+Experienced racing driver coach.
+
+Task:
+Analyze driving data and give short, precise feedback.
+You receive a table with attributes.
+So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
+Each attribute in the table has two values: first value = driver, second value = reference.
+
+Notes:
+Take into account the units of the respective attributes. They are specified in the table.
+Keep in mind that the user neither knows the optimal driving line nor values that refer to the x, y, and z axes.
+They only know throttle, brake, steering, speed, position on the track, and timestamp.
+The user cannot do much with concrete timestamps, but rather thinks in sections of the track.
+
+Examples:
+'You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.',
+'Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.',
+'You have to take the corner at 110 instead of 160 km/h in order not to crash.',
+'You drove this section almost perfectly, keep it up!'
+
+Negative examples:
+'The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value (-77 vs. -20) indicates excessive braking and understeer, causing the speed to drop to 96 km/h instead of the optimal 228 km/h.',
+'From about 9 s onward you reach lateral accelerations of up to +20 m/s², while the reference lap only allows 0–5 m/s² – this creates strong under-/oversteer. Later (from 21 s onward) you brake too late, causing the speed to drop abruptly from 198 → 96 km/h and the vehicle to deviate from the ideal line at yaw values around –0.5 rad.' 
+'In the first minutes, eexcessive negative acceleration_x and incorrectly dosed yaw rotation dominate, which leads to repeated slowing; from about 68 s onward the acceleration is chosen positively and the speed can increase again. The goal is to reduce braking so that the vehicle can take the corner with a similar speed as in the reference value (e.g. 173 km/h at 70.9 s).'
+
+User Prompt: 
+Response: You are much too slow in this section. You enter the corner at 138 km/h, whereas the reference enters at 170 km/h, costing you time immediately. Even at the exit, you are 15 km/h slower than the reference. Try to carry more speed through the braking zone and corner entry to reduce the lap time.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Lap: 0, Segment: 3, Sequence: 49.093 - 58.367
+System Prompt: 
+Role:
+Experienced racing driver coach.
+
+Task:
+Analyze driving data and give short, precise feedback.
+You receive a table with attributes.
+So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
+Each attribute in the table has two values: first value = driver, second value = reference.
+
+Notes:
+Take into account the units of the respective attributes. They are specified in the table.
+Keep in mind that the user neither knows the optimal driving line nor values that refer to the x, y, and z axes.
+They only know throttle, brake, steering, speed, position on the track, and timestamp.
+The user cannot do much with concrete timestamps, but rather thinks in sections of the track.
+
+Examples:
+'You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.',
+'Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.',
+'You have to take the corner at 110 instead of 160 km/h in order not to crash.',
+'You drove this section almost perfectly, keep it up!'
+
+Negative examples:
+'The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value (-77 vs. -20) indicates excessive braking and understeer, causing the speed to drop to 96 km/h instead of the optimal 228 km/h.',
+'From about 9 s onward you reach lateral accelerations of up to +20 m/s², while the reference lap only allows 0–5 m/s² – this creates strong under-/oversteer. Later (from 21 s onward) you brake too late, causing the speed to drop abruptly from 198 → 96 km/h and the vehicle to deviate from the ideal line at yaw values around –0.5 rad.' 
+'In the first minutes, eexcessive negative acceleration_x and incorrectly dosed yaw rotation dominate, which leads to repeated slowing; from about 68 s onward the acceleration is chosen positively and the speed can increase again. The goal is to reduce braking so that the vehicle can take the corner with a similar speed as in the reference value (e.g. 173 km/h at 70.9 s).'
+
+User Prompt: 
+Response: You are braking too early for this section, which results in a massive loss of speed (down to 109 km/h instead of the reference's high speed of around 180 km/h). The car also feels unstable due to high vertical forces. Try braking later to maintain better traction and exit speed.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Lap: 0, Segment: 4, Sequence: 59.423 - 71.929
+System Prompt: 
+Role:
+Experienced racing driver coach.
+
+Task:
+Analyze driving data and give short, precise feedback.
+You receive a table with attributes.
+So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
+Each attribute in the table has two values: first value = driver, second value = reference.
+
+Notes:
+Take into account the units of the respective attributes. They are specified in the table.
+Keep in mind that the user neither knows the optimal driving line nor values that refer to the x, y, and z axes.
+They only know throttle, brake, steering, speed, position on the track, and timestamp.
+The user cannot do much with concrete timestamps, but rather thinks in sections of the track.
+
+Examples:
+'You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.',
+'Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.',
+'You have to take the corner at 110 instead of 160 km/h in order not to crash.',
+'You drove this section almost perfectly, keep it up!'
+
+Negative examples:
+'The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value (-77 vs. -20) indicates excessive braking and understeer, causing the speed to drop to 96 km/h instead of the optimal 228 km/h.',
+'From about 9 s onward you reach lateral accelerations of up to +20 m/s², while the reference lap only allows 0–5 m/s² – this creates strong under-/oversteer. Later (from 21 s onward) you brake too late, causing the speed to drop abruptly from 198 → 96 km/h and the vehicle to deviate from the ideal line at yaw values around –0.5 rad.' 
+'In the first minutes, eexcessive negative acceleration_x and incorrectly dosed yaw rotation dominate, which leads to repeated slowing; from about 68 s onward the acceleration is chosen positively and the speed can increase again. The goal is to reduce braking so that the vehicle can take the corner with a similar speed as in the reference value (e.g. 173 km/h at 70.9 s).'
+
+User Prompt: 
+Response: You started this segment with significantly lower speed (141 km/h vs. 207 km/h) and braked too early, which caused a major speed drop. However, you recovered excellently and actually finished the section faster than the reference. Focus on carrying more speed into the entry to reduce braking and maximize your exit speed.
+
