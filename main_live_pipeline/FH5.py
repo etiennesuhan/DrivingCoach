@@ -11,6 +11,7 @@ import pathlib
 import ollama
 import re
 import tiktoken
+import threading
 
 from typing import Iterable
 from pathlib import Path
@@ -18,16 +19,33 @@ from pandas import DataFrame
 from itertools import product
 
 
+BASE_DIR = Path(__file__).resolve().parent
+REPO_ROOT = BASE_DIR.parent
+
+
+def resolve_repo_path(path: str | Path) -> Path:
+    candidate = Path(path)
+    return candidate if candidate.is_absolute() else (REPO_ROOT / candidate).resolve()
+
+
 class Listener():
     def __init__(self, DB_FILE):
         self.UDP_IP = "0.0.0.0"
         self.UDP_PORT = 5300
-        self.DB_FILE = DB_FILE
-        self.MAX_PACKETS_PER_SECOND = 1
+        self.DB_FILE = resolve_repo_path(DB_FILE)
+        self.MAX_PACKETS_PER_SECOND = 10
         self.MIN_SAVE_INTERVAL = 1.0 / self.MAX_PACKETS_PER_SECOND
-        self.FORZA_FIELDS = self.load_tuples('main_live_pipeline/forza_fields.txt')
-        self.SCHEMAS = struct.calcsize("<" + "".join(fmt for _, fmt in self.FORZA_FIELDS))
+        self.FORZA_FIELDS = self.load_tuples(BASE_DIR / "forza_fields.txt")
+        self.SCHEMAS = SCHEMAS = [("fh5_dash_324", self.FORZA_FIELDS, struct.calcsize("<" + "".join(fmt for _, fmt in self.FORZA_FIELDS)))]
         self.BASE_STRUCT_FORMAT = "<" + "".join(fmt for _, fmt in self.FORZA_FIELDS)
+        self.distance = np.inf
+        self.threshold = 15
+        self.segment = 0
+        self.in_zone = False
+        self.TRACK_2_SEGMENT_POINTS = [(610, 2485), (635, 2780), (525, 2720), (880, 2790)]
+        self.lap = 0
+        self.preprocessing = Preprocessing(self.DB_FILE, "data/track2_good.db")
+        self.model = Model()
         
         
     def run(self):
@@ -56,7 +74,7 @@ class Listener():
             conn.close()
             sock.close()
 
-    def load_tuples(self, path: str):
+    def load_tuples(self, path: str | Path):
         return ast.literal_eval("[" + Path(path).read_text(encoding="utf-8").strip().strip().rstrip(",") + "]")
 
     def create_socket(self, ip: str, port: int) -> socket.socket:
@@ -74,6 +92,8 @@ class Listener():
 
 
     def init_db(self, db_path: str) -> sqlite3.Connection:
+        db_path = Path(db_path)
+        db_path.parent.mkdir(parents=True, exist_ok=True)
         conn = sqlite3.connect(db_path)
 
         db_types = {"f": "REAL", "i": "INTEGER", "I": "INTEGER", "H": "INTEGER", "B": "INTEGER"}
@@ -122,6 +142,7 @@ class Listener():
     def insert_sample(
         self, conn: sqlite3.Connection, timestamp_utc: str, raw: bytes, schema_name: str, parsed: dict
     ) -> None:
+        
         columns = ["timestamp_utc", "packet_length", "packet_schema", "raw"] + [name for name, _ in self.FORZA_FIELDS]
         placeholders = ", ".join(["?"] * len(columns))
         values = [
@@ -132,6 +153,30 @@ class Listener():
         
         for name, _ in self.FORZA_FIELDS:
             values.append(parsed.get(name, 0))
+        
+        
+        if self.segment <= 3:
+            distance = np.sqrt((values[65]-self.TRACK_2_SEGMENT_POINTS[self.segment][0])**2 + (values[67]-self.TRACK_2_SEGMENT_POINTS[self.segment][1])**2) 
+            if distance <= self.threshold:
+                if distance <= self.distance:
+                    self.distance = distance
+                    self.in_zone = True
+                else:
+                    print(f'Start processing {self.segment}')
+                    self.preprocessing.run()
+                    print('Started requesting model answer ...')
+                    threading.Thread(target=self.model.run, args=(self.lap, self.segment), daemon=True).start()
+                    self.segment += 1
+                    self.distance = np.inf
+                    self.in_zone = False
+        
+        if values[82] != self.lap:
+            print(f'Start processing {self.segment}')
+            print('Started requesting model answer ...')
+            self.preprocessing.run()
+            threading.Thread(target=self.model.run, args=(self.lap, self.segment), daemon=True).start()
+            self.lap += 1
+            self.segment = 0
 
         conn.execute(f"INSERT INTO telemetry_samples ({', '.join(columns)}) VALUES ({placeholders})",values,)
         conn.commit()
@@ -139,11 +184,13 @@ class Listener():
 
 class Preprocessing():
     def __init__(self, CURRENT_LINE, OPTIMAL_LINE):
-        self.DATABASE_OPTIMAL = f"sqlite:///../{OPTIMAL_LINE}"
-        self.DATABASE_CURRENT = f"sqlite:///../{CURRENT_LINE}"
-        self.OUTPUT = '../data/output.txt'
-        self.MD = '../data/output.md'
-        self.PROMPTS = '../prompts/prompts.txt'
+        current_path = resolve_repo_path(CURRENT_LINE)
+        optimal_path = resolve_repo_path(OPTIMAL_LINE)
+        self.DATABASE_OPTIMAL = f"sqlite:///{optimal_path.as_posix()}"
+        self.DATABASE_CURRENT = f"sqlite:///{current_path.as_posix()}"
+        self.OUTPUT = (REPO_ROOT / "data/output.txt").as_posix()
+        self.MD = (REPO_ROOT / "data/output.md").as_posix()
+        self.PROMPTS = (REPO_ROOT / "prompts/prompts.txt").as_posix()
         self.TRACK_2_SEGMENT_POINTS = [(610, 2485), (635, 2780), (525, 2720), (880, 2790)]
         self.QUERY = """SELECT timestamp_utc AS timestamp, acceleration_x, acceleration_y, acceleration_z, yaw, position_x, position_y, position_z, speed, lap_number
         FROM telemetry_samples
@@ -153,6 +200,7 @@ class Preprocessing():
     def run(self):
         df_fast = self.preprocess(pd.read_sql(self.QUERY, self.DATABASE_OPTIMAL))
         df_slow = self.preprocess(pd.read_sql(self.QUERY, self.DATABASE_CURRENT))
+        df_slow = df_slow.iloc[::int(10), :]
         df_slow["segment"] = self.segment_labels(self.TRACK_2_SEGMENT_POINTS, df_slow)
         df_slow = self.match_lines_by_euclid(df_slow, df_fast)
         df_slow = df_slow.rename(
@@ -252,6 +300,9 @@ class Preprocessing():
         for _, line in df_slow.iterrows():
             # find line in optimal_df with minimal euclidian in x and z, with distance in y < 2
             optimal_line = self.find_optimal_line(df_fast, line)
+            if optimal_line is None:
+                # No remaining match in optimal data; stop to avoid None access
+                break
 
             # write all optimal values into df_slow with the new values being second in a tuple, e.g. "timestamp": 0.0 -> "timestamp": [0.0,0.0]
             for column in df_slow.columns:
@@ -290,15 +341,28 @@ class Preprocessing():
                 if distance < min_distance:
                     min_distance = distance
                     optimal_line = fast_line
+        if optimal_line is not None:
+            return optimal_line
+
+        # Fallback: ignore the y-constraint if nothing matched
+        for _, fast_line in df_fast.iterrows():
+            if(line['lap_number'] == '0' and line['segment'] == 0):
+                if(fast_line['lap_number'] != line['lap_number'] and fast_line['segment'] != line['segment']):
+                    continue
+            distance = ((fast_line['position_x'] - line['position_x']) ** 2 + 
+                        (fast_line['position_z'] - line['position_z']) ** 2) ** 0.5
+            if distance < min_distance:
+                min_distance = distance
+                optimal_line = fast_line
 
         return optimal_line
 
 
 class Model():
     def __init__(self):
-        self.OUTPUT_MD = '../data/output.md'
-        self.PROMPTS = '../prompts/prompts.txt'
-        self.NON_PERSISTENT_PROMPTS = '../prompts/non_persistent_prompts.txt'
+        self.OUTPUT_MD = (REPO_ROOT / "data/output.md").as_posix()
+        self.PROMPTS = (REPO_ROOT / "prompts/prompts.txt").as_posix()
+        self.NON_PERSISTENT_PROMPTS = (REPO_ROOT / "prompts/non_persistent_prompts.txt").as_posix()
         self.SYSTEM_PROMPT = """
         Role:
         Experienced racing driver coach.
@@ -329,6 +393,9 @@ class Model():
         self.USER_PROMPT = ""
 
         self.print_token_length()
+        
+        
+    def run(self, lap, segment):
         # --- Read markdown file ---
         with open(self.OUTPUT_MD, "r", encoding="utf-8") as f:
             lines = [line.rstrip("\n") for line in f if line.strip()]
@@ -343,34 +410,30 @@ class Model():
         pathlib.Path(self.NON_PERSISTENT_PROMPTS).parent.mkdir(parents=True, exist_ok=True)  # sicherstellen, dass Ordner existiert
         pathlib.Path(self.NON_PERSISTENT_PROMPTS).touch()  # erstellt leere Datei
 
-        # --- Process per lap / segment ---
-        for lap, segment in product([0], [0, 1, 2, 3, 4]):
-            print("Lap:" + str(lap) + ", Segment:" + str(segment))
-            segment_rows = [r for r in rows if self.get_segment_md(r) == segment and self.get_lap_md(r) == lap]
+        print("Lap:" + str(lap) + ", Segment:" + str(segment))
+        segment_rows = [r for r in rows if self.get_segment_md(r) == segment and self.get_lap_md(r) == lap]
+        
+        md_block = "\n".join([header, separator, *segment_rows])
+        print(md_block)
 
-            if not segment_rows:
-                continue
-            
-            md_block = "\n".join([header, separator, *segment_rows])
-            print(md_block)
+        segment_info = self.get_segment_information(segment_rows)
 
-            segment_info = self.get_segment_information(segment_rows)
+        # --- LLM call ---
+        resp = ollama.chat(
+            think=True,
+            # model="glm-4.7-flash:q4_K_M",
+            model="nemotron-3-nano:30b",
+            messages=[
+                {"role": "system", "content": self.SYSTEM_PROMPT},
+                {"role": "user", "content": self.USER_PROMPT + f"\n```markdown\n{md_block}\n```" + f"\n\nSegment Summary:\n{segment_info}"},
+            ],
+        )
 
-            # --- LLM call ---
-            resp = ollama.chat(
-                think=True,
-                model="glm-4.7-flash:q4_K_M",
-                messages=[
-                    {"role": "system", "content": self.SYSTEM_PROMPT},
-                    {"role": "user", "content": self.USER_PROMPT + f"\n```markdown\n{md_block}\n```" + f"\n\nSegment Summary:\n{segment_info}"},
-                ],
-            )
-
-            # Logging
-            data_tokens = self.count_tokens(md_block, model_name="gpt-4")
-            print(f"Token-Anzahl User {data_tokens}")
-            timestamps = [self.get_timestamp_md(r) for r in segment_rows]
-            self.log_response(timestamps, lap, segment, self.SYSTEM_PROMPT, self.USER_PROMPT, resp, md_block, segment_info)
+        # Logging
+        data_tokens = self.count_tokens(md_block, model_name="gpt-4")
+        print(f"Token-Anzahl User {data_tokens}")
+        timestamps = [self.get_timestamp_md(r) for r in segment_rows]
+        self.log_response(timestamps, lap, segment, self.SYSTEM_PROMPT, self.USER_PROMPT, resp, md_block, segment_info)
     
     
     def count_tokens(self, prompt: str, model_name: str = "gpt-4") -> int:
@@ -384,7 +447,7 @@ class Model():
 
     def print_token_length(self):
         text = []
-        with open('../data/output.md', "r", encoding="utf-8") as f:
+        with open(self.OUTPUT_MD, "r", encoding="utf-8") as f:
             for line in f:
                 line = line.rstrip("\n")
                 if line != '\'':
