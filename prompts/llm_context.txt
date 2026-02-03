@@ -1,0 +1,19 @@
+Lap: 0, Segment: 0, Sequence: 0.0 - 20.699
+Time — user: 20.699s, ref: 10.807s (Δ +9.892s). Max speed — user: 108.0 km/h, ref: 234.0 km/h; Min speed — user: 0.0 km/h, ref: 0.0 km/h. Max yaw (abs) — user: 2.500°, ref: 2.500°.
+Response: You are significantly slower than the reference, with a top speed of only 108 km/h instead of 234 km/h. You accelerate too slowly at the beginning and are coasting around the 8-second mark, which prevents you from building momentum. Keep the throttle fully applied during acceleration zones to increase your speed.
+
+Lap: 0, Segment: 1, Sequence: 21.74 - 34.857
+Time — user: 13.117s, ref: 10.103s (Δ +3.014s). Max speed — user: 124.0 km/h, ref: 179.0 km/h; Min speed — user: 84.0 km/h, ref: 119.0 km/h. Max yaw (abs) — user: 1.570°, ref: 1.210°.
+Response: You lost a significant amount of time because you were much slower than the reference. Your maximum speed was only 124 km/h compared to 179 km/h. You braked too late and too hard, causing the car to lose speed and over-rotate.
+
+Lap: 0, Segment: 2, Sequence: 35.845 - 48.061
+Time — user: 12.216s, ref: 10.353s (Δ +1.863s). Max speed — user: 140.0 km/h, ref: 209.0 km/h; Min speed — user: 63.0 km/h, ref: 48.0 km/h. Max yaw (abs) — user: 2.900°, ref: 2.890°.
+Response: Your car control was stable in this section, but you lost significant time due to a lower top speed (140 km/h vs. 209 km/h). Try to brake a bit later to carry more speed into the corner.
+
+Lap: 0, Segment: 3, Sequence: 49.093 - 58.367
+Time — user: 9.274s, ref: 7.501s (Δ +1.773s). Max speed — user: 171.0 km/h, ref: 203.0 km/h; Min speed — user: 109.0 km/h, ref: 141.0 km/h. Max yaw (abs) — user: 1.950°, ref: 1.910°.
+Response: You lost over 1.7 seconds in this section. You entered the corner with only 109 km/h instead of 141 km/h, limiting your potential speed. Since your steering inputs are correct, focus on carrying more speed from the previous straight and braking slightly earlier to increase your cornering momentum.
+
+Lap: 0, Segment: 4, Sequence: 59.423 - 71.929
+Time — user: 12.506s, ref: 7.287s (Δ +5.219s). Max speed — user: 209.0 km/h, ref: 222.0 km/h; Min speed — user: 0.0 km/h, ref: 92.0 km/h. Max yaw (abs) — user: 3.020°, ref: 3.100°.
+Response: You lost almost all speed in this section and came to a complete stop (0 km/h), which caused a significant loss of momentum. Try braking earlier to keep the car moving.
