@@ -1,2 +1,4 @@
 /__pycache__
 /telemetry.db-journal
+/voice/
+prompts/non_persistent_prompts.txt
