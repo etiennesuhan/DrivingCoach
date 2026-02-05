@@ -1,4 +1,5 @@
 import datetime
+import os
 import socket
 import sqlite3
 import struct
@@ -52,6 +53,10 @@ class Listener():
         self._responses_lock = threading.Lock()
         self._model_responses = {}
         self._spoken_for_lap = set()
+        self.DEBUG = False
+        self._seen_packet_sizes = set()
+        self._last_no_data_log = 0.0
+        self._packet_count = 0
         
         
     def run(self):
@@ -59,10 +64,21 @@ class Listener():
         sock = self.create_socket(self.UDP_IP, self.UDP_PORT)
         print(f"Lausche auf UDP {self.UDP_IP}:{self.UDP_PORT} ...")
         last_saved = 0.0
+        sock.settimeout(2.0)
 
         try:
             while True:
-                data, _ = sock.recvfrom(512)
+                try:
+                    data, addr = sock.recvfrom(512)
+                except socket.timeout:
+                    if self.DEBUG and (time.monotonic() - self._last_no_data_log) > 2.0:
+                        print("Kein UDP-Datenempfang in den letzten 2 Sekunden.")
+                        self._last_no_data_log = time.monotonic()
+                    continue
+                if self.DEBUG:
+                    self._packet_count += 1
+                    if self._packet_count <= 5:
+                        print(f"UDP-Paket #{self._packet_count}: {len(data)} Bytes von {addr}")
                 parsed_result = self.parse_telemetry(data)
                 if parsed_result is None:
                     continue
@@ -192,12 +208,17 @@ class Listener():
 
 
     def parse_telemetry(self, data: bytes) -> tuple[str, dict] | None:
+        packet_size = len(data)
         for schema_name, fields, size in self.SCHEMAS:
-            if len(data) != size:
+            if packet_size != size:
                 continue
             fmt = "<" + "".join(fmt for _, fmt in fields)
             values = struct.unpack_from(fmt, data, 0)
             return schema_name, {name: value for (name, _), value in zip(fields, values)}
+        if self.DEBUG and packet_size not in self._seen_packet_sizes:
+            expected_sizes = [size for _, _, size in self.SCHEMAS]
+            print(f"Unerwartete Paketgroesse {packet_size} Bytes. Erwartet: {expected_sizes}.")
+            self._seen_packet_sizes.add(packet_size)
         return None
 
 
@@ -212,9 +233,10 @@ class Listener():
             len(raw),
             schema_name,
             sqlite3.Binary(raw)]
-        
         for name, _ in self.FORZA_FIELDS:
             values.append(parsed.get(name, 0))
+        if self.DEBUG:
+            print((values[65], values[67]))
         if self.segment <= 3:
             distance = np.sqrt((values[65]-self.TRACK_2_SEGMENT_POINTS[self.segment][0])**2 + (values[67]-self.TRACK_2_SEGMENT_POINTS[self.segment][1])**2) 
             if distance <= self.threshold:

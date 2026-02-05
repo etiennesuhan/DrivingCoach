@@ -11,6 +11,7 @@ REPO_ROOT = BASE_DIR.parent
 
 
 class Model():
+    _log_lock = threading.Lock()
     _non_persistent_reset = False
 
     def __init__(self):
@@ -25,7 +26,7 @@ class Model():
         Experienced racing driver coach.
 
         Task:
-        Analyze driving data and give short, precise feedback.
+        Analyze driving data and give short, precise feedback. Maximal **ONE** bullet point.
         You receive a table with attributes.
         So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
         Each attribute in the table has two values: first value = driver, second value = reference.
