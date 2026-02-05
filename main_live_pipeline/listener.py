@@ -12,6 +12,7 @@ from typing import Iterable
 from pathlib import Path
 from preprocessing import Preprocessing
 from model import Model
+from voice import Voice
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -41,9 +42,16 @@ class Listener():
         self.lap = 0
         self.preprocessing = Preprocessing(self.DB_FILE, "data/track2_good.db")
         self.model = Model()
+        self.voice = Voice()
         self.model_queue = queue.Queue()
         self.model_worker = threading.Thread(target=self._model_worker, name="ModelWorker", daemon=True)
         self.model_worker.start()
+        self.voice_queue = queue.Queue()
+        self.voice_worker = threading.Thread(target=self._voice_worker, name="VoiceWorker", daemon=True)
+        self.voice_worker.start()
+        self._responses_lock = threading.Lock()
+        self._model_responses = {}
+        self._spoken_for_lap = set()
         
         
     def run(self):
@@ -74,21 +82,59 @@ class Listener():
             conn.close()
             sock.close()
 
-    def _enqueue_model_run(self, lap: int, segment: int, md_text: str | None) -> None:
-        if not md_text or not md_text.strip():
-            print("No markdown data available; skipping model enqueue.")
-            return
-        self.model_queue.put((lap, segment, md_text))
+    def _enqueue_model_run(self, lap: int, segment: int) -> None:
+        self.model_queue.put((lap, segment))
 
     def _model_worker(self) -> None:
         while True:
-            lap, segment, md_text = self.model_queue.get()
+            lap, segment = self.model_queue.get()
             try:
-                self.model.run(lap, segment, md_text=md_text)
+                md_text = self.preprocessing.run()
+                if not md_text or not md_text.strip():
+                    print("No markdown data available; skipping model run.")
+                    continue
+                response_text = self.model.run(lap, segment, md_text=md_text)
+                self._store_model_response(lap, segment, response_text)
             except Exception as exc:
                 print(f"Model worker error: {exc}")
             finally:
                 self.model_queue.task_done()
+
+    def _enqueue_voice(self, text: str) -> None:
+        if not text or not text.strip():
+            return
+        self.voice_queue.put(text.strip())
+
+    def _voice_worker(self) -> None:
+        while True:
+            text = self.voice_queue.get()
+            try:
+                self.voice.run(text)
+            except Exception as exc:
+                print(f"Voice error: {exc}")
+            finally:
+                self.voice_queue.task_done()
+
+    def _store_model_response(self, lap: int, segment: int, response_text: str | None) -> None:
+        if not response_text or not response_text.strip():
+            return
+        key = (lap, segment)
+        with self._responses_lock:
+            self._model_responses[key] = response_text.strip()
+
+    def _speak_previous_lap_response(self, current_lap: int, segment: int) -> None:
+        if current_lap <= 0:
+            return
+        previous_key = (current_lap - 1, segment)
+        with self._responses_lock:
+            text = self._model_responses.get(previous_key)
+            if text is None:
+                return
+            spoken_key = (current_lap, segment)
+            if spoken_key in self._spoken_for_lap:
+                return
+            self._spoken_for_lap.add(spoken_key)
+        self._enqueue_voice(text)
 
     def load_tuples(self, path: str | Path):
         return ast.literal_eval("[" + Path(path).read_text(encoding="utf-8").strip().strip().rstrip(",") + "]")
@@ -177,20 +223,20 @@ class Listener():
                     self.in_zone = True
                 else:
                     print(f'Start processing {self.segment}')
-                    md_text = self.preprocessing.run()
+                    self._speak_previous_lap_response(self.lap, self.segment)
                     print('Queued model answer ...')
-                    self._enqueue_model_run(self.lap, self.segment, md_text)
+                    self._enqueue_model_run(self.lap, self.segment)
                     self.segment += 1
                     self.distance = np.inf
                     self.in_zone = False
         
         if values[82] != self.lap:
             print(f'Start processing {self.segment}')
-            md_text = self.preprocessing.run()
             print('Queued model answer ...')
-            self._enqueue_model_run(self.lap, self.segment, md_text)
+            self._enqueue_model_run(self.lap, self.segment)
             self.lap += 1
             self.segment = 0
+            self._speak_previous_lap_response(self.lap, self.segment)
 
         conn.execute(f"INSERT INTO telemetry_samples ({', '.join(columns)}) VALUES ({placeholders})",values,)
         conn.commit()

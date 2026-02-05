@@ -10,16 +10,13 @@ BASE_DIR = Path(__file__).resolve().parent
 REPO_ROOT = BASE_DIR.parent
 
 
-def resolve_repo_path(path: str | Path) -> Path:
-    candidate = Path(path)
-    return candidate if candidate.is_absolute() else (REPO_ROOT / candidate).resolve()
-
-
 class Model():
-    _log_lock = threading.Lock()
     _non_persistent_reset = False
 
     def __init__(self):
+        # self.MODEL_NAME="glm-4.7-flash:q4_K_M",
+        # self.MODEL_NAME="nemotron-3-nano:30b",
+        self.MODEL_NAME = "llama3.1"
         self.OUTPUT_MD = (REPO_ROOT / "data/output.md").as_posix()
         self.PROMPTS = (REPO_ROOT / "prompts/prompts.txt").as_posix()
         self.NON_PERSISTENT_PROMPTS = (REPO_ROOT / "prompts/non_persistent_prompts.txt").as_posix()
@@ -61,9 +58,15 @@ class Model():
         pathlib.Path(self.NON_PERSISTENT_PROMPTS).unlink(missing_ok=True)
         pathlib.Path(self.NON_PERSISTENT_PROMPTS).touch()
         Model._non_persistent_reset = True
+
+    def warmup_model(self):
+        ollama.chat(
+            model=self.MODEL_NAME,
+            messages=[{"role": "user", "content": "ping"}],
+        )
         
         
-    def run(self, lap, segment, md_text: str | None = None):
+    def run(self, lap, segment, md_text: str | None = None) -> str | None:
         # --- Read markdown file ---
         if md_text is None:
             with open(self.OUTPUT_MD, "r", encoding="utf-8") as f:
@@ -94,9 +97,7 @@ class Model():
         # --- LLM call ---
         resp = ollama.chat(
             # think=True,
-            # model="glm-4.7-flash:q4_K_M",
-            # model="nemotron-3-nano:30b",
-            model="llama3.1",
+            model=self.MODEL_NAME,
             messages=[
                 {"role": "system", "content": self.SYSTEM_PROMPT},
                 {"role": "user", "content": self.USER_PROMPT + f"\n```markdown\n{md_block}\n```" + f"\n\nSegment Summary:\n{segment_info}"},
@@ -104,6 +105,10 @@ class Model():
         )
         timestamps = [self.get_timestamp_md(r) for r in segment_rows]
         self.log_response(timestamps, lap, segment, self.SYSTEM_PROMPT, self.USER_PROMPT, resp, md_block, segment_info)
+        try:
+            return resp["message"]["content"]
+        except Exception:
+            return None
     
     
     def log_response(self, timestamps, lap, segment, system_prompt, user_prompt, resp, md, segment_info):
