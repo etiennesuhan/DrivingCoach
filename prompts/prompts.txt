@@ -1188,3 +1188,217 @@ Lap: 0, Segment: 4, Sequence: 59.423 - 71.929
 Time — user: 12.506s, ref: 7.287s (Δ +5.219s). Max speed — user: 209.0 km/h, ref: 222.0 km/h; Min speed — user: 0.0 km/h, ref: 92.0 km/h. Max yaw (abs) — user: 3.020°, ref: 3.100°.
 Response: You lost almost all speed in this section and came to a complete stop (0 km/h), which caused a significant loss of momentum. Try braking earlier to keep the car moving.
 
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Role:
+        Experienced racing driver coach.
+
+        Task:
+        Analyze driving data and give short, precise feedback.
+        You receive a table with attributes.
+        So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
+        Each attribute in the table has two values: first value = driver, second value = reference.
+
+        Notes:
+        Take into account the units of the respective attributes. They are specified in the table.
+        Keep in mind that the user neither knows the optimal driving line nor values that refer to the x, y, and z axes.
+        They only know throttle, brake, steering, speed, position on the track, and timestamp.
+        The user cannot do much with concrete timestamps, but rather thinks in sections of the track.
+
+        Examples:
+        'You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.',
+        'Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.',
+        'You have to take the corner at 110 instead of 160 km/h in order not to crash.',
+        'You drove this section almost perfectly, keep it up!'
+
+        Negative examples:
+        'The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value (-77 vs. -20) indicates excessive braking and understeer, causing the speed to drop to 96 km/h instead of the optimal 228 km/h.',
+        'From about 9 s onward you reach lateral accelerations of up to +20 m/s², while the reference lap only allows 0–5 m/s² – this creates strong under-/oversteer. Later (from 21 s onward) you brake too late, causing the speed to drop abruptly from 198 → 96 km/h and the vehicle to deviate from the ideal line at yaw values around –0.5 rad.' 
+        'In the first minutes, eexcessive negative acceleration_x and incorrectly dosed yaw rotation dominate, which leads to repeated slowing; from about 68 s onward the acceleration is chosen positively and the speed can increase again. The goal is to reduce braking so that the vehicle can take the corner with a similar speed as in the reference value (e.g. 173 km/h at 70.9 s).'
+        
+User Prompt: 
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 0, Sequence: 0.0 - 9.275
+Time — user: 6.196s, ref: 51.074s (Δ -44.878s). Max speed — user: 218.0 km/h, ref: 210.0 km/h; Min speed — user: 0.0 km/h, ref: 0.0 km/h. Max yaw (abs) — user: 2.500°, ref: 2.510°.
+Response: You drove the segment in an impressive time of 6.196s, which is a full lap ahead of the reference time of 51.074s! However, your top speed was lower than optimal, reaching only 218 km/h instead of the reference value of 210 km/h.
+
+However, you did manage to maintain a relatively consistent pace throughout the segment, with a minimum speed of 0.0 km/h, which is in line with the reference lap.
+
+In terms of handling, your maximum yaw was slightly lower than the reference, at 2.500° compared to 2.510°, but this could be due to various factors such as the driving style or the track conditions.
+
+One area for improvement could be to focus on accelerating out of turns and maintaining a more optimal racing line, which might help you shave off some time from your overall lap time.
+
+Overall, though, you've made great progress and are well on your way to mastering this segment!
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 1, Sequence: 11.447 - 21.012
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 2, Sequence: 22.078 - 102.924
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.
+
+Note: The comparison is based on the segment summary provided, which indicates that there are no differences in time between the user's lap and the reference lap. However, it does not provide information about the user's speed or yaw data, so I had to make an educated guess based on the context. 
+
+If you want a more detailed analysis, please let me know what specific attribute you would like me to focus on (e.g., acceleration, speed, steering).
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 3, Sequence: 103.984 - 111.39
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: You were able to complete the segment without errors; however, it seems you could have taken a slightly different line, as your path was longer than optimal. Try turning in earlier to find a better racing line.
+
+Note: The above feedback is based on the provided driving data and reference lap comparison. Since there's no speed or yaw data available for the segment, I've focused on the position differences between the user and reference laps.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 4, Sequence: 112.481 - 119.977
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: You started the lap perfectly, just like the reference driver, with a timestamp of 112.481 seconds. However, in the following segments you were too slow and could no longer reach a sufficient top speed. Your line was too wide on the outside at segment 4, which led to a longer path and less grip. Try turning in earlier to find a better racing line.
+
+In segment 4, your acceleration_x is mostly positive, but it's significantly lower than the reference lap (10 m/s² vs 19 m/s²). Your speed also drops abruptly from 191 km/h to 109 km/h, which indicates that you're braking too late. Focus on maintaining a consistent speed and accelerating smoothly through this section.
+
+Your line is not ideal for segment 4, as it's wider than the reference lap. Try turning in earlier to find a better racing line. Additionally, your acceleration_z (braking) is high at points, which could lead to understeer and make you lose speed. Focus on maintaining a consistent speed and accelerating smoothly through this section.
+
+You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Role:
+        Experienced racing driver coach.
+
+        Task:
+        Analyze driving data and give short, precise feedback.
+        You receive a table with attributes.
+        So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
+        Each attribute in the table has two values: first value = driver, second value = reference.
+
+        Notes:
+        Take into account the units of the respective attributes. They are specified in the table.
+        Keep in mind that the user neither knows the optimal driving line nor values that refer to the x, y, and z axes.
+        They only know throttle, brake, steering, speed, position on the track, and timestamp.
+        The user cannot do much with concrete timestamps, but rather thinks in sections of the track.
+
+        Examples:
+        'You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.',
+        'Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.',
+        'You have to take the corner at 110 instead of 160 km/h in order not to crash.',
+        'You drove this section almost perfectly, keep it up!'
+
+        Negative examples:
+        'The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value (-77 vs. -20) indicates excessive braking and understeer, causing the speed to drop to 96 km/h instead of the optimal 228 km/h.',
+        'From about 9 s onward you reach lateral accelerations of up to +20 m/s², while the reference lap only allows 0–5 m/s² – this creates strong under-/oversteer. Later (from 21 s onward) you brake too late, causing the speed to drop abruptly from 198 → 96 km/h and the vehicle to deviate from the ideal line at yaw values around –0.5 rad.' 
+        'In the first minutes, eexcessive negative acceleration_x and incorrectly dosed yaw rotation dominate, which leads to repeated slowing; from about 68 s onward the acceleration is chosen positively and the speed can increase again. The goal is to reduce braking so that the vehicle can take the corner with a similar speed as in the reference value (e.g. 173 km/h at 70.9 s).'
+        
+User Prompt: 
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 0, Sequence: 121.04 - 125.241
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: Based on the provided driving data and reference lap, here's a concise analysis of the driver's performance:
+
+* The segment starts with a relatively slow speed of 161 km/h, which is lower than the optimal 228 km/h.
+* At timestamp 122.111s, the driver accelerates positively in the x-axis, but not enough to catch up to the reference lap's speed. 
+* The driver then brakes excessively from 490 to 500, dropping their speed from 267 km/h to 176 km/h.
+
+To improve, the driver should focus on accelerating more aggressively and maintaining a consistent line through the segment.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 1, Sequence: 127.361 - 134.685
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: You drove this section without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 2, Sequence: 135.732 - 137.879
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: Your lap was identical to the reference lap in terms of time, indicating that you maintained a similar pace throughout the segment. However, there is no speed data available for this segment, so we can't evaluate your top speed or acceleration. Focus on maintaining a smooth and consistent driving style as you approach the next segment.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 3, Sequence: 149.476 - 154.809
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: Based on the provided table and segment summary, here's a possible feedback for the given driving data:
+
+"You drove this section almost perfectly, keep it up!" 
+
+This comment is justified as there are no significant errors or issues in the driving data provided (no strongly negative acceleration_x, excessive braking, understeer, etc.).
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 4, Sequence: 156.975 - 163.352
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: Based on the driving data provided, here is a short and precise feedback for the driver:
+
+* You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.
+
+The reference lap data shows that the driver was able to maintain a high speed throughout the segment, whereas the user's speed dropped significantly. It's likely that the user took a wider line or made other mistakes that led to the loss of speed.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Role:
+        Experienced racing driver coach.
+
+        Task:
+        Analyze driving data and give short, precise feedback.
+        You receive a table with attributes.
+        So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
+        Each attribute in the table has two values: first value = driver, second value = reference.
+
+        Notes:
+        Take into account the units of the respective attributes. They are specified in the table.
+        Keep in mind that the user neither knows the optimal driving line nor values that refer to the x, y, and z axes.
+        They only know throttle, brake, steering, speed, position on the track, and timestamp.
+        The user cannot do much with concrete timestamps, but rather thinks in sections of the track.
+
+        Examples:
+        'You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.',
+        'Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.',
+        'You have to take the corner at 110 instead of 160 km/h in order not to crash.',
+        'You drove this section almost perfectly, keep it up!'
+
+        Negative examples:
+        'The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value (-77 vs. -20) indicates excessive braking and understeer, causing the speed to drop to 96 km/h instead of the optimal 228 km/h.',
+        'From about 9 s onward you reach lateral accelerations of up to +20 m/s², while the reference lap only allows 0–5 m/s² – this creates strong under-/oversteer. Later (from 21 s onward) you brake too late, causing the speed to drop abruptly from 198 → 96 km/h and the vehicle to deviate from the ideal line at yaw values around –0.5 rad.' 
+        'In the first minutes, eexcessive negative acceleration_x and incorrectly dosed yaw rotation dominate, which leads to repeated slowing; from about 68 s onward the acceleration is chosen positively and the speed can increase again. The goal is to reduce braking so that the vehicle can take the corner with a similar speed as in the reference value (e.g. 173 km/h at 70.9 s).'
+        
+User Prompt: 
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 0, Sequence: 164.424 - 168.64
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: You drove this segment without errors; however, you were not able to gather any relevant driving data, as there is no speed or yaw data available. 
+
+However, upon examining the acceleration values and track position for a more in-depth look at your performance: 
+you are taking the corner with an excessive negative acceleration_z value (-19 vs. reference 0) which may cause you to understeer and lose top speed.
+Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 1, Sequence: 170.752 - 178.041
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: Based on the provided driving data and reference lap, here's a concise analysis:
+
+"You drove this segment without errors; however, your line was too wide on the outside in some parts, which led to a longer path and less grip. Try turning in earlier to find a better racing line."
+
+This conclusion is drawn from the following observations:
+
+* The user deviates significantly from the reference position_x values at certain points (e.g., 611m vs. ref. 599m), indicating a wider turn-in or exit.
+* The lateral acceleration_y values are relatively high in some instances, which might suggest the need for improved cornering techniques.
+
+To further improve, consider analyzing specific sections of the track and comparing your performance with the reference lap more closely.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 2, Sequence: 179.095 - 181.211
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: You drove this section almost perfectly, keep it up!
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 3, Sequence: 191.787 - 198.259
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: Based on the provided driving data and reference lap, here's a short analysis with precise feedback:
+
+"Your corner entry in segment 3 was too late, causing you to lose precious speed. Look at your acceleration_x values: they're consistently negative, indicating braking instead of turning. Try to turn earlier and maintain your speed by reducing unnecessary braking."
+
+This feedback is based on the following observations:
+
+* In segment 3, the user's acceleration_x values are mostly negative (-4 to -23 m/s²), indicating excessive braking.
+* The reference lap shows a more optimal corner entry with positive acceleration_x values (e.g., +22 and +18 m/s² at timestamps 197.205 and 198.259).
+* By turning earlier, the user could have maintained their speed and improved their lap time.
+
+Please note that this analysis is based on a limited data set and might not capture all aspects of the driver's performance.
+
