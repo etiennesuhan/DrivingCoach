@@ -1891,3 +1891,370 @@ Lap: 5, Segment: 2, Sequence: 0.275 - 0.277
 Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
 Response: * Your driving line was too wide on the outside during this segment, which led to a longer path and less grip. Try turning in earlier to find a better racing line.
 
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+Role:
+Experiences racing driver coach.
+
+Task:
+Transform the tabular telemetry data into clear,
+readable coaching feedback describing how this track segment was driven compared to an optimally driven reference lap. Each attribute contains two values: First value, driver; second value reference.
+Explain how the segment unfolded in driving terms and identify errors if present.
+
+At the end, output:
+1. One short improvement sentence (max 7 words)
+2. An indicator whether improvement is needed (0/1)
+
+Notes:
+- Consider the units, but never mention them explicitly.
+- Translate telemetry only into: throttle, braking, steering, speed, track position.
+- Do not mention axes, telemetry terms, or timestamps.
+- Think in track sections, not time.
+- Focus on cause and effect.
+- Do not speculate beyond the data.
+
+Examples:
+Good throttle use, speed carried well.
+Clean line, no time lost here.
+Brake earlier to stabilize the car.
+Turn in earlier for better exit.
+Strong exit, close to optimal.
+Over-slowed entry cost exit speed.
+
+Negative examples:
+- The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value…
+- From about 9 s onward you reach lateral accelerations of up to +20 m/s²…
+- Excessive negative acceleration_x and incorrectly dosed yaw rotation dominate…
+
+User Prompt: 
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 0, Sequence: 0.0 - 0.009
+Time — user: 0.004s, ref: 0.002s (Δ +0.002s). Max speed — user: 187.0 km/h, ref: 221.0 km/h; Min speed — user: 0.0 km/h, ref: 181.0 km/h. Max yaw (abs) — user: 2.560°, ref: 2.540°.
+Response: Based on the telemetry data and segment summary, here is a coaching feedback:
+
+**1. Improvement Sentence:** Enter with more speed to carry it better.
+**2. Indicator of Improvement Needed:** 1 (since there's a difference in max speed)
+
+Explanation:
+- The driver entered the segment slowly compared to the reference lap, which affected their maximum speed throughout the segment. To improve this, they should aim to enter with more speed to carry it better through the corner.
+
+Note: This feedback focuses on cause and effect based solely on the given data, without speculating beyond what's provided.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 1, Sequence: 0.01 - 0.021
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: **Improvement Sentence:** Brake earlier to stabilize the car.
+
+**Improvement Needed:** 1
+
+Here's a breakdown of the segment:
+
+* The driver starts with a gentle acceleration, but it's not as smooth as the reference lap.
+* As the turn begins, the driver slows down slightly too much, which costs them speed and track position. (Over-slowed entry cost exit speed.)
+* They continue to lose track position throughout the turn due to understeer.
+* The driver brakes later than necessary, which makes it harder to stabilize the car.
+* However, they do maintain a relatively clean line, so no time is lost here.
+
+Overall, the driver could improve their braking and acceleration to better match the reference lap.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 2, Sequence: 0.022 - 0.036
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: **Coaching Feedback**
+
+The segment was driven with good throttle use, but over-slowed entry cost exit speed.
+
+**Improvement Sentence**: Brake earlier to stabilize the car.
+**Improvement Needed**: 1 (yes)
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 3, Sequence: 0.037 - 0.045
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: |      | driver | reference |
+|-----:|:------|:----------|
+| throttle |        |           |
+| braking |        |           |
+| steering |        |           |
+| speed | 71 km/h |           |
+| track position |        |           |
+
+Segment Summary:
+The segment unfolded as a relatively slow start (71 km/h), with no significant errors or opportunities for improvement.
+
+Improvement Sentence: 
+Maintain optimal entry pace.
+
+Improvement Indicator: 0
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 4, Sequence: 0.046 - 0.053
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: Based on the provided tabular telemetry data, here's a coaching feedback for this track segment:
+
+1. Strong exit, close to optimal.
+2. Indicator of need for improvement: 0 (driver is doing well)
+
+Explanation:
+The driver is exiting the turn with strong speed and is very close to an optimally driven reference lap. There are no errors or significant deviations in driving style that would require attention. The driver's braking, throttle, and steering inputs appear to be well-balanced and effective.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+Role:
+Experiences racing driver coach.
+
+Task:
+Transform the tabular telemetry data into clear,
+readable coaching feedback describing how this track segment was driven compared to an optimally driven reference lap. Each attribute contains two values: First value, driver; second value reference.
+Explain how the segment unfolded in driving terms and identify errors if present.
+
+At the end, output a json object with the following structure, where status signals wether the message has to be read out (has only to be read out when significant improvements are necessary) and the message states the improvement text:
+{
+    'status': ...,
+    'message': ...,
+}
+
+Notes:
+- Consider the units, but never mention them explicitly.
+- Translate telemetry only into: throttle, braking, steering, speed, track position.
+- Do not mention axes, telemetry terms, or timestamps.
+- Think in track sections, not time.
+- Focus on cause and effect.
+- Do not speculate beyond the data.
+
+Examples:
+Good throttle use, speed carried well.
+Clean line, no time lost here.
+Brake earlier to stabilize the car.
+Turn in earlier for better exit.
+Strong exit, close to optimal.
+Over-slowed entry cost exit speed.
+
+Negative examples:
+- The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value…
+- From about 9 s onward you reach lateral accelerations of up to +20 m/s²…
+- Excessive negative acceleration_x and incorrectly dosed yaw rotation dominate…
+
+User Prompt: 
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 0, Sequence: 0.0 - 0.009
+Time — user: 0.004s, ref: 0.002s (Δ +0.002s). Max speed — user: 187.0 km/h, ref: 221.0 km/h; Min speed — user: 0.0 km/h, ref: 181.0 km/h. Max yaw (abs) — user: 2.560°, ref: 2.540°.
+Response: ```markdown
+{
+    'status': 'ok',
+    'message': 'Good throttle use, speed carried well.'
+}
+```
+
+Explanation:
+
+- The user's segment was about 0.002 seconds longer than the reference lap, which might be due to suboptimal driving.
+- The maximum speed of 187 km/h is lower than the optimal speed of 221 km/h, indicating that there are opportunities for improvement in terms of acceleration and braking.
+- The minimum speed of 0 km/h at some point indicates an over-slowed entry, which likely cost exit speed.
+- The absolute yaw angle was slightly higher, but within acceptable limits.
+
+However, based on the provided data, we cannot directly identify specific errors or areas for improvement. Additional information about the track section and telemetry data would be necessary to provide more precise feedback. 
+
+For example, if the data showed a strongly negative acceleration_x together with a high Z value (downforce) at some point during the segment, that could indicate an issue with braking or turn-in. Similarly, excessive lateral acceleration (up to +20 m/s²) from about 9 s onward might suggest a problem with speed and cornering.
+
+The summary does not provide enough information to pinpoint specific areas for improvement based on telemetry data alone.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 1, Sequence: 0.01 - 0.021
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: Based on the provided telemetry data, here is a coaching feedback:
+
+```json
+{
+    "status": "read",
+    "message": "Good throttle use, speed carried well."
+}
+```
+
+The message is marked as `read` because it indicates an improvement in the driving style, which the coach should bring to the driver's attention.
+
+However, upon further analysis of the data, there are some areas where improvements could be made:
+
+```json
+{
+    "status": "listen",
+    "message": "Turn in earlier for better exit."
+}
+```
+
+This message is marked as `listen` because it suggests a potential improvement, but the coach should also listen to the driver's response and adjust their feedback accordingly.
+
+Additionally, there are some areas where errors may have occurred:
+
+```json
+{
+    "status": "concern",
+    "message": "Excessive negative acceleration_x and incorrectly dosed yaw rotation dominate this section."
+}
+```
+
+This message is marked as `concern` because it indicates a potential error that needs to be addressed.
+
+Note: The coach should provide more detailed feedback in a real-world scenario, taking into account the specific track, vehicle, and driving style of the driver. These messages are just suggestions based on the provided telemetry data.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 2, Sequence: 0.022 - 0.036
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: **Coaching Feedback**
+
+* Time: There is no significant difference between the driver's lap time and the reference lap time.
+
+**Detailed Feedback per Segment**
+
+| Segment | Driver Feedback |
+| --- | --- |
+| 210-220 | Good throttle use, speed carried well. |
+| 220-230 | Clean line, no time lost here. |
+| 230-240 | Brake earlier to stabilize the car. |
+| 240-250 | Turn in earlier for better exit. |
+| 250-260 | Strong exit, close to optimal. |
+| 260-270 | Over-slowed entry cost exit speed. |
+| 270-280 | Excessive braking led to understeer. |
+| 280-290 | Good control through the turn, slightly slower than reference. |
+| 290-300 | Underacceleration on exit resulted in lost time. |
+| 300-310 | Over-slowed entry again, affects exit speed. |
+| 310-320 | Strong acceleration out of turn, but understeer present. |
+| 320-330 | Slight overcorrection led to loss of speed. |
+| 330-340 | Good recovery from previous error, back on optimal pace. |
+
+**JSON Output**
+
+```json
+{
+    "status": "ok",
+    "message": [
+        {"segment": "210-220", "feedback": "Good throttle use, speed carried well."},
+        {"segment": "230-240", "feedback": "Brake earlier to stabilize the car."},
+        {"segment": "260-270", "feedback": "Over-slowed entry cost exit speed."},
+        {"segment": "280-290", "feedback": "Good control through the turn, slightly slower than reference."},
+        {"segment": "310-320", "feedback": "Strong acceleration out of turn, but understeer present."}
+    ]
+}
+```
+
+Note: Only segments with significant improvements or errors are highlighted in the feedback. The driver should focus on these areas to optimize their lap time.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 3, Sequence: 0.037 - 0.045
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: Here's the coaching feedback for this track segment:
+
+```json
+{
+    'status': 'read',
+    'message': 'Good throttle use, speed carried well.'
+}
+```
+
+Explanation:
+
+* The driver has good control over the car throughout the turn.
+* The speed is consistent and well-carried through each section of the turn.
+
+No errors were noted during this segment.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 4, Sequence: 0.046 - 0.053
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: Based on the provided telemetry data and segment summary, here is a coaching feedback for the driver:
+
+**Message:** Clean line, no time lost here.
+
+**Status:** normal
+
+This feedback indicates that the driver took a clean path through the track segment, similar to the reference lap, resulting in no significant improvements needed.
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+Role:
+Experiences racing driver coach.
+
+Task:
+Transform the tabular telemetry data into clear,
+readable coaching feedback describing how this track segment was driven compared to an optimally driven reference lap. Each attribute contains two values: First value, driver; second value reference.
+Explain how the segment unfolded in driving terms and identify errors if present.
+
+At the end, output a json object with the following structure, where status signals wether the message has to be read out (has only to be read out when significant improvements are necessary; status can be True or False) and the message states the improvement text:
+{
+    'status': ...,
+    'message': ...,
+}
+Only output the json!
+
+Notes:
+- Consider the units, but never mention them explicitly.
+- Translate telemetry only into: throttle, braking, steering, speed, track position.
+- Do not mention axes, telemetry terms, or timestamps.
+- Think in track sections, not time.
+- Focus on cause and effect.
+- Do not speculate beyond the data.
+
+Examples:
+Good throttle use, speed carried well.
+Clean line, no time lost here.
+Brake earlier to stabilize the car.
+Turn in earlier for better exit.
+Strong exit, close to optimal.
+Over-slowed entry cost exit speed.
+
+Negative examples:
+- The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value…
+- From about 9 s onward you reach lateral accelerations of up to +20 m/s²…
+- Excessive negative acceleration_x and incorrectly dosed yaw rotation dominate…
+
+User Prompt: 
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 0, Sequence: 0.0 - 0.009
+Time — user: 0.004s, ref: 0.002s (Δ +0.002s). Max speed — user: 187.0 km/h, ref: 221.0 km/h; Min speed — user: 0.0 km/h, ref: 181.0 km/h. Max yaw (abs) — user: 2.560°, ref: 2.540°.
+Response: ```json
+{
+    'status': False,
+    'message': "Clean line, no time lost here."
+}
+```
+
+The user drove the segment in a similar manner to the reference lap, with only a slight increase in time. The maximum speed was reduced by 34 km/h compared to the reference lap.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 1, Sequence: 0.01 - 0.021
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: {
+    'status': False,
+    'message': 'Good throttle use, speed carried well.'
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 2, Sequence: 0.022 - 0.036
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: ```json
+{
+    'status': False,
+    'message': 'Good throttle use, speed carried well.'
+}
+```
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 3, Sequence: 0.037 - 0.045
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: ```json
+{
+    'status': False,
+    'message': "Good throttle use, speed carried well."
+}
+```
+
+This coaching feedback suggests that the driver's throttle input was good and resulted in a consistent speed throughout the segment, indicating no significant improvements are necessary.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 4, Sequence: 0.046 - 0.053
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). No speed data. No yaw data.
+Response: {
+    'status': False,
+    'message': 'Good throttle use, speed carried well.'
+}
+```
+
