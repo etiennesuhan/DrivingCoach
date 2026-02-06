@@ -116,19 +116,18 @@ class Preprocessing():
         for col in df_slow.columns:
             df_slow[col] = df_slow[col].astype(object)
         
+        df_fast_working = df_fast.copy()
+        
         #for line in df_slow:
-        for _, line in df_slow.iterrows():
+        for idx, line in df_slow.iterrows():
             # find line in optimal_df with minimal euclidian in x and z, with distance in y < 2
-            optimal_line = self.find_optimal_line(df_fast, line)
-            if optimal_line is None:
-                # No remaining match in optimal data; stop to avoid None access
-                break
+            optimal_line = find_optimal_line(df_fast_working, line)
 
             # write all optimal values into df_slow with the new values being second in a tuple, e.g. "timestamp": 0.0 -> "timestamp": [0.0,0.0]
             for column in df_slow.columns:
-                if(column != "segment" and column != "lap_number"):
+                if column not in ["segment", "lap_number"]:
                     optimal_val = optimal_line[column]
-                    slow_val = df_slow.at[line.name, column]
+                    slow_val = df_slow.at[idx, column]
                     
                     # Convert based on original dtype
                     if pd.api.types.is_integer_dtype(original_dtypes[column]):
@@ -138,9 +137,11 @@ class Preprocessing():
                         slow_val = float(slow_val)
                         optimal_val = float(optimal_val)
                     
-                    df_slow.at[line.name, column] = (slow_val, optimal_val)
-            # cut off all lines before found line in optimal df without 
-            df_fast = df_fast[df_fast.index > optimal_line.name]
+                    df_slow.at[idx, column] = (slow_val, optimal_val)
+                    
+            # only advance cutting of when we found a match
+            if optimal_line is not None:
+                df_fast_working = df_fast_working[df_fast_working.index > optimal_line.name]
         return df_slow
 
 
@@ -169,5 +170,4 @@ class Preprocessing():
             if distance < min_distance:
                 min_distance = distance
                 optimal_line = fast_line
-
         return optimal_line
