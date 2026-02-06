@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 from pandas import DataFrame
+import sqlite3
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -16,10 +17,12 @@ def resolve_repo_path(path: str | Path) -> Path:
 
 class Preprocessing():
     def __init__(self, CURRENT_LINE, OPTIMAL_LINE):
+        CURRENT_LINE = "data/" + CURRENT_LINE
+        OPTIMAL_LINE = "data/" + OPTIMAL_LINE
         current_path = resolve_repo_path(CURRENT_LINE)
         optimal_path = resolve_repo_path(OPTIMAL_LINE)
-        self.DATABASE_OPTIMAL = f"sqlite:///{optimal_path.as_posix()}"
-        self.DATABASE_CURRENT = f"sqlite:///{current_path.as_posix()}"
+        self.DATABASE_OPTIMAL = optimal_path.as_posix()
+        self.DATABASE_CURRENT = current_path.as_posix()
         self.OUTPUT = (REPO_ROOT / "data/output.txt").as_posix()
         self.MD = (REPO_ROOT / "data/output.md").as_posix()
         self.PROMPTS = (REPO_ROOT / "prompts/prompts.txt").as_posix()
@@ -30,8 +33,12 @@ class Preprocessing():
         ORDER BY id"""
     
     def run(self):
-        df_fast = self.preprocess(pd.read_sql(self.QUERY, self.DATABASE_OPTIMAL))
-        df_slow = self.preprocess(pd.read_sql(self.QUERY, self.DATABASE_CURRENT))
+        conn_fast = sqlite3.connect(self.DATABASE_OPTIMAL)
+        df_fast = self.preprocess(pd.read_sql(self.QUERY, conn_fast))
+        
+        conn_slow = sqlite3.connect(self.DATABASE_CURRENT)
+        df_slow = self.preprocess(pd.read_sql(self.QUERY, conn_slow))
+        
         df_slow = df_slow.iloc[::int(10), :]
         df_slow["segment"] = self.segment_labels(self.TRACK_2_SEGMENT_POINTS, df_slow)
         df_slow = self.match_lines_by_euclid(df_slow, df_fast)
@@ -48,7 +55,9 @@ class Preprocessing():
                 'speed': 'speed in km/h',
             }
         )
-        markdown = df_slow.to_markdown()
+        #df_slow["timestamp in s"] = df_slow["timestamp in s"].astype('float')
+        df_formatted = self.clean_decimals(df_slow)
+        markdown = df_formatted.to_markdown()
         with open(self.MD, 'w', encoding="utf-8") as f:
             f.write(markdown)
         return markdown
@@ -58,6 +67,8 @@ class Preprocessing():
         df['timestamp'] = pd.to_datetime(df["timestamp"], utc=True).astype("int64") // 10**6
         df['timestamp'] = (df['timestamp'] - min(df['timestamp'])) / 1000
 
+        df['timestamp'] = df['timestamp'].round(decimals=3)
+        
         df['position_x'] = df['position_x'].astype(int)
         df['position_y'] = df['position_y'].astype(int)
         df['position_z'] = df['position_z'].astype(int)
@@ -70,6 +81,24 @@ class Preprocessing():
         
         return df
     
+    def clean_decimals(self, df):
+        df = df.copy()
+    
+        # Debug: Check input
+        print("Before cleaning:")
+        print(df["timestamp in s"].head())
+        print(f"Type of first value: {type(df['timestamp in s'].iloc[0])}")
+        
+        df["timestamp in s"] = df["timestamp in s"].apply(
+            lambda x: (round(x[0], 3), round(x[1], 3))
+        )
+        
+        # Debug: Check output
+        print("\nAfter cleaning:")
+        print(df["timestamp in s"].head())
+        print(f"Type of first value: {type(df['timestamp in s'].iloc[0])}")
+        
+        return df
 
     def get_index_nearest_position(self, point: tuple, positions_x: np.ndarray, positions_z: np.ndarray) -> int:
         smallest_distance = np.inf
@@ -121,21 +150,21 @@ class Preprocessing():
         #for line in df_slow:
         for idx, line in df_slow.iterrows():
             # find line in optimal_df with minimal euclidian in x and z, with distance in y < 2
-            optimal_line = find_optimal_line(df_fast_working, line)
+            optimal_line = self.find_optimal_line(df_fast_working, line)
 
             # write all optimal values into df_slow with the new values being second in a tuple, e.g. "timestamp": 0.0 -> "timestamp": [0.0,0.0]
             for column in df_slow.columns:
                 if column not in ["segment", "lap_number"]:
                     optimal_val = optimal_line[column]
-                    slow_val = df_slow.at[idx, column]
+                    slow_val = line[column]
                     
                     # Convert based on original dtype
                     if pd.api.types.is_integer_dtype(original_dtypes[column]):
                         slow_val = int(slow_val)
                         optimal_val = int(optimal_val)
                     elif pd.api.types.is_float_dtype(original_dtypes[column]):
-                        slow_val = float(slow_val)
-                        optimal_val = float(optimal_val)
+                        slow_val = round(float(slow_val), 3)
+                        optimal_val = round(float(optimal_val), 3)
                     
                     df_slow.at[idx, column] = (slow_val, optimal_val)
                     
@@ -171,3 +200,7 @@ class Preprocessing():
                 min_distance = distance
                 optimal_line = fast_line
         return optimal_line
+    
+p = Preprocessing("test.db", "track2_good.db")
+
+p.run()
