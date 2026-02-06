@@ -55,7 +55,6 @@ class Preprocessing():
                 'speed': 'speed in km/h',
             }
         )
-        #df_slow["timestamp in s"] = df_slow["timestamp in s"].astype('float')
         df_formatted = self.clean_decimals(df_slow)
         markdown = df_formatted.to_markdown()
         with open(self.MD, 'w', encoding="utf-8") as f:
@@ -90,7 +89,7 @@ class Preprocessing():
         print(f"Type of first value: {type(df['timestamp in s'].iloc[0])}")
         
         df["timestamp in s"] = df["timestamp in s"].apply(
-            lambda x: (round(x[0], 3), round(x[1], 3))
+            lambda x: (round(x[0], 1), round(x[1], 1))
         )
         
         # Debug: Check output
