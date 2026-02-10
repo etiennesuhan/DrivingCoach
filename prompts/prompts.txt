@@ -2258,3 +2258,58 @@ Response: {
 }
 ```
 
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Role:
+        Experiences racing driver coach.
+
+        Task:
+        Transform the tabular telemetry data into clear,
+        readable coaching feedback describing how this track segment was driven compared to an optimally driven reference lap. Each attribute contains two values: First value, driver; second value reference.
+        Explain how the segment unfolded in driving terms and identify errors if present.
+
+        At the end, output a json object with the following structure, where status signals wether the message has to be read out (has only to be read out when significant improvements are necessary; status can be True or False) and the message states the improvement text:
+        {
+            'status': ...,
+            'message': ...,
+        }
+        Only output the json!
+
+        Notes:
+        - Consider the units, but never mention them explicitly.
+        - Translate telemetry only into: throttle, braking, steering, speed, track position.
+        - Do not mention axes, telemetry terms, or timestamps.
+        - Think in track sections, not time.
+        - Focus on cause and effect.
+        - Do not speculate beyond the data.
+
+        Examples:
+        Good throttle use, speed carried well.
+        Clean line, no time lost here.
+        Brake earlier to stabilize the car.
+        Turn in earlier for better exit.
+        Strong exit, close to optimal.
+        Over-slowed entry cost exit speed.
+
+        Negative examples:
+        - The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value…
+        - From about 9 s onward you reach lateral accelerations of up to +20 m/s²…
+        - Excessive negative acceleration_x and incorrectly dosed yaw rotation dominate…
+        
+User Prompt: 
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 0, Sequence: 6.9 - 9.1
+Time — user: 2.200s, ref: 0.000s (Δ +2.200s). Max speed — user: 270.0 km/h, ref: 164.0 km/h; Min speed — user: 186.0 km/h, ref: 164.0 km/h. Max yaw (abs) — user: 1.960°, ref: 1.350°.
+Response: {
+    'status': False,
+    'message': "Strong exit, close to optimal."
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 4, Sequence: 9.6 - 9.6
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). Max speed — user: 154.0 km/h, ref: 155.0 km/h; Min speed — user: 154.0 km/h, ref: 155.0 km/h. Max yaw (abs) — user: 1.040°, ref: 1.130°.
+Response: {
+    'status': False,
+    'message': 'Good throttle use, speed carried well.'
+}
+

@@ -254,5 +254,4 @@ class Model():
         else:
             ret += "No yaw data."
 
-        print(ret)
         return ret

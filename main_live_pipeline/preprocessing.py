@@ -15,34 +15,33 @@ def resolve_repo_path(path: str | Path) -> Path:
 
 
 class Preprocessing():
-    def __init__(self, CURRENT_LINE, OPTIMAL_LINE, lap_id, optimal_lap_id=0, optimal_lap=0):
-        current_path = resolve_repo_path(CURRENT_LINE)
-        optimal_path = resolve_repo_path(OPTIMAL_LINE)
-        self.DATABASE_OPTIMAL = optimal_path.as_posix()
-        self.DATABASE_CURRENT = current_path.as_posix()
+    def __init__(self, database, lap_id, optimal_lap, segments):
+        current_path = resolve_repo_path(database)
+        self.database = current_path.as_posix()
         self.OUTPUT = (REPO_ROOT / "data/output.txt").as_posix()
         self.MD = (REPO_ROOT / "data/output.md").as_posix()
         self.PROMPTS = (REPO_ROOT / "prompts/prompts.txt").as_posix()
-        self.TRACK_2_SEGMENT_POINTS = [(610, 2485), (635, 2780), (525, 2720), (880, 2790)]
-        self.QUERY = f"""SELECT timestamp_utc AS timestamp, acceleration_x, acceleration_y, acceleration_z, yaw, position_x, position_y, position_z, speed, lap_number
-        FROM telemetry_samples
-        WHERE lap_id = {lap_id}
-        ORDER BY id"""
-        self.QUERY2 = """SELECT timestamp_utc AS timestamp, acceleration_x, acceleration_y, acceleration_z, yaw, position_x, position_y, position_z, speed, lap_number
-        FROM telemetry_samples
-        WHERE distance_traveled != 0
-        AND lap_number = 1
-        ORDER BY id"""
+        self.lap_id = lap_id
+        self.optimal_lap = optimal_lap
+        self.segments = segments
     
     def run(self):
-        conn_fast = sqlite3.connect(self.DATABASE_OPTIMAL)
-        df_fast = self.preprocess(pd.read_sql(self.QUERY2, conn_fast))
-        
-        conn_slow = sqlite3.connect(self.DATABASE_CURRENT)
-        df_slow = self.preprocess(pd.read_sql(self.QUERY, conn_slow))
+        conn = sqlite3.connect(self.database)
+        df_slow = self.preprocess(pd.read_sql(self.query(self.lap_id), conn))
         df_slow = df_slow.iloc[::int(5), :]
-        df_slow["segment"] = self.segment_labels(self.TRACK_2_SEGMENT_POINTS, df_slow)
-        df_slow = self.match_lines_by_euclid(df_slow, df_fast)
+        df_slow["segment"] = self.segment_labels(df_slow)
+        if self.optimal_lap is not None:
+            df_fast_raw = pd.read_sql(self.query(self.optimal_lap), conn)
+            if not df_fast_raw.empty:
+                df_fast = self.preprocess(df_fast_raw)
+                df_slow = self.match_lines_by_euclid(df_slow, df_fast)
+            else:
+                self.optimal_lap = None
+        if self.optimal_lap is None:
+            cols = [c for c in df_slow.columns if c not in ("segment", "lap_number")]
+            for c in cols:
+                vals = df_slow[c].tolist()
+                df_slow[c] = list(zip(vals, vals))
         df_slow = df_slow.rename(
             columns={
                 'timestamp': 'timestamp in s',
@@ -62,7 +61,12 @@ class Preprocessing():
             f.write(markdown)
         return markdown
     
-    
+    def query(self, lap_id):
+        return f"""SELECT timestamp_utc AS timestamp, acceleration_x, acceleration_y, acceleration_z, yaw, position_x, position_y, position_z, speed, lap_number
+        FROM telemetry_samples
+        WHERE lap_id = {lap_id}
+        ORDER BY id"""
+
     def preprocess(self, df: DataFrame):
         df['timestamp'] = pd.to_datetime(df['timestamp'], utc=True)
         df['timestamp'] = (df['timestamp'] - df['timestamp'].iloc[0]).dt.total_seconds()
@@ -90,7 +94,7 @@ class Preprocessing():
         return index
 
 
-    def segment_labels(self, points: list, track: DataFrame):
+    def segment_labels(self, track: DataFrame):
         labels_all: list[int] = []
         for lap in track["lap_number"].unique():
             lap_df = track[track["lap_number"] == lap]
@@ -101,7 +105,7 @@ class Preprocessing():
                     lap_df["position_x"].to_numpy(),
                     lap_df["position_z"].to_numpy()
                 ))
-                for p in points
+                for p in self.segments
             ]
             idxs = sorted({max(0, min(n, i)) for i in idxs})
             lap_labels = np.empty(n, dtype=int)

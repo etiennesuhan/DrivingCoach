@@ -7,7 +7,7 @@ import ast
 import numpy as np
 import threading
 import queue
-import pandas as pd
+import json
 
 from typing import Iterable
 from pathlib import Path
@@ -60,6 +60,7 @@ class Listener():
         self._packet_count = 0
         self.track_id = None
         self._race_active = False
+        self.optimal_lap_id = None
         
         
     def run(self):
@@ -97,7 +98,7 @@ class Listener():
                 # User drives in open world
                 if parsed.get("distance_traveled", 0) == 0 and parsed.get("engine_max_rpm", 0) != 0:
                     if self.DEBUG:
-                        print(f'{parsed.get('position_x')}, {parsed.get('position_z')}')
+                        print(f"{parsed.get('position_x')}, {parsed.get('position_z')}")
                     self.identify_track_id([parsed.get('position_x'), parsed.get('position_z')])
                     continue
                 
@@ -110,13 +111,13 @@ class Listener():
                 if parsed.get("distance_traveled", 0) != 0 and parsed.get("engine_max_rpm", 0) != 0:
                     if not self._race_active or self.lap_id is None:
                         self._start_new_lap(parsed.get("lap_number", 0), reset_session=True)
+
                     self._race_active = True
                     now = time.monotonic()
                     if now - last_saved < self.MIN_SAVE_INTERVAL:
                         continue
                     last_saved = now
                     timestamp_utc = (datetime.datetime.utcnow().isoformat(timespec="milliseconds") + "Z")
-                    print(f'Lap Id {self.lap_id}')
                     self.insert_sample(conn, timestamp_utc, data, schema_name, parsed)
 
         except KeyboardInterrupt:
@@ -127,14 +128,43 @@ class Listener():
 
 
     def identify_track_id(self, position: list[int, int]):
-        track_dict = pd.read_json(Path('main_live_pipeline/metadata.json')).to_dict()
+        metadata_path = Path("main_live_pipeline/metadata.json")
+        data = json.loads(metadata_path.read_text(encoding="utf-8"))
+        tracks = data.get("tracks") if isinstance(data.get("tracks"), dict) else data
+        if not isinstance(tracks, dict):
+            return
 
-        for point in track_dict['tracks'].keys():
-            point_conv = [int(i) for i in point.strip('[]').split(',')]
+        for point, track_info in tracks.items():
+            if not isinstance(track_info, dict):
+                continue
+            try:
+                point_conv = [int(i.strip()) for i in point.strip("[]").split(",")]
+            except (ValueError, AttributeError):
+                continue
             distance_to_point = np.sqrt((position[0] - point_conv[0])**2 + (position[1] - point_conv[1])**2)
             if distance_to_point <= 30:
-                self.segments = track_dict[point]['segments']
-                self.track_name = track_dict[point]['name']
+                self.track_id = point
+                self.segments = track_info.get("segments", self.segments)
+                self.track_name = track_info.get("name")
+                self.optimal_lap_id = track_info.get("lap")
+
+    def update_optimal_lap_time(self, new_id: int, new_time: float) -> None:
+        if self.track_id is None:
+            return
+        path = Path("main_live_pipeline/metadata.json")
+        data = json.loads(path.read_text(encoding="utf-8"))
+        tracks = data.get("tracks") if isinstance(data.get("tracks"), dict) else data
+        if not isinstance(tracks, dict) or self.track_id not in tracks:
+            return
+        tracks[self.track_id]["lap"] = new_id
+        tracks[self.track_id]["time"] = new_time
+        if isinstance(data.get("tracks"), dict):
+            data["tracks"] = tracks
+        else:
+            data = tracks
+        path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        self.optimal_lap_id = new_id
+
 
     def _start_new_lap(self, lap_number: int | None = None, reset_session: bool = False) -> None:
         self.lap_id = self._get_next_lap_id()
@@ -163,7 +193,7 @@ class Listener():
         while True:
             lap_id, lap, segment = self.model_queue.get()
             try:
-                preprocessing = Preprocessing(self.DB_FILE, "data/track2_good.db", lap_id)
+                preprocessing = Preprocessing(self.DB_FILE, lap_id, self.optimal_lap_id, self.segments)
                 md_text = preprocessing.run()
                 if not md_text or not md_text.strip():
                     print("No markdown data available; skipping model run.")
@@ -336,6 +366,19 @@ class Listener():
                     self.in_zone = False
         
         if lap != self.lap:
+            last_lap_time = parsed.get("last_lap", 0)
+            if last_lap_time and last_lap_time > 0:
+                optimal_lap_time = None
+                if self.track_id is not None:
+                    metadata_path = Path("main_live_pipeline/metadata.json")
+                    data = json.loads(metadata_path.read_text(encoding="utf-8"))
+                    tracks = data.get("tracks") if isinstance(data.get("tracks"), dict) else data
+                    if isinstance(tracks, dict) and self.track_id in tracks:
+                        optimal_lap_time = tracks[self.track_id].get("time")
+                if optimal_lap_time is None or last_lap_time < optimal_lap_time:
+                    self.update_optimal_lap_time(self.lap_id, last_lap_time)
+                    if self.DEBUG:
+                        print(f"New lap record: {last_lap_time}")
             print(f'Start processing {self.segment}')
             print('Queued model answer ...')
             self._enqueue_model_run(self.lap_id, self.lap, self.segment)
