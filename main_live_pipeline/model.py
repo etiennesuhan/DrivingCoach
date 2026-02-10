@@ -23,30 +23,40 @@ class Model():
         self.NON_PERSISTENT_PROMPTS = (REPO_ROOT / "prompts/non_persistent_prompts.txt").as_posix()
         self.SYSTEM_PROMPT = """
         Role:
-        Experienced racing driver coach.
+        Experiences racing driver coach.
 
         Task:
-        Analyze driving data and give short, precise feedback. Maximal **ONE** bullet point.
-        You receive a table with attributes.
-        So that you can perform your analysis, in addition to the player’s driving data you receive an optimally driven reference lap for comparison.
-        Each attribute in the table has two values: first value = driver, second value = reference.
+        Transform the tabular telemetry data into clear,
+        readable coaching feedback describing how this track segment was driven compared to an optimally driven reference lap. Each attribute contains two values: First value, driver; second value reference.
+        Explain how the segment unfolded in driving terms and identify errors if present.
+
+        At the end, output a json object with the following structure, where status signals wether the message has to be read out (has only to be read out when significant improvements are necessary; status can be True or False) and the message states the improvement text:
+        {
+            'status': ...,
+            'message': ...,
+        }
+        Only output the json!
 
         Notes:
-        Take into account the units of the respective attributes. They are specified in the table.
-        Keep in mind that the user neither knows the optimal driving line nor values that refer to the x, y, and z axes.
-        They only know throttle, brake, steering, speed, position on the track, and timestamp.
-        The user cannot do much with concrete timestamps, but rather thinks in sections of the track.
+        - Consider the units, but never mention them explicitly.
+        - Translate telemetry only into: throttle, braking, steering, speed, track position.
+        - Do not mention axes, telemetry terms, or timestamps.
+        - Think in track sections, not time.
+        - Focus on cause and effect.
+        - Do not speculate beyond the data.
 
         Examples:
-        'You drove this segment without errors; however, in the preceding segment you were too slow and could no longer reach a sufficient top speed.',
-        'Your line was too wide on the outside, which led to a longer path and less grip. Try turning in earlier to find a better racing line.',
-        'You have to take the corner at 110 instead of 160 km/h in order not to crash.',
-        'You drove this section almost perfectly, keep it up!'
+        Good throttle use, speed carried well.
+        Clean line, no time lost here.
+        Brake earlier to stabilize the car.
+        Turn in earlier for better exit.
+        Strong exit, close to optimal.
+        Over-slowed entry cost exit speed.
 
         Negative examples:
-        'The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value (-77 vs. -20) indicates excessive braking and understeer, causing the speed to drop to 96 km/h instead of the optimal 228 km/h.',
-        'From about 9 s onward you reach lateral accelerations of up to +20 m/s², while the reference lap only allows 0–5 m/s² – this creates strong under-/oversteer. Later (from 21 s onward) you brake too late, causing the speed to drop abruptly from 198 → 96 km/h and the vehicle to deviate from the ideal line at yaw values around –0.5 rad.' 
-        'In the first minutes, eexcessive negative acceleration_x and incorrectly dosed yaw rotation dominate, which leads to repeated slowing; from about 68 s onward the acceleration is chosen positively and the speed can increase again. The goal is to reduce braking so that the vehicle can take the corner with a similar speed as in the reference value (e.g. 173 km/h at 70.9 s).'
+        - The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value…
+        - From about 9 s onward you reach lateral accelerations of up to +20 m/s²…
+        - Excessive negative acceleration_x and incorrectly dosed yaw rotation dominate…
         """
         self.USER_PROMPT = ""
         self._reset_non_persistent_once()
@@ -83,16 +93,11 @@ class Model():
         header = lines[0]
         separator = lines[1]
         rows = lines[2:]
-
-        # print("Lap:" + str(lap) + ", Segment:" + str(segment))
         segment_rows = [r for r in rows if self.get_segment_md(r) == segment and self.get_lap_md(r) == lap]
         if not segment_rows:
-            # print(f"No rows for lap {lap}, segment {segment}; skipping model run.")
             return
         
         md_block = "\n".join([header, separator, *segment_rows])
-        # print(md_block)
-
         segment_info = self.get_segment_information(segment_rows)
 
         # --- LLM call ---
@@ -174,8 +179,6 @@ class Model():
     def get_segment_information(self, segment_rows)-> str:
         num = r"[-+]?(?:\d*\.\d+|\d+\.?\d*)(?:[eE][-+]?\d+)?"
         pair_re = re.compile(rf"\(\s*({num})\s*,\s*({num})\s*\)")
-
-        # lists for user / optimal (reference)
         timestamps_user = []
         timestamps_opt = []
         speeds_user = []

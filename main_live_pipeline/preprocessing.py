@@ -1,4 +1,3 @@
-import sys
 import numpy as np
 import pandas as pd
 from pathlib import Path
@@ -16,9 +15,7 @@ def resolve_repo_path(path: str | Path) -> Path:
 
 
 class Preprocessing():
-    def __init__(self, CURRENT_LINE, OPTIMAL_LINE):
-        CURRENT_LINE = "data/" + CURRENT_LINE
-        OPTIMAL_LINE = "data/" + OPTIMAL_LINE
+    def __init__(self, CURRENT_LINE, OPTIMAL_LINE, lap_id, optimal_lap_id=0, optimal_lap=0):
         current_path = resolve_repo_path(CURRENT_LINE)
         optimal_path = resolve_repo_path(OPTIMAL_LINE)
         self.DATABASE_OPTIMAL = optimal_path.as_posix()
@@ -27,19 +24,23 @@ class Preprocessing():
         self.MD = (REPO_ROOT / "data/output.md").as_posix()
         self.PROMPTS = (REPO_ROOT / "prompts/prompts.txt").as_posix()
         self.TRACK_2_SEGMENT_POINTS = [(610, 2485), (635, 2780), (525, 2720), (880, 2790)]
-        self.QUERY = """SELECT timestamp_utc AS timestamp, acceleration_x, acceleration_y, acceleration_z, yaw, position_x, position_y, position_z, speed, lap_number
+        self.QUERY = f"""SELECT timestamp_utc AS timestamp, acceleration_x, acceleration_y, acceleration_z, yaw, position_x, position_y, position_z, speed, lap_number
+        FROM telemetry_samples
+        WHERE lap_id = {lap_id}
+        ORDER BY id"""
+        self.QUERY2 = """SELECT timestamp_utc AS timestamp, acceleration_x, acceleration_y, acceleration_z, yaw, position_x, position_y, position_z, speed, lap_number
         FROM telemetry_samples
         WHERE distance_traveled != 0
+        AND lap_number = 1
         ORDER BY id"""
     
     def run(self):
         conn_fast = sqlite3.connect(self.DATABASE_OPTIMAL)
-        df_fast = self.preprocess(pd.read_sql(self.QUERY, conn_fast))
+        df_fast = self.preprocess(pd.read_sql(self.QUERY2, conn_fast))
         
         conn_slow = sqlite3.connect(self.DATABASE_CURRENT)
         df_slow = self.preprocess(pd.read_sql(self.QUERY, conn_slow))
-        
-        df_slow = df_slow.iloc[::int(10), :]
+        df_slow = df_slow.iloc[::int(5), :]
         df_slow["segment"] = self.segment_labels(self.TRACK_2_SEGMENT_POINTS, df_slow)
         df_slow = self.match_lines_by_euclid(df_slow, df_fast)
         df_slow = df_slow.rename(
@@ -55,18 +56,16 @@ class Preprocessing():
                 'speed': 'speed in km/h',
             }
         )
-        df_formatted = self.clean_decimals(df_slow)
-        markdown = df_formatted.to_markdown()
+        df_slow["timestamp in s"] = df_slow["timestamp in s"].apply(lambda x: (round(x[0], 1), round(x[1], 1)))
+        markdown = df_slow.to_markdown()
         with open(self.MD, 'w', encoding="utf-8") as f:
             f.write(markdown)
         return markdown
     
     
-    def preprocess(self, df):
-        df['timestamp'] = pd.to_datetime(df["timestamp"], utc=True).astype("int64") // 10**6
-        df['timestamp'] = (df['timestamp'] - min(df['timestamp'])) / 1000
-
-        df['timestamp'] = df['timestamp'].round(decimals=3)
+    def preprocess(self, df: DataFrame):
+        df['timestamp'] = pd.to_datetime(df['timestamp'], utc=True)
+        df['timestamp'] = (df['timestamp'] - df['timestamp'].iloc[0]).dt.total_seconds()
         
         df['position_x'] = df['position_x'].astype(int)
         df['position_y'] = df['position_y'].astype(int)
@@ -77,25 +76,6 @@ class Preprocessing():
         df['acceleration_z'] = df['acceleration_z'].astype(int)
         df['yaw'] = df['yaw'].round(decimals=2)
         df['speed'] = (df['speed'] * 3.6).astype(int)
-        
-        return df
-    
-    def clean_decimals(self, df):
-        df = df.copy()
-    
-        # Debug: Check input
-        print("Before cleaning:")
-        print(df["timestamp in s"].head())
-        print(f"Type of first value: {type(df['timestamp in s'].iloc[0])}")
-        
-        df["timestamp in s"] = df["timestamp in s"].apply(
-            lambda x: (round(x[0], 1), round(x[1], 1))
-        )
-        
-        # Debug: Check output
-        print("\nAfter cleaning:")
-        print(df["timestamp in s"].head())
-        print(f"Type of first value: {type(df['timestamp in s'].iloc[0])}")
         
         return df
 
@@ -137,69 +117,41 @@ class Preprocessing():
             labels_all.extend(lap_labels.tolist())
         return labels_all
     
+    def match_lines_by_euclid(
+            self, df_slow: pd.DataFrame,
+            df_fast: pd.DataFrame,
+            exclude_cols=("segment", "lap_number"),
+            keep_fast_index_col="fast_match_idx",
+            chunk_size=204
+        ):
 
-    def match_lines_by_euclid(self, df_slow, df_fast):
-        original_dtypes = df_slow.dtypes.copy()
-        # Convert all columns to object dtype to allow storing tuples
-        for col in df_slow.columns:
-            df_slow[col] = df_slow[col].astype(object)
-        
-        df_fast_working = df_fast.copy()
-        
-        #for line in df_slow:
-        for idx, line in df_slow.iterrows():
-            # find line in optimal_df with minimal euclidian in x and z, with distance in y < 2
-            optimal_line = self.find_optimal_line(df_fast_working, line)
+        df_slow = df_slow.copy()
+        df_fast = df_fast.reset_index(drop=True)
 
-            # write all optimal values into df_slow with the new values being second in a tuple, e.g. "timestamp": 0.0 -> "timestamp": [0.0,0.0]
-            for column in df_slow.columns:
-                if column not in ["segment", "lap_number"]:
-                    optimal_val = optimal_line[column]
-                    slow_val = line[column]
-                    
-                    # Convert based on original dtype
-                    if pd.api.types.is_integer_dtype(original_dtypes[column]):
-                        slow_val = int(slow_val)
-                        optimal_val = int(optimal_val)
-                    elif pd.api.types.is_float_dtype(original_dtypes[column]):
-                        slow_val = round(float(slow_val), 3)
-                        optimal_val = round(float(optimal_val), 3)
-                    
-                    df_slow.at[idx, column] = (slow_val, optimal_val)
-                    
-            # only advance cutting of when we found a match
-            if optimal_line is not None:
-                df_fast_working = df_fast_working[df_fast_working.index > optimal_line.name]
+        slow_xz = df_slow[["position_x", "position_z"]].to_numpy(dtype=float)
+        fast_xz = df_fast[["position_x", "position_z"]].to_numpy(dtype=float)
+
+        idx = self.find_optimal_line(slow_xz, fast_xz, chunk_size=chunk_size)
+        matched_fast = df_fast.iloc[idx].reset_index(drop=True)
+
+        df_slow[keep_fast_index_col] = idx
+        cols = [c for c in df_slow.columns if c not in exclude_cols and c != keep_fast_index_col]
+        for c in cols:
+            slow_vals = df_slow[c].to_numpy()
+            fast_vals = matched_fast[c].to_numpy()
+            df_slow[c] = list(zip(slow_vals.tolist(), fast_vals.tolist()))
+
+
         return df_slow
-
-
-    def find_optimal_line(self, df_fast, line):
-        min_distance = sys.maxsize
-        optimal_line = None
-
-        for _, fast_line in df_fast.iterrows():
-            # Now minimmize euclidian distance in x and z while holding y-constraint
-            if abs(fast_line['position_y'] - line['position_y']) < 2:
-                distance = ((fast_line['position_x'] - line['position_x']) ** 2 + 
-                            (fast_line['position_z'] - line['position_z']) ** 2) ** 0.5
-                if distance < min_distance:
-                    min_distance = distance
-                    optimal_line = fast_line
-        if optimal_line is not None:
-            return optimal_line
-
-        # Fallback: ignore the y-constraint if nothing matched
-        for _, fast_line in df_fast.iterrows():
-            if(line['lap_number'] == '0' and line['segment'] == 0):
-                if(fast_line['lap_number'] != line['lap_number'] and fast_line['segment'] != line['segment']):
-                    continue
-            distance = ((fast_line['position_x'] - line['position_x']) ** 2 + 
-                        (fast_line['position_z'] - line['position_z']) ** 2) ** 0.5
-            if distance < min_distance:
-                min_distance = distance
-                optimal_line = fast_line
-        return optimal_line
     
-p = Preprocessing("test.db", "track2_good.db")
+    def find_optimal_line(self, slow_xz: np.ndarray, fast_xz: np.ndarray, chunk_size: int = 2048) -> np.ndarray:
+        idx_out = np.empty((slow_xz.shape[0],), dtype=int)
 
-p.run()
+        for start in range(0, slow_xz.shape[0], chunk_size):
+            end = min(start + chunk_size, slow_xz.shape[0])
+            chunk = slow_xz[start:end]
+            d2 = ((chunk[:, None, 0] - fast_xz[None, :, 0]) ** 2 +
+                (chunk[:, None, 1] - fast_xz[None, :, 1]) ** 2)
+            idx_out[start:end] = d2.argmin(axis=1)
+
+        return idx_out

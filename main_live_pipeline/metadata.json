@@ -1,0 +1,15 @@
+{
+    "tracks": {
+        "[931, 2603]": {
+            "name": "Bola Ocho, Rundstrecke",
+            "optimal_race": 1,
+            "optimal_lap": 1,
+            "segments": [[610, 2485], [635, 2780], [525, 2720], [880, 2790]]},
+        "[5707, 490]": {
+            "name": "Playa Azul, Rundstrecke",
+            "optimal_race": 1,
+            "optimal_lap": 1,
+            "segments": []}
+    },
+    "optimal_lap_id": 2
+}

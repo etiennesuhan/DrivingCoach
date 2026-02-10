@@ -1,5 +1,4 @@
 import datetime
-import os
 import socket
 import sqlite3
 import struct
@@ -8,6 +7,7 @@ import ast
 import numpy as np
 import threading
 import queue
+import pandas as pd
 
 from typing import Iterable
 from pathlib import Path
@@ -26,22 +26,23 @@ def resolve_repo_path(path: str | Path) -> Path:
 
 
 class Listener():
-    def __init__(self, DB_FILE):
+    def __init__(self, DB_FILE, debug=False):
         self.UDP_IP = "0.0.0.0"
         self.UDP_PORT = 5300
         self.DB_FILE = resolve_repo_path(DB_FILE)
         self.MAX_PACKETS_PER_SECOND = 10
         self.MIN_SAVE_INTERVAL = 1.0 / self.MAX_PACKETS_PER_SECOND
         self.FORZA_FIELDS = self.load_tuples(BASE_DIR / "forza_fields.txt")
-        self.SCHEMAS = SCHEMAS = [("fh5_dash_324", self.FORZA_FIELDS, struct.calcsize("<" + "".join(fmt for _, fmt in self.FORZA_FIELDS)))]
+        self.SCHEMAS = [("fh5_dash_324", self.FORZA_FIELDS, struct.calcsize("<" + "".join(fmt for _, fmt in self.FORZA_FIELDS)))]
         self.BASE_STRUCT_FORMAT = "<" + "".join(fmt for _, fmt in self.FORZA_FIELDS)
         self.distance = np.inf
         self.threshold = 15
         self.segment = 0
         self.in_zone = False
-        self.TRACK_2_SEGMENT_POINTS = [(610, 2485), (635, 2780), (525, 2720), (880, 2790)]
+        self.segments = [[610, 2485], [635, 2780], [525, 2720], [880, 2790]]
+        self.track_name = None
         self.lap = 0
-        self.preprocessing = Preprocessing(self.DB_FILE, "data/track2_good.db")
+        self.lap_id = None
         self.model = Model()
         self.voice = Voice()
         self.model_queue = queue.Queue()
@@ -53,10 +54,12 @@ class Listener():
         self._responses_lock = threading.Lock()
         self._model_responses = {}
         self._spoken_for_lap = set()
-        self.DEBUG = False
+        self.DEBUG = debug
         self._seen_packet_sizes = set()
         self._last_no_data_log = 0.0
         self._packet_count = 0
+        self.track_id = None
+        self._race_active = False
         
         
     def run(self):
@@ -83,29 +86,85 @@ class Listener():
                 if parsed_result is None:
                     continue
                 schema_name, parsed = parsed_result
-                if parsed.get("engine_max_rpm", 0) == 0:
-                    continue
-                now = time.monotonic()
-                if now - last_saved < self.MIN_SAVE_INTERVAL:
-                    continue
-                last_saved = now
+                in_race = parsed.get("engine_max_rpm", 0) != 0 and (
+                    parsed.get("distance_traveled", 0) != 0
+                    or parsed.get("current_race_time", 0) > 0
+                    or parsed.get("lap_number", 0) > 0
+                )
+                if not in_race:
+                    self._race_active = False
 
-                timestamp_utc = (datetime.datetime.utcnow().isoformat(timespec="milliseconds") + "Z")
-                self.insert_sample(conn, timestamp_utc, data, schema_name, parsed)
+                # User drives in open world
+                if parsed.get("distance_traveled", 0) == 0 and parsed.get("engine_max_rpm", 0) != 0:
+                    if self.DEBUG:
+                        print(f'{parsed.get('position_x')}, {parsed.get('position_z')}')
+                    self.identify_track_id([parsed.get('position_x'), parsed.get('position_z')])
+                    continue
+                
+                # User is in menu
+                if parsed.get("distance_traveled", 0) == 0 and parsed.get("engine_max_rpm", 0) == 0:
+                    self._race_active = False
+                    continue
+                
+                # User is in race
+                if parsed.get("distance_traveled", 0) != 0 and parsed.get("engine_max_rpm", 0) != 0:
+                    if not self._race_active or self.lap_id is None:
+                        self._start_new_lap(parsed.get("lap_number", 0), reset_session=True)
+                    self._race_active = True
+                    now = time.monotonic()
+                    if now - last_saved < self.MIN_SAVE_INTERVAL:
+                        continue
+                    last_saved = now
+                    timestamp_utc = (datetime.datetime.utcnow().isoformat(timespec="milliseconds") + "Z")
+                    print(f'Lap Id {self.lap_id}')
+                    self.insert_sample(conn, timestamp_utc, data, schema_name, parsed)
+
         except KeyboardInterrupt:
             print("\nBeende Listener...")
         finally:
             conn.close()
             sock.close()
 
-    def _enqueue_model_run(self, lap: int, segment: int) -> None:
-        self.model_queue.put((lap, segment))
+
+    def identify_track_id(self, position: list[int, int]):
+        track_dict = pd.read_json(Path('main_live_pipeline/metadata.json')).to_dict()
+
+        for point in track_dict['tracks'].keys():
+            point_conv = [int(i) for i in point.strip('[]').split(',')]
+            distance_to_point = np.sqrt((position[0] - point_conv[0])**2 + (position[1] - point_conv[1])**2)
+            if distance_to_point <= 30:
+                self.segments = track_dict[point]['segments']
+                self.track_name = track_dict[point]['name']
+
+    def _start_new_lap(self, lap_number: int | None = None, reset_session: bool = False) -> None:
+        self.lap_id = self._get_next_lap_id()
+        self.segment = 0
+        self.distance = np.inf
+        self.in_zone = False
+        if reset_session:
+            self._spoken_for_lap.clear()
+            with self._responses_lock:
+                self._model_responses.clear()
+        if lap_number is not None and lap_number > 0:
+            self.lap = lap_number
+        elif reset_session:
+            self.lap = 0
+        if self.DEBUG:
+            print(f"Neue Runde gestartet: lap_id={self.lap_id}, lap_number={self.lap}")
+
+
+    def _enqueue_model_run(self, lap_id: int | None, lap: int, segment: int) -> None:
+        if lap_id is None:
+            return
+        self.model_queue.put((lap_id, lap, segment))
+
 
     def _model_worker(self) -> None:
         while True:
-            lap, segment = self.model_queue.get()
+            lap_id, lap, segment = self.model_queue.get()
             try:
-                md_text = self.preprocessing.run()
+                preprocessing = Preprocessing(self.DB_FILE, "data/track2_good.db", lap_id)
+                md_text = preprocessing.run()
                 if not md_text or not md_text.strip():
                     print("No markdown data available; skipping model run.")
                     continue
@@ -160,6 +219,22 @@ class Listener():
         sock.bind((ip, port))
         return sock
 
+    def _get_next_lap_id(self) -> int:
+        if not self.DB_FILE.exists():
+            return 0
+        try:
+            conn = sqlite3.connect(self.DB_FILE)
+            try:
+                row = conn.execute("SELECT MAX(lap_id) FROM telemetry_samples").fetchone()
+                max_id = row[0] if row and row[0] is not None else -1
+                return int(max_id) + 1
+            except sqlite3.Error:
+                return 0
+            finally:
+                conn.close()
+        except Exception:
+            return 0
+
 
     def ensure_columns(self, conn: sqlite3.Connection, table: str, columns: Iterable[tuple[str, str]]) -> None:
         existing = {row[1] for row in conn.execute(f"PRAGMA table_info({table})")}
@@ -177,6 +252,7 @@ class Listener():
         db_types = {"f": "REAL", "i": "INTEGER", "I": "INTEGER", "H": "INTEGER", "B": "INTEGER"}
         column_defs = [
             "id INTEGER PRIMARY KEY AUTOINCREMENT",
+            "lap_id INTEGER NOT NULL",
             "timestamp_utc TEXT NOT NULL",
             "packet_length INTEGER NOT NULL",
             "packet_schema TEXT NOT NULL",
@@ -197,6 +273,7 @@ class Listener():
             conn,
             "telemetry_samples",
             [
+                ("lap_id", "INTEGER"),
                 ("timestamp_utc", "TEXT"),
                 ("packet_length", "INTEGER"),
                 ("packet_schema", "TEXT"),
@@ -217,7 +294,7 @@ class Listener():
             return schema_name, {name: value for (name, _), value in zip(fields, values)}
         if self.DEBUG and packet_size not in self._seen_packet_sizes:
             expected_sizes = [size for _, _, size in self.SCHEMAS]
-            print(f"Unerwartete Paketgroesse {packet_size} Bytes. Erwartet: {expected_sizes}.")
+            print(f"Unerwartete Paketgröße {packet_size} Bytes. Erwartet: {expected_sizes}.")
             self._seen_packet_sizes.add(packet_size)
         return None
 
@@ -226,19 +303,25 @@ class Listener():
         self, conn: sqlite3.Connection, timestamp_utc: str, raw: bytes, schema_name: str, parsed: dict
     ) -> None:
         
-        columns = ["timestamp_utc", "packet_length", "packet_schema", "raw"] + [name for name, _ in self.FORZA_FIELDS]
+        columns = ["lap_id", "timestamp_utc", "packet_length", "packet_schema", "raw"] + [name for name, _ in self.FORZA_FIELDS]
         placeholders = ", ".join(["?"] * len(columns))
         values = [
+            self.lap_id,
             timestamp_utc,
             len(raw),
             schema_name,
             sqlite3.Binary(raw)]
+        x = parsed.get("position_x", 0.0)
+        z = parsed.get("position_z", 0.0)
+        lap = parsed.get("lap_number", 0)
+
         for name, _ in self.FORZA_FIELDS:
             values.append(parsed.get(name, 0))
+        
         if self.DEBUG:
-            print((values[65], values[67]))
+            print((x, z))
         if self.segment <= 3:
-            distance = np.sqrt((values[65]-self.TRACK_2_SEGMENT_POINTS[self.segment][0])**2 + (values[67]-self.TRACK_2_SEGMENT_POINTS[self.segment][1])**2) 
+            distance = np.sqrt((x-self.segments[self.segment][0])**2 + (z-self.segments[self.segment][1])**2) 
             if distance <= self.threshold:
                 if distance <= self.distance:
                     self.distance = distance
@@ -247,17 +330,17 @@ class Listener():
                     print(f'Start processing {self.segment}')
                     self._speak_previous_lap_response(self.lap, self.segment)
                     print('Queued model answer ...')
-                    self._enqueue_model_run(self.lap, self.segment)
+                    self._enqueue_model_run(self.lap_id, self.lap, self.segment)
                     self.segment += 1
                     self.distance = np.inf
                     self.in_zone = False
         
-        if values[82] != self.lap:
+        if lap != self.lap:
             print(f'Start processing {self.segment}')
             print('Queued model answer ...')
-            self._enqueue_model_run(self.lap, self.segment)
-            self.lap += 1
-            self.segment = 0
+            self._enqueue_model_run(self.lap_id, self.lap, self.segment)
+            self.lap = lap
+            self._start_new_lap(lap, reset_session=False)
             self._speak_previous_lap_response(self.lap, self.segment)
 
         conn.execute(f"INSERT INTO telemetry_samples ({', '.join(columns)}) VALUES ({placeholders})",values,)
