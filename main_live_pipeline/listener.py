@@ -221,11 +221,35 @@ class Listener():
                 self.voice_queue.task_done()
 
     def _store_model_response(self, lap: int, segment: int, response_text: str | None) -> None:
-        if not response_text or not response_text.strip():
+        message = self._extract_voice_message(response_text)
+        if not message:
             return
         key = (lap, segment)
         with self._responses_lock:
-            self._model_responses[key] = response_text.strip()
+            self._model_responses[key] = message
+
+    def _extract_voice_message(self, response_text: str | None) -> str | None:
+        if not response_text or not response_text.strip():
+            return None
+        text = response_text.strip()
+        data = None
+        for parser in (json.loads, ast.literal_eval):
+            try:
+                data = parser(text)
+                break
+            except Exception:
+                continue
+        if not isinstance(data, dict):
+            return None
+        status = data.get("status")
+        if isinstance(status, str):
+            status = status.strip().lower() in ("true", "1", "yes", "y")
+        if status is not True:
+            return None
+        message = data.get("message")
+        if not message:
+            return None
+        return str(message).strip()
 
     def _speak_previous_lap_response(self, current_lap: int, segment: int) -> None:
         if current_lap <= 0:

@@ -2313,3 +2313,303 @@ Response: {
     'message': 'Good throttle use, speed carried well.'
 }
 
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Role:
+        Experiences racing driver coach.
+
+        Task:
+        Transform the tabular telemetry data into clear,
+        readable coaching feedback describing how this track segment was driven compared to an optimally driven reference lap. Each attribute contains two values: First value, driver; second value reference.
+        Explain how the segment unfolded in driving terms and identify errors if present.
+
+        At the end, output a json object with the following structure, where status signals wether the message has to be read out (has only to be read out when significant improvements are necessary; status can be True or False) and the message states the improvement text:
+        {
+            'status': ...,
+            'message': ...,
+        }
+        Only output the json!
+
+        Notes:
+        - Consider the units, but never mention them explicitly.
+        - Translate telemetry only into: throttle, braking, steering, speed, track position.
+        - Do not mention axes, telemetry terms, or timestamps.
+        - Think in track sections, not time.
+        - Focus on cause and effect.
+        - Do not speculate beyond the data.
+
+        Examples:
+        Good throttle use, speed carried well.
+        Clean line, no time lost here.
+        Brake earlier to stabilize the car.
+        Turn in earlier for better exit.
+        Strong exit, close to optimal.
+        Over-slowed entry cost exit speed.
+
+        Negative examples:
+        - The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value…
+        - From about 9 s onward you reach lateral accelerations of up to +20 m/s²…
+        - Excessive negative acceleration_x and incorrectly dosed yaw rotation dominate…
+        
+User Prompt: 
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 0, Sequence: 0.0 - 0.0
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). Max speed — user: 0.0 km/h, ref: 0.0 km/h; Min speed — user: 0.0 km/h, ref: 0.0 km/h. Max yaw (abs) — user: 2.510°, ref: 2.510°.
+Response: {
+    'status': False,
+    'message': 'Time consistent with reference, no speed was generated.'
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 3, Sequence: 0.5 - 0.5
+Time — user: 0.000s, ref: 0.000s (Δ +0.000s). Max speed — user: 14.0 km/h, ref: 6.0 km/h; Min speed — user: 14.0 km/h, ref: 6.0 km/h. Max yaw (abs) — user: 2.510°, ref: 2.510°.
+Response: {
+    'status': True,
+    'message': 'Good throttle use, speed carried well.'
+}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Role:
+        Experiences racing driver coach.
+
+        Task:
+        Transform the tabular telemetry data into clear,
+        readable coaching feedback describing how this track segment was driven compared to an optimally driven reference lap. Each attribute contains two values: First value, driver; second value reference.
+        Explain how the segment unfolded in driving terms and identify errors if present.
+
+        At the end, output a json object with the following structure, where status signals wether the message has to be read out (has only to be read out when significant improvements are necessary; status can be True or False) and the message states the improvement text:
+        {
+            'status': ...,
+            'message': ...,
+        }
+        Only output the json!
+
+        Notes:
+        - Consider the units, but never mention them explicitly.
+        - Translate telemetry only into: throttle, braking, steering, speed, track position.
+        - Do not mention axes, telemetry terms, or timestamps.
+        - Think in track sections, not time.
+        - Focus on cause and effect.
+        - Do not speculate beyond the data.
+
+        Examples:
+        Good throttle use, speed carried well.
+        Clean line, no time lost here.
+        Brake earlier to stabilize the car.
+        Turn in earlier for better exit.
+        Strong exit, close to optimal.
+        Over-slowed entry cost exit speed.
+
+        Negative examples:
+        - The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value…
+        - From about 9 s onward you reach lateral accelerations of up to +20 m/s²…
+        - Excessive negative acceleration_x and incorrectly dosed yaw rotation dominate…
+        
+User Prompt: 
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 0, Sequence: 0.0 - 10.7
+Time — user: 10.700s, ref: 10.500s (Δ +0.200s). Max speed — user: 252.0 km/h, ref: 258.0 km/h; Min speed — user: 0.0 km/h, ref: 0.0 km/h. Max yaw (abs) — user: 2.520°, ref: 2.510°.
+Response: ```json
+{
+    "status": false,
+    "message": "Good throttle use, speed carried well."
+}
+```
+
+Explanation:
+
+1. The segment summary shows that the driver's lap time is +0.200s slower than the reference lap, which indicates a small loss of time.
+
+2. However, there are no significant errors in terms of acceleration or yaw rotation, as indicated by the data. The driver maintains a stable speed and yaw throughout the segment.
+
+3. Looking at the telemetry data, we can see that the driver's throttle use is good, and their speed is well carried throughout the segment.
+
+4. There are no instances where the driver loses significant time due to incorrect braking or acceleration, which suggests that they have made some good decisions in terms of driving line and speed.
+
+5. However, there are a few instances where the driver's yaw rotation deviates from the reference lap, but these deviations do not seem to result in any significant loss of time.
+
+6. Given this analysis, it seems that the driver has driven well throughout the segment, with only minor areas for improvement.
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 1, Sequence: 11.2 - 21.4
+Time — user: 10.200s, ref: 9.600s (Δ +0.600s). Max speed — user: 169.0 km/h, ref: 182.0 km/h; Min speed — user: 96.0 km/h, ref: 122.0 km/h. Max yaw (abs) — user: 1.230°, ref: 1.320°.
+Response: {
+    'status': True,
+    'message': "Good throttle use, speed carried well, but max speed was lower than reference and the entry to the segment was over-slowed which cost exit speed."
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 2, Sequence: 21.9 - 33.1
+Time — user: 11.200s, ref: 9.800s (Δ +1.400s). Max speed — user: 210.0 km/h, ref: 223.0 km/h; Min speed — user: 31.0 km/h, ref: 84.0 km/h. Max yaw (abs) — user: 3.050°, ref: 3.080°.
+Response: {
+    'status': True,
+    'message': 'Driver should improve throttle and braking control to match the reference lap.'
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 3, Sequence: 33.7 - 41.2
+Time — user: 7.500s, ref: 18.300s (Δ -10.800s). Max speed — user: 202.0 km/h, ref: 208.0 km/h; Min speed — user: 156.0 km/h, ref: 153.0 km/h. Max yaw (abs) — user: 1.960°, ref: 1.930°.
+Response: {
+    'status': False,
+    'message': 'Good throttle use, speed carried well.'
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 4, Sequence: 41.7 - 49.7
+Time — user: 8.000s, ref: 6.800s (Δ +1.200s). Max speed — user: 235.0 km/h, ref: 235.0 km/h; Min speed — user: 44.0 km/h, ref: 92.0 km/h. Max yaw (abs) — user: 2.930°, ref: 3.030°.
+Response: {
+    'status': False,
+    'message': 'Good throttle use, speed carried well.'
+}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Role:
+        Experiences racing driver coach.
+
+        Task:
+        Transform the tabular telemetry data into clear,
+        readable coaching feedback describing how this track segment was driven compared to an optimally driven reference lap. Each attribute contains two values: First value, driver; second value reference.
+        Explain how the segment unfolded in driving terms and identify errors if present.
+
+        At the end, output a json object with the following structure, where status signals wether the message has to be read out (has only to be read out when significant improvements are necessary; status can be True or False) and the message states the improvement text:
+        {
+            'status': ...,
+            'message': ...,
+        }
+        Only output the json!
+
+        Notes:
+        - Consider the units, but never mention them explicitly.
+        - Translate telemetry only into: throttle, braking, steering, speed, track position.
+        - Do not mention axes, telemetry terms, or timestamps.
+        - Think in track sections, not time.
+        - Focus on cause and effect.
+        - Do not speculate beyond the data.
+
+        Examples:
+        Good throttle use, speed carried well.
+        Clean line, no time lost here.
+        Brake earlier to stabilize the car.
+        Turn in earlier for better exit.
+        Strong exit, close to optimal.
+        Over-slowed entry cost exit speed.
+
+        Negative examples:
+        - The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value…
+        - From about 9 s onward you reach lateral accelerations of up to +20 m/s²…
+        - Excessive negative acceleration_x and incorrectly dosed yaw rotation dominate…
+        
+User Prompt: 
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 0, Sequence: 0.0 - 5.9
+Time — user: 5.900s, ref: 41.200s (Δ -35.300s). Max speed — user: 260.0 km/h, ref: 260.0 km/h; Min speed — user: 159.0 km/h, ref: 159.0 km/h. Max yaw (abs) — user: 2.450°, ref: 2.480°.
+Response: {
+    'status': False,
+    'message': 'Good throttle use, speed carried well.'
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 1, Sequence: 6.9 - 13.9
+Time — user: 7.000s, ref: 6.900s (Δ +0.100s). Max speed — user: 163.0 km/h, ref: 183.0 km/h; Min speed — user: 118.0 km/h, ref: 118.0 km/h. Max yaw (abs) — user: 1.310°, ref: 1.270°.
+Response: {
+    'status': False,
+    'message': "Good throttle use, speed carried well."
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 2, Sequence: 14.4 - 16.6
+Time — user: 2.200s, ref: 2.000s (Δ +0.200s). Max speed — user: 169.0 km/h, ref: 158.0 km/h; Min speed — user: 122.0 km/h, ref: 139.0 km/h. Max yaw (abs) — user: 1.060°, ref: 1.320°.
+Response: {
+    'status': False,
+    'message': "Good speed carried over the segment, but a slower entry cost exit speed."
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 3, Sequence: 27.3 - 34.8
+Time — user: 7.500s, ref: 7.200s (Δ +0.300s). Max speed — user: 210.0 km/h, ref: 214.0 km/h; Min speed — user: 147.0 km/h, ref: 165.0 km/h. Max yaw (abs) — user: 1.880°, ref: 1.910°.
+Response: {
+    'status': False,
+    'message': 'Good throttle use, speed carried well.'
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 4, Sequence: 35.3 - 42.4
+Time — user: 7.100s, ref: 45.300s (Δ -38.200s). Max speed — user: 221.0 km/h, ref: 237.0 km/h; Min speed — user: 86.0 km/h, ref: 6.0 km/h. Max yaw (abs) — user: 3.140°, ref: 2.980°.
+Response: {
+    "status": True,
+    "message": "Over-slowed entry and weak throttle use; speed carried poorly."
+}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Role:
+        Experiences racing driver coach.
+
+        Task:
+        Transform the tabular telemetry data into clear,
+        readable coaching feedback describing how this track segment was driven compared to an optimally driven reference lap. Each attribute contains two values: First value, driver; second value reference.
+        Explain how the segment unfolded in driving terms and identify errors if present.
+
+        At the end, output a json object with the following structure, where status signals wether the message has to be read out (has only to be read out when significant improvements are necessary; status can be True or False) and the message states the improvement text:
+        {
+            'status': ...,
+            'message': ...,
+        }
+        Only output the json!
+
+        Notes:
+        - Consider the units, but never mention them explicitly.
+        - Translate telemetry only into: throttle, braking, steering, speed, track position.
+        - Do not mention axes, telemetry terms, or timestamps.
+        - Think in track sections, not time.
+        - Focus on cause and effect.
+        - Do not speculate beyond the data.
+
+        Examples:
+        Good throttle use, speed carried well.
+        Clean line, no time lost here.
+        Brake earlier to stabilize the car.
+        Turn in earlier for better exit.
+        Strong exit, close to optimal.
+        Over-slowed entry cost exit speed.
+
+        Negative examples:
+        - The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value…
+        - From about 9 s onward you reach lateral accelerations of up to +20 m/s²…
+        - Excessive negative acceleration_x and incorrectly dosed yaw rotation dominate…
+        
+User Prompt: 
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 0, Sequence: 0.0 - 5.9
+Time — user: 5.900s, ref: 41.100s (Δ -35.200s). Max speed — user: 254.0 km/h, ref: 260.0 km/h; Min speed — user: 158.0 km/h, ref: 158.0 km/h. Max yaw (abs) — user: 2.480°, ref: 2.480°.
+Response: {
+    'status': False,
+    'message': 'Good segment, slight loss in speed compared to optimal.'
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 1, Sequence: 6.9 - 14.4
+Time — user: 7.500s, ref: 7.300s (Δ +0.200s). Max speed — user: 171.0 km/h, ref: 183.0 km/h; Min speed — user: 117.0 km/h, ref: 118.0 km/h. Max yaw (abs) — user: 1.220°, ref: 1.270°.
+Response: {
+    "status": True,
+    "message": "Brake earlier to stabilize the car."
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 2, Sequence: 14.9 - 17.1
+Time — user: 2.200s, ref: 2.000s (Δ +0.200s). Max speed — user: 181.0 km/h, ref: 175.0 km/h; Min speed — user: 119.0 km/h, ref: 139.0 km/h. Max yaw (abs) — user: 1.270°, ref: 1.340°.
+Response: {
+    'status': False,
+    'message': 'Clean line, no time lost here.'
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 3, Sequence: 28.8 - 36.8
+Time — user: 8.000s, ref: 18.100s (Δ -10.100s). Max speed — user: 187.0 km/h, ref: 208.0 km/h; Min speed — user: 112.0 km/h, ref: 156.0 km/h. Max yaw (abs) — user: 1.920°, ref: 1.930°.
+Response: {
+    'status': False,
+    'message': 'Good throttle use, speed carried well.'
+}
+

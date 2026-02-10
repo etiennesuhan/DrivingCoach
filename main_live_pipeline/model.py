@@ -93,12 +93,18 @@ class Model():
         header = lines[0]
         separator = lines[1]
         rows = lines[2:]
-        segment_rows = [r for r in rows if self.get_segment_md(r) == segment and self.get_lap_md(r) == lap]
+        header_cells = self._parse_header_cells(header)
+        idx_map = {name: idx for idx, name in enumerate(header_cells)}
+        segment_rows = [
+            r for r in rows
+            if self.get_segment_md(r, idx_map=idx_map) == segment
+            and self.get_lap_md(r, idx_map=idx_map) == lap
+        ]
         if not segment_rows:
             return
         
         md_block = "\n".join([header, separator, *segment_rows])
-        segment_info = self.get_segment_information(segment_rows)
+        segment_info = self.get_segment_information(segment_rows, idx_map=idx_map)
 
         # --- LLM call ---
         resp = ollama.chat(
@@ -109,7 +115,7 @@ class Model():
                 {"role": "user", "content": self.USER_PROMPT + f"\n```markdown\n{md_block}\n```" + f"\n\nSegment Summary:\n{segment_info}"},
             ],
         )
-        timestamps = [self.get_timestamp_md(r) for r in segment_rows]
+        timestamps = [self.get_timestamp_md(r, idx_map=idx_map) for r in segment_rows]
         self.log_response(timestamps, lap, segment, self.SYSTEM_PROMPT, self.USER_PROMPT, resp, md_block, segment_info)
         try:
             return resp["message"]["content"]
@@ -163,20 +169,43 @@ class Model():
             ])
 
 
-    def get_segment_md(self, md_row: str) -> int:
+    def _parse_header_cells(self, header: str) -> list[str]:
+        return [c.strip() for c in header.split("|")[1:-1]]
+
+
+    def _get_cell(self, md_row: str, idx_map: dict[str, int], name: str) -> str | None:
+        idx = idx_map.get(name)
+        if idx is None:
+            return None
+        cells = [c.strip() for c in md_row.split("|")[1:-1]]
+        if idx >= len(cells):
+            return None
+        return cells[idx]
+
+
+    def get_segment_md(self, md_row: str, idx_map: dict[str, int] | None = None) -> int:
+        if idx_map is not None:
+            cell = self._get_cell(md_row, idx_map, "segment")
+            return int(cell) if cell is not None else -1
         return int(md_row.split("|")[-2].strip())
 
 
-    def get_lap_md(self, md_row: str) -> int:
+    def get_lap_md(self, md_row: str, idx_map: dict[str, int] | None = None) -> int:
+        if idx_map is not None:
+            cell = self._get_cell(md_row, idx_map, "lap_number")
+            return int(cell) if cell is not None else -1
         return int(md_row.split("|")[-3].strip())
 
 
-    def get_timestamp_md(self, md_row: str) -> float:
-        ts_cell = md_row.split("|")[2].strip()
+    def get_timestamp_md(self, md_row: str, idx_map: dict[str, int] | None = None) -> float:
+        if idx_map is not None:
+            ts_cell = self._get_cell(md_row, idx_map, "timestamp in s") or ""
+        else:
+            ts_cell = md_row.split("|")[2].strip()
         return float(ts_cell.strip("()").split(",")[0])
     
     
-    def get_segment_information(self, segment_rows)-> str:
+    def get_segment_information(self, segment_rows, idx_map: dict[str, int] | None = None) -> str:
         num = r"[-+]?(?:\d*\.\d+|\d+\.?\d*)(?:[eE][-+]?\d+)?"
         pair_re = re.compile(rf"\(\s*({num})\s*,\s*({num})\s*\)")
         timestamps_user = []
@@ -187,28 +216,33 @@ class Model():
         yaws_opt = []
 
         for row in segment_rows:
-            cells = [c.strip() for c in row.split("|")]
+            if idx_map is not None:
+                ts_cell = self._get_cell(row, idx_map, "timestamp in s") or ""
+                yaw_cell = self._get_cell(row, idx_map, "yaw in degrees") or ""
+                speed_cell = self._get_cell(row, idx_map, "speed in km/h") or ""
+            else:
+                cells = [c.strip() for c in row.split("|")]
+                ts_cell = cells[2] if len(cells) > 2 else ""
+                yaw_cell = cells[6] if len(cells) > 6 else ""
+                speed_cell = cells[10] if len(cells) > 10 else ""
 
             # timestamp usually in column index 2
-            if len(cells) > 2:
-                m = pair_re.search(cells[2])
-                if m:
-                    timestamps_user.append(float(m.group(1)))
-                    timestamps_opt.append(float(m.group(2)))
+            m = pair_re.search(ts_cell)
+            if m:
+                timestamps_user.append(float(m.group(1)))
+                timestamps_opt.append(float(m.group(2)))
 
             # yaw usually in column index 6
-            if len(cells) > 6:
-                m = pair_re.search(cells[6])
-                if m:
-                    yaws_user.append(float(m.group(1)))
-                    yaws_opt.append(float(m.group(2)))
+            m = pair_re.search(yaw_cell)
+            if m:
+                yaws_user.append(float(m.group(1)))
+                yaws_opt.append(float(m.group(2)))
 
             # speed usually in column index 10
-            if len(cells) > 10:
-                m = pair_re.search(cells[10])
-                if m:
-                    speeds_user.append(float(m.group(1)))
-                    speeds_opt.append(float(m.group(2)))
+            m = pair_re.search(speed_cell)
+            if m:
+                speeds_user.append(float(m.group(1)))
+                speeds_opt.append(float(m.group(2)))
 
         # --- Timestamp / duration ---
         if timestamps_user:
