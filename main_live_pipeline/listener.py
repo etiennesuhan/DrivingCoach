@@ -37,6 +37,7 @@ class Listener():
         self.BASE_STRUCT_FORMAT = "<" + "".join(fmt for _, fmt in self.FORZA_FIELDS)
         self.distance = np.inf
         self.threshold = 15
+        self.preplay_distance = 20.0
         self.segment = 0
         self.in_zone = False
         self.segments = [[610, 2485], [635, 2780], [525, 2720], [880, 2790]]
@@ -51,9 +52,15 @@ class Listener():
         self.voice_queue = queue.Queue()
         self.voice_worker = threading.Thread(target=self._voice_worker, name="VoiceWorker", daemon=True)
         self.voice_worker.start()
+        self.tts_queue = queue.Queue()
+        self.tts_worker = threading.Thread(target=self._tts_worker, name="TTSWorker", daemon=True)
+        self.tts_worker.start()
         self._responses_lock = threading.Lock()
         self._model_responses = {}
         self._spoken_for_lap = set()
+        self._tts_lock = threading.Lock()
+        self._tts_cache = {}
+        self._tts_dir = (REPO_ROOT / "data" / "tts_cache")
         self.DEBUG = debug
         self._seen_packet_sizes = set()
         self._last_no_data_log = 0.0
@@ -208,17 +215,54 @@ class Listener():
     def _enqueue_voice(self, text: str) -> None:
         if not text or not text.strip():
             return
-        self.voice_queue.put(text.strip())
+        self.voice_queue.put(("text", text.strip()))
+
+    def _enqueue_voice_wav(self, wav_path: str | Path, key: tuple[int, int]) -> None:
+        if not wav_path:
+            return
+        self.voice_queue.put(("wav", Path(wav_path), key))
 
     def _voice_worker(self) -> None:
         while True:
-            text = self.voice_queue.get()
+            item = self.voice_queue.get()
             try:
-                self.voice.run(text)
+                kind, payload, *rest = item
+                if kind == "wav":
+                    wav_key = rest[0] if rest else None
+                    self.voice.play_wav(payload)
+                    if wav_key is not None:
+                        with self._tts_lock:
+                            cached = self._tts_cache.get(wav_key)
+                            if cached and Path(cached) == Path(payload):
+                                self._tts_cache.pop(wav_key, None)
+                    try:
+                        Path(payload).unlink(missing_ok=True)
+                    except Exception:
+                        pass
+                else:
+                    self.voice.run(payload)
             except Exception as exc:
                 print(f"Voice error: {exc}")
             finally:
                 self.voice_queue.task_done()
+
+    def _enqueue_tts(self, lap: int, segment: int, text: str) -> None:
+        if not text or not text.strip():
+            return
+        self.tts_queue.put((lap, segment, text.strip()))
+
+    def _tts_worker(self) -> None:
+        while True:
+            lap, segment, text = self.tts_queue.get()
+            try:
+                wav_path = self._tts_dir / f"lap{lap}_seg{segment}.wav"
+                wav_path = self.voice.synthesize_to_wav(text, wav_path)
+                with self._tts_lock:
+                    self._tts_cache[(lap, segment)] = wav_path
+            except Exception as exc:
+                print(f"TTS error: {exc}")
+            finally:
+                self.tts_queue.task_done()
 
     def _store_model_response(self, lap: int, segment: int, response_text: str | None) -> None:
         message = self._extract_voice_message(response_text)
@@ -227,6 +271,7 @@ class Listener():
         key = (lap, segment)
         with self._responses_lock:
             self._model_responses[key] = message
+        self._enqueue_tts(lap, segment, message)
 
     def _extract_voice_message(self, response_text: str | None) -> str | None:
         if not response_text or not response_text.strip():
@@ -255,15 +300,15 @@ class Listener():
         if current_lap <= 0:
             return
         previous_key = (current_lap - 1, segment)
-        with self._responses_lock:
-            text = self._model_responses.get(previous_key)
-            if text is None:
-                return
-            spoken_key = (current_lap, segment)
-            if spoken_key in self._spoken_for_lap:
-                return
-            self._spoken_for_lap.add(spoken_key)
-        self._enqueue_voice(text)
+        with self._tts_lock:
+            wav_path = self._tts_cache.get(previous_key)
+        if wav_path is None:
+            return
+        spoken_key = (current_lap, segment)
+        if spoken_key in self._spoken_for_lap:
+            return
+        self._spoken_for_lap.add(spoken_key)
+        self._enqueue_voice_wav(wav_path, previous_key)
 
     def load_tuples(self, path: str | Path):
         return ast.literal_eval("[" + Path(path).read_text(encoding="utf-8").strip().strip().rstrip(",") + "]")
@@ -374,8 +419,10 @@ class Listener():
         
         if self.DEBUG:
             print((x, z))
-        if self.segment <= 3:
-            distance = np.sqrt((x-self.segments[self.segment][0])**2 + (z-self.segments[self.segment][1])**2) 
+        if self.segment < len(self.segments):
+            distance = np.sqrt((x-self.segments[self.segment][0])**2 + (z-self.segments[self.segment][1])**2)
+            if distance <= self.preplay_distance:
+                self._speak_previous_lap_response(self.lap, self.segment)
             if distance <= self.threshold:
                 if distance <= self.distance:
                     self.distance = distance
