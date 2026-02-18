@@ -27,7 +27,17 @@ DEFAULT_SAMPLE_FIELDS = [
 MAX_SAMPLE_LIMIT = 10000
 
 
-def create_app(listener: Listener) -> FastAPI:
+def _resolve_ui_build_dir(ui_dir: str | None) -> Path | None:
+    if not ui_dir:
+        return None
+    candidate = Path(ui_dir).expanduser().resolve()
+    index_html = candidate / "index.html"
+    if not index_html.exists():
+        raise ValueError(f"UI build not found (missing index.html): {candidate}")
+    return candidate
+
+
+def create_app(listener: Listener, ui_dir: str | None = None) -> FastAPI:
     app = FastAPI(title="FH5 Live Pipeline API", version="0.1.0")
     app.state.listener = listener
     app.add_middleware(
@@ -732,13 +742,38 @@ def create_app(listener: Listener) -> FastAPI:
                     last_ping = time.time()
         return StreamingResponse(gen(), media_type="text/event-stream")
 
+    ui_build_dir = _resolve_ui_build_dir(ui_dir)
+    if ui_build_dir is not None:
+        index_html = (ui_build_dir / "index.html").resolve()
+        ui_root = ui_build_dir.resolve()
+
+        @app.get("/", include_in_schema=False)
+        def web_index():
+            return FileResponse(index_html.as_posix())
+
+        @app.get("/{full_path:path}", include_in_schema=False)
+        def web_fallback(full_path: str):
+            candidate = (ui_root / full_path).resolve()
+            try:
+                candidate.relative_to(ui_root)
+            except ValueError:
+                raise HTTPException(status_code=404, detail="not found")
+            if candidate.is_file():
+                return FileResponse(candidate.as_posix())
+            return FileResponse(index_html.as_posix())
+
     return app
 
 
-def start_api(listener: Listener, host: str = "127.0.0.1", port: int = 8000) -> threading.Thread:
+def start_api(
+    listener: Listener,
+    host: str = "127.0.0.1",
+    port: int = 8000,
+    ui_dir: str | None = None,
+) -> threading.Thread:
     import uvicorn
 
-    app = create_app(listener)
+    app = create_app(listener, ui_dir=ui_dir)
 
     def _run() -> None:
         uvicorn.run(app, host=host, port=port, log_level="info")

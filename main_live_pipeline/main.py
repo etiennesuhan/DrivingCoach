@@ -1,9 +1,17 @@
 import argparse
+from pathlib import Path
 
 from listener import Listener
 from model import Model
 
 CURRENT_LINE = "data/test.db"
+
+
+def _default_ui_build_dir() -> str:
+    repo_root = Path(__file__).resolve().parents[1]
+    return (
+        repo_root.parent.parent / "Flutter" / "track_analyzer" / "build" / "web"
+    ).as_posix()
 
 
 def main() -> None:
@@ -13,6 +21,16 @@ def main() -> None:
     parser.add_argument("--api", action="store_true", help="REST-API aktivieren")
     parser.add_argument("--api-host", default="127.0.0.1", help="API Host")
     parser.add_argument("--api-port", type=int, default=8000, help="API Port")
+    parser.add_argument(
+        "--serve-ui",
+        action="store_true",
+        help="Liefert ein gebautes Flutter-Web (index.html) ueber dieselbe URL aus",
+    )
+    parser.add_argument(
+        "--ui-dir",
+        default=_default_ui_build_dir(),
+        help="Pfad zum Flutter-Web-Build-Ordner (enthaelt index.html)",
+    )
     args = parser.parse_args()
 
     print(f"Lade Modell: {Model().MODEL_NAME}")
@@ -37,7 +55,15 @@ def main() -> None:
             from api import start_api
         except Exception as exc:
             raise RuntimeError(f"API konnte nicht gestartet werden: {exc}") from exc
-        start_api(listener, host=args.api_host, port=args.api_port)
+        try:
+            start_api(
+                listener,
+                host=args.api_host,
+                port=args.api_port,
+                ui_dir=args.ui_dir if args.serve_ui else None,
+            )
+        except Exception as exc:
+            raise RuntimeError(f"API konnte nicht gestartet werden: {exc}") from exc
 
     listener.run()
 
