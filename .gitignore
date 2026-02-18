@@ -3,3 +3,4 @@
 prompts/non_persistent_prompts.txt
 .venv
 *.pyc
+*.wav
