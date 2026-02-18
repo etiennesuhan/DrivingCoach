@@ -1,4 +1,5 @@
 import datetime
+import os
 import socket
 import sqlite3
 import struct
@@ -49,6 +50,7 @@ class Listener():
         self.lap_id = None
         self.model = Model()
         self.voice = Voice()
+        self.driver_name = self._normalize_driver_name(os.getenv("FH5_DRIVER_NAME", "Etienne"))
         self.model_queue = queue.Queue()
         self.model_worker = threading.Thread(target=self._model_worker, name="ModelWorker", daemon=True)
         self.model_worker.start()
@@ -392,6 +394,13 @@ class Listener():
         self._log_event("lap_start", {"lap": self.lap, "lap_id": self.lap_id})
         if self.DEBUG:
             print(f"Neue Runde gestartet: lap_id={self.lap_id}, lap_number={self.lap}")
+
+    def _normalize_driver_name(self, name: str | None) -> str:
+        normalized = (name or "").strip()
+        return normalized if normalized else "Etienne"
+
+    def set_driver_name(self, name: str | None) -> None:
+        self.driver_name = self._normalize_driver_name(name)
 
 
     def _enqueue_model_run(self, lap_id: int | None, lap: int, segment: int) -> None:
@@ -766,6 +775,7 @@ class Listener():
             "last_yaw": self.last_yaw,
             "last_lap_time": self.last_lap_time,
             "best_lap_time": self.best_lap_time,
+            "driver_name": self.driver_name,
             "current_distance_to_segment": self.current_distance_to_segment,
             "current_segment_target": self.current_segment_target,
             "packet_rate": self.packet_rate,
@@ -829,6 +839,7 @@ class Listener():
             "id INTEGER PRIMARY KEY AUTOINCREMENT",
             "lap_id INTEGER NOT NULL",
             "track_id TEXT",
+            "driver_name TEXT",
             "timestamp_utc TEXT NOT NULL",
             "packet_length INTEGER NOT NULL",
             "packet_schema TEXT NOT NULL",
@@ -851,6 +862,7 @@ class Listener():
             [
                 ("lap_id", "INTEGER"),
                 ("track_id", "TEXT"),
+                ("driver_name", "TEXT"),
                 ("timestamp_utc", "TEXT"),
                 ("packet_length", "INTEGER"),
                 ("packet_schema", "TEXT"),
@@ -858,6 +870,15 @@ class Listener():
             ]
             + [(name, db_types[fmt]) for name, fmt in self.FORZA_FIELDS]
         )
+        # Existing laps in historical sessions belong to Etienne by default.
+        conn.execute(
+            """
+            UPDATE telemetry_samples
+            SET driver_name = 'Etienne'
+            WHERE driver_name IS NULL OR TRIM(driver_name) = ''
+            """
+        )
+        conn.commit()
         return conn
 
 
@@ -904,6 +925,7 @@ class Listener():
             "lap": self.lap,
             "segment": self.segment,
             "track_id": self.track_id,
+            "driver_name": self.driver_name,
             "position_x": x,
             "position_z": z,
             "speed": self.last_speed,
@@ -918,11 +940,12 @@ class Listener():
     def insert_sample(
         self, conn: sqlite3.Connection, timestamp_utc: str, raw: bytes, schema_name: str, parsed: dict
     ) -> None:
-        columns = ["lap_id", "track_id", "timestamp_utc", "packet_length", "packet_schema", "raw"] + [name for name, _ in self.FORZA_FIELDS]
+        columns = ["lap_id", "track_id", "driver_name", "timestamp_utc", "packet_length", "packet_schema", "raw"] + [name for name, _ in self.FORZA_FIELDS]
         placeholders = ", ".join(["?"] * len(columns))
         values = [
             self.lap_id,
             self.track_id,
+            self.driver_name,
             timestamp_utc,
             len(raw),
             schema_name,

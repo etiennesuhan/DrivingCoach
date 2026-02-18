@@ -194,6 +194,18 @@ def create_app(listener: Listener) -> FastAPI:
     def status() -> dict:
         return listener.get_status()
 
+    @app.get("/driver")
+    def driver() -> dict:
+        return {"driver_name": getattr(listener, "driver_name", "Etienne")}
+
+    @app.put("/driver")
+    def set_driver(payload: dict = Body(...)) -> dict:
+        if "driver_name" not in payload:
+            raise HTTPException(status_code=400, detail="driver_name required")
+        if hasattr(listener, "set_driver_name"):
+            listener.set_driver_name(payload.get("driver_name"))
+        return {"driver_name": getattr(listener, "driver_name", "Etienne")}
+
     @app.get("/tracks")
     def tracks() -> dict:
         data = _read_metadata()
@@ -304,7 +316,13 @@ def create_app(listener: Listener) -> FastAPI:
         try:
             columns = _get_columns(conn)
             has_track_id = "track_id" in columns
+            has_driver_name = "driver_name" in columns
             selected_track_col = "track_id" if has_track_id else "NULL AS track_id"
+            selected_driver_col = (
+                "MAX(COALESCE(NULLIF(driver_name, ''), 'Etienne')) AS driver_name"
+                if has_driver_name
+                else "'Etienne' AS driver_name"
+            )
             where_clause = ""
             params: list[object] = []
             if effective_track_id is not None and has_track_id:
@@ -315,6 +333,7 @@ def create_app(listener: Listener) -> FastAPI:
                 "SELECT "
                 "lap_id, "
                 f"{selected_track_col}, "
+                f"{selected_driver_col}, "
                 "MIN(lap_number) AS lap_number_min, "
                 "MAX(lap_number) AS lap_number_max, "
                 "MIN(timestamp_utc) AS start_utc, "
@@ -336,6 +355,7 @@ def create_app(listener: Listener) -> FastAPI:
                 {
                     "lap_id": row["lap_id"],
                     "track_id": row["track_id"],
+                    "driver_name": row["driver_name"],
                     "lap_number_min": row["lap_number_min"],
                     "lap_number_max": row["lap_number_max"],
                     "start_utc": row["start_utc"],
@@ -645,7 +665,6 @@ def create_app(listener: Listener) -> FastAPI:
         return FileResponse(
             path=Path(wav_path).as_posix(),
             media_type=media_type,
-            filename=Path(wav_path).name,
             headers={"Cache-Control": "no-store"},
         )
 
@@ -660,7 +679,6 @@ def create_app(listener: Listener) -> FastAPI:
         return FileResponse(
             path=Path(wav_path).as_posix(),
             media_type=media_type,
-            filename=Path(wav_path).name,
             headers={"Cache-Control": "no-store"},
         )
 

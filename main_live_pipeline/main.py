@@ -19,6 +19,19 @@ def main() -> None:
     Model().warmup_model()
 
     listener = Listener(args.db, debug=args.debug)
+    print(
+        "TTS-Backend:"
+        f" {listener.voice.backend}"
+        f" | Voice: {getattr(listener.voice, 'voice_name', '-')}"
+        f" | SAPI-Voice: {getattr(listener.voice, 'sapi_voice_name', '-')}"
+        f" | Soprano-ModelPath: {getattr(listener.voice, 'soprano_model_path', '-')}"
+    )
+    if listener.voice.backend == "soprano":
+        print(
+            "Hinweis: Das aktuell verfuegbare Soprano-Standardmodell spricht primar Englisch. "
+            "Fuer zuverlaessiges Deutsch bitte edge-tts verwenden oder ein deutsches Soprano-Modell "
+            "ueber FH5_SOPRANO_MODEL_PATH konfigurieren."
+        )
     if args.api:
         try:
             from api import start_api
