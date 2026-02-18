@@ -4,10 +4,12 @@ import sqlite3
 import struct
 import time
 import ast
+import hashlib
 import numpy as np
 import threading
 import queue
 import json
+import re
 from collections import deque
 
 from typing import Iterable
@@ -76,7 +78,9 @@ class Listener():
         self._response_log_max = 1000
         self.paused = False
         self.model_enabled = True
-        self.voice_enabled = True
+        # Browser clients handle playback; backend voice playback can still be
+        # enabled via /voice when explicitly requested.
+        self.voice_enabled = False
         self.tts_enabled = True
         self.last_position = None
         self.last_speed = None
@@ -98,6 +102,12 @@ class Listener():
         self._worker_last_active = {"model": None, "voice": None, "tts": None}
         self._lap_positions_lock = threading.Lock()
         self._current_lap_positions = []
+        self.INCOMPLETE_LAP_SEGMENT_TOLERANCE = 1
+        self.INCOMPLETE_LAP_MIN_SAMPLES = 80
+        self._lap_sample_count = 0
+        self._lap_max_segment = 0
+        self._last_race_time = None
+        self._last_race_lap_number = None
         
         
     def run(self):
@@ -129,25 +139,34 @@ class Listener():
                     or parsed.get("current_race_time", 0) > 0
                     or parsed.get("lap_number", 0) > 0
                 )
-                if not in_race:
-                    if self._race_active:
-                        self._log_event("race_end", {"lap": self.lap, "lap_id": self.lap_id})
-                    self._race_active = False
+                self._update_race_activity_state(
+                    in_race=in_race,
+                    parsed=parsed,
+                    conn=conn,
+                )
 
                 # User drives in open world
                 if parsed.get("distance_traveled", 0) == 0 and parsed.get("engine_max_rpm", 0) != 0:
                     if self.DEBUG:
                         print(f"{parsed.get('position_x')}, {parsed.get('position_z')}")
                     self.identify_track_id([parsed.get('position_x'), parsed.get('position_z')])
+                    now = time.monotonic()
+                    if now - last_saved < self.MIN_SAVE_INTERVAL:
+                        continue
+                    last_saved = now
+                    timestamp_utc = (datetime.datetime.utcnow().isoformat(timespec="milliseconds") + "Z")
+                    if self.paused:
+                        continue
+                    self._ingest_free_roam_sample(timestamp_utc, parsed)
                     continue
                 
                 # User is in menu
                 if parsed.get("distance_traveled", 0) == 0 and parsed.get("engine_max_rpm", 0) == 0:
-                    self._race_active = False
                     continue
                 
                 # User is in race
                 if parsed.get("distance_traveled", 0) != 0 and parsed.get("engine_max_rpm", 0) != 0:
+                    self.identify_track_id([parsed.get("position_x"), parsed.get("position_z")])
                     if not self._race_active or self.lap_id is None:
                         self._start_new_lap(parsed.get("lap_number", 0), reset_session=True)
                         self._log_event("race_start", {"lap": self.lap, "lap_id": self.lap_id})
@@ -168,6 +187,117 @@ class Listener():
             conn.close()
             sock.close()
 
+    def _current_lap_is_complete_enough(self) -> bool:
+        total_segments = len(self.segments)
+        if total_segments <= 0:
+            required_segments = 0
+        else:
+            required_segments = max(1, total_segments - self.INCOMPLETE_LAP_SEGMENT_TOLERANCE)
+        reached_segments = int(self._lap_max_segment)
+        return (
+            self._lap_sample_count >= self.INCOMPLETE_LAP_MIN_SAMPLES
+            and reached_segments >= required_segments
+        )
+
+    def _is_lap_switch_completion_valid(self, next_lap: int) -> bool:
+        """Validate lap completion on lap-number switch to avoid restart artifacts."""
+        if self.lap_id is None:
+            return False
+        if next_lap <= int(self.lap):
+            return False
+        return self._current_lap_is_complete_enough()
+
+    def _delete_lap_samples(self, lap_id: int, reason: str, conn: sqlite3.Connection | None = None) -> None:
+        if lap_id is None:
+            return
+        own_conn = False
+        db_conn = conn
+        if db_conn is None:
+            db_conn = sqlite3.connect(self.DB_FILE)
+            own_conn = True
+        try:
+            cur = db_conn.execute("DELETE FROM telemetry_samples WHERE lap_id = ?", (lap_id,))
+            db_conn.commit()
+            if cur.rowcount and cur.rowcount > 0:
+                self._log_event(
+                    "lap_discarded",
+                    {
+                        "lap_id": lap_id,
+                        "lap": self.lap,
+                        "reason": reason,
+                        "samples": self._lap_sample_count,
+                        "segments_reached": int(self._lap_max_segment),
+                        "segments_total": len(self.segments),
+                    },
+                )
+        except sqlite3.Error as exc:
+            if self.DEBUG:
+                print(f"Lap cleanup failed for lap_id={lap_id}: {exc}")
+        finally:
+            if own_conn:
+                db_conn.close()
+
+    def _drop_current_lap_if_incomplete(
+        self,
+        reason: str,
+        conn: sqlite3.Connection | None = None,
+    ) -> None:
+        if self.lap_id is None:
+            return
+        if self._current_lap_is_complete_enough():
+            return
+        self._delete_lap_samples(self.lap_id, reason=reason, conn=conn)
+
+    def _end_active_race(
+        self,
+        reason: str = "race_end",
+        conn: sqlite3.Connection | None = None,
+    ) -> None:
+        self._drop_current_lap_if_incomplete(reason=reason, conn=conn)
+        if self._race_active:
+            self._log_event("race_end", {"lap": self.lap, "lap_id": self.lap_id})
+        self._race_active = False
+        self._last_race_time = None
+        self._last_race_lap_number = None
+
+    def _update_race_activity_state(
+        self,
+        in_race: bool,
+        parsed: dict,
+        conn: sqlite3.Connection | None = None,
+    ) -> None:
+        if in_race:
+            try:
+                current_race_time = float(parsed.get("current_race_time", 0.0) or 0.0)
+            except Exception:
+                current_race_time = 0.0
+            try:
+                current_lap_number = int(parsed.get("lap_number", 0) or 0)
+            except Exception:
+                current_lap_number = 0
+
+            if self._race_active and self._last_race_time is not None:
+                race_time_rewound = current_race_time + 1.0 < self._last_race_time
+                if race_time_rewound and current_lap_number <= 1:
+                    # New race was started from menu; close old race context.
+                    self._end_active_race(reason="race_restart", conn=conn)
+
+            self._last_race_time = current_race_time
+            self._last_race_lap_number = current_lap_number
+            return
+        if not self._race_active:
+            return
+
+        in_open_world = (
+            parsed.get("distance_traveled", 0) == 0
+            and parsed.get("engine_max_rpm", 0) != 0
+        )
+        if not in_open_world:
+            # Menu/paused overlays should keep the active race context, regardless of duration.
+            return
+
+        self._end_active_race(reason="open_world", conn=conn)
+
 
     def identify_track_id(self, position: list[int, int]):
         metadata_path = Path("main_live_pipeline/metadata.json")
@@ -176,6 +306,9 @@ class Listener():
         if not isinstance(tracks, dict):
             return
 
+        best_track_id = None
+        best_track_info = None
+        best_distance = np.inf
         for point, track_info in tracks.items():
             if not isinstance(track_info, dict):
                 continue
@@ -184,14 +317,42 @@ class Listener():
             except (ValueError, AttributeError):
                 continue
             distance_to_point = np.sqrt((position[0] - point_conv[0])**2 + (position[1] - point_conv[1])**2)
-            if distance_to_point <= 30:
-                previous = self.track_id
-                self.track_id = point
-                self.segments = track_info.get("segments", self.segments)
-                self.track_name = track_info.get("name")
-                self.optimal_lap_id = track_info.get("lap")
-                if previous != self.track_id:
-                    self._log_event("track_changed", {"track_id": self.track_id, "track_name": self.track_name})
+            if distance_to_point < best_distance:
+                best_distance = distance_to_point
+                best_track_id = point
+                best_track_info = track_info
+
+        if best_track_id is None or best_track_info is None:
+            return
+
+        strict_lock_distance = 30.0
+        relaxed_race_distance = 300.0
+        should_assign = best_distance <= strict_lock_distance
+        if (
+            not should_assign
+            and self._race_active
+            and self.track_id is None
+            and best_distance <= relaxed_race_distance
+        ):
+            should_assign = True
+
+        if not should_assign:
+            return
+
+        previous = self.track_id
+        self.track_id = best_track_id
+        self.segments = best_track_info.get("segments", self.segments)
+        self.track_name = best_track_info.get("name")
+        self.optimal_lap_id = best_track_info.get("lap")
+        if previous != self.track_id:
+            self._log_event(
+                "track_changed",
+                {
+                    "track_id": self.track_id,
+                    "track_name": self.track_name,
+                    "distance": float(best_distance),
+                },
+            )
 
     def update_optimal_lap_time(self, new_id: int, new_time: float) -> None:
         if self.track_id is None:
@@ -214,6 +375,8 @@ class Listener():
     def _start_new_lap(self, lap_number: int | None = None, reset_session: bool = False) -> None:
         self.lap_id = self._get_next_lap_id()
         self.segment = 0
+        self._lap_max_segment = 0
+        self._lap_sample_count = 0
         self.distance = np.inf
         self.in_zone = False
         with self._lap_positions_lock:
@@ -242,7 +405,13 @@ class Listener():
             lap_id, lap, segment = self.model_queue.get()
             try:
                 self._worker_last_active["model"] = time.time()
-                preprocessing = Preprocessing(self.DB_FILE, lap_id, self.optimal_lap_id, self.segments)
+                preprocessing = Preprocessing(
+                    self.DB_FILE,
+                    lap_id,
+                    self.optimal_lap_id,
+                    self.segments,
+                    track_id=self.track_id,
+                )
                 md_text = preprocessing.run()
                 if not md_text or not md_text.strip():
                     print("No markdown data available; skipping model run.")
@@ -299,7 +468,8 @@ class Listener():
             lap, segment, text = self.tts_queue.get()
             try:
                 self._worker_last_active["tts"] = time.time()
-                wav_path = self._tts_dir / f"lap{lap}_seg{segment}.wav"
+                suffix = getattr(self.voice, "audio_suffix", ".wav")
+                wav_path = self._tts_dir / f"lap{lap}_seg{segment}{suffix}"
                 wav_path = self.voice.synthesize_to_wav(text, wav_path)
                 with self._tts_lock:
                     self._tts_cache[(lap, segment)] = wav_path
@@ -316,6 +486,7 @@ class Listener():
         message = payload.get("message") if payload.get("status") is True else None
         if not message:
             return
+        message = self._normalize_feedback_language(message)
         key = (lap, segment)
         with self._responses_lock:
             self._model_responses[key] = message
@@ -326,12 +497,32 @@ class Listener():
             return None
         text = response_text.strip()
         data = None
-        for parser in (json.loads, ast.literal_eval):
-            try:
-                data = parser(text)
-                break
-            except Exception:
+        candidates = [text]
+        fenced = re.findall(r"```(?:json)?\s*([\s\S]*?)```", text, flags=re.IGNORECASE)
+        candidates.extend(chunk.strip() for chunk in fenced if chunk and chunk.strip())
+        brace_candidate = self._extract_first_brace_block(text)
+        if brace_candidate:
+            candidates.append(brace_candidate)
+
+        seen = set()
+        unique_candidates = []
+        for candidate in candidates:
+            if candidate in seen:
                 continue
+            seen.add(candidate)
+            unique_candidates.append(candidate)
+
+        for candidate in unique_candidates:
+            for parser in (json.loads, ast.literal_eval):
+                try:
+                    parsed = parser(candidate)
+                except Exception:
+                    continue
+                if isinstance(parsed, dict):
+                    data = parsed
+                    break
+            if isinstance(data, dict):
+                break
         if isinstance(data, dict):
             status = data.get("status")
             if isinstance(status, str):
@@ -344,6 +535,39 @@ class Listener():
             message = str(message).strip() if message is not None else None
             return {"status": status, "message": message, "raw": text, "parsed": True}
         return {"status": None, "message": None, "raw": text, "parsed": False}
+
+    def _extract_first_brace_block(self, text: str) -> str | None:
+        start = text.find("{")
+        if start < 0:
+            return None
+        depth = 0
+        for idx in range(start, len(text)):
+            ch = text[idx]
+            if ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    return text[start : idx + 1].strip()
+        return None
+
+    def _normalize_feedback_language(self, message: str) -> str:
+        normalized = (message or "").strip()
+        if not normalized:
+            return normalized
+        english_to_german = {
+            "Good throttle use, speed carried well.": "Gute Gasannahme, die Geschwindigkeit wurde sauber mitgenommen.",
+            "Clean line, no time lost here.": "Saubere Linie, hier wurde keine Zeit verloren.",
+            "Brake earlier to stabilize the car.": "Bremse frueher, um das Auto zu stabilisieren.",
+            "Turn in earlier for better exit.": "Lenke frueher ein, um einen besseren Kurvenausgang zu haben.",
+            "Strong exit, close to optimal.": "Starker Kurvenausgang, fast optimal.",
+            "Over-slowed entry cost exit speed.": "Zu langsamer Kurveneingang hat Ausgangsgeschwindigkeit gekostet.",
+            "Strong exit on turn-in to maintain optimal speed.": "Starker Kurvenausgang beim Einlenken, um die optimale Geschwindigkeit zu halten.",
+            "The braking in this segment could be improved to stabilize the car better.": "Das Bremsen in diesem Segment kann verbessert werden, um das Auto besser zu stabilisieren.",
+            "Good throttle use, but brake earlier to stabilize the car.": "Gute Gasannahme, aber bremse frueher, um das Auto zu stabilisieren.",
+            "Slow entry at the start of the segment cost exit speed.": "Der langsame Kurveneingang zu Segmentbeginn hat Ausgangsgeschwindigkeit gekostet.",
+        }
+        return english_to_german.get(normalized, normalized)
 
     def _log_model_response(self, lap_id: int | None, lap: int, segment: int, payload: dict) -> None:
         entry = {
@@ -429,6 +653,52 @@ class Listener():
                 continue
         return removed
 
+    def get_tts_audio_path(
+        self,
+        lap: int,
+        segment: int,
+        synthesize_if_missing: bool = True,
+    ) -> Path | None:
+        key = (int(lap), int(segment))
+        with self._tts_lock:
+            cached = self._tts_cache.get(key)
+        if cached is not None:
+            path = Path(cached)
+            if path.exists():
+                return path
+
+        if not synthesize_if_missing or not self.tts_enabled:
+            return None
+
+        with self._responses_lock:
+            message = self._model_responses.get(key)
+        if not message:
+            return None
+
+        try:
+            suffix = getattr(self.voice, "audio_suffix", ".wav")
+            out_path = self._tts_dir / f"lap{key[0]}_seg{key[1]}{suffix}"
+            out_path = self.voice.synthesize_to_wav(message, out_path)
+            with self._tts_lock:
+                self._tts_cache[key] = out_path
+            return Path(out_path)
+        except Exception:
+            return None
+
+    def synthesize_preview_tts(self, text: str) -> Path | None:
+        text = (text or "").strip()
+        if not text:
+            return None
+        digest = hashlib.sha1(text.encode("utf-8")).hexdigest()[:12]
+        suffix = getattr(self.voice, "audio_suffix", ".wav")
+        out_path = self._tts_dir / f"preview_{digest}{suffix}"
+        if out_path.exists():
+            return out_path
+        try:
+            return Path(self.voice.synthesize_to_wav(text, out_path))
+        except Exception:
+            return None
+
     def set_paused(self, paused: bool) -> None:
         self.paused = bool(paused)
 
@@ -456,10 +726,15 @@ class Listener():
             self.model.USER_PROMPT = user_prompt
 
     def reset_session(self) -> None:
+        self._drop_current_lap_if_incomplete(reason="session_reset", conn=None)
         self._race_active = False
+        self._last_race_time = None
+        self._last_race_lap_number = None
         self.lap = 0
         self.lap_id = None
         self.segment = 0
+        self._lap_max_segment = 0
+        self._lap_sample_count = 0
         self.distance = np.inf
         self.in_zone = False
         with self._responses_lock:
@@ -553,6 +828,7 @@ class Listener():
         column_defs = [
             "id INTEGER PRIMARY KEY AUTOINCREMENT",
             "lap_id INTEGER NOT NULL",
+            "track_id TEXT",
             "timestamp_utc TEXT NOT NULL",
             "packet_length INTEGER NOT NULL",
             "packet_schema TEXT NOT NULL",
@@ -574,6 +850,7 @@ class Listener():
             "telemetry_samples",
             [
                 ("lap_id", "INTEGER"),
+                ("track_id", "TEXT"),
                 ("timestamp_utc", "TEXT"),
                 ("packet_length", "INTEGER"),
                 ("packet_schema", "TEXT"),
@@ -599,26 +876,15 @@ class Listener():
         return None
 
 
-    def insert_sample(
-        self, conn: sqlite3.Connection, timestamp_utc: str, raw: bytes, schema_name: str, parsed: dict
-    ) -> None:
-        
+    def _update_runtime_telemetry(self, timestamp_utc: str, parsed: dict) -> dict:
         self.last_packet_utc = timestamp_utc
         self._packet_times.append(time.monotonic())
         while self._packet_times and (time.monotonic() - self._packet_times[0]) > 1.0:
             self._packet_times.popleft()
         self.packet_rate = float(len(self._packet_times))
-        columns = ["lap_id", "timestamp_utc", "packet_length", "packet_schema", "raw"] + [name for name, _ in self.FORZA_FIELDS]
-        placeholders = ", ".join(["?"] * len(columns))
-        values = [
-            self.lap_id,
-            timestamp_utc,
-            len(raw),
-            schema_name,
-            sqlite3.Binary(raw)]
+
         x = parsed.get("position_x", 0.0)
         z = parsed.get("position_z", 0.0)
-        lap = parsed.get("lap_number", 0)
         self.last_position = [x, z]
         self.last_speed = parsed.get("speed", None)
         self.last_yaw = parsed.get("yaw", None)
@@ -633,29 +899,55 @@ class Listener():
         else:
             self.current_distance_to_segment = None
 
-        self._log_telemetry(
+        return {
+            "lap_id": self.lap_id,
+            "lap": self.lap,
+            "segment": self.segment,
+            "track_id": self.track_id,
+            "position_x": x,
+            "position_z": z,
+            "speed": self.last_speed,
+            "yaw": self.last_yaw,
+        }
+
+    def _ingest_free_roam_sample(self, timestamp_utc: str, parsed: dict) -> None:
+        self.lap = int(parsed.get("lap_number", 0) or 0)
+        payload = self._update_runtime_telemetry(timestamp_utc, parsed)
+        self._log_telemetry(timestamp_utc, payload)
+
+    def insert_sample(
+        self, conn: sqlite3.Connection, timestamp_utc: str, raw: bytes, schema_name: str, parsed: dict
+    ) -> None:
+        columns = ["lap_id", "track_id", "timestamp_utc", "packet_length", "packet_schema", "raw"] + [name for name, _ in self.FORZA_FIELDS]
+        placeholders = ", ".join(["?"] * len(columns))
+        values = [
+            self.lap_id,
+            self.track_id,
             timestamp_utc,
-            {
-                "lap_id": self.lap_id,
-                "lap": self.lap,
-                "segment": self.segment,
-                "position_x": x,
-                "position_z": z,
-                "speed": self.last_speed,
-                "yaw": self.last_yaw,
-            },
-        )
+            len(raw),
+            schema_name,
+            sqlite3.Binary(raw)]
+        try:
+            lap = int(parsed.get("lap_number", 0) or 0)
+        except Exception:
+            lap = 0
+        payload = self._update_runtime_telemetry(timestamp_utc, parsed)
+        x = payload["position_x"]
+        z = payload["position_z"]
+        self._log_telemetry(timestamp_utc, payload)
         with self._lap_positions_lock:
             self._current_lap_positions.append(
                 {
                     "timestamp_utc": timestamp_utc,
-                    "position_x": x,
-                    "position_z": z,
-                    "speed": self.last_speed,
-                    "yaw": self.last_yaw,
+                    "position_x": payload["position_x"],
+                    "position_z": payload["position_z"],
+                    "speed": payload["speed"],
+                    "yaw": payload["yaw"],
                     "segment": self.segment,
                 }
             )
+        self._lap_sample_count += 1
+        self._lap_max_segment = max(self._lap_max_segment, int(self.segment))
 
         for name, _ in self.FORZA_FIELDS:
             values.append(parsed.get(name, 0))
@@ -677,12 +969,21 @@ class Listener():
                     self._enqueue_model_run(self.lap_id, self.lap, self.segment)
                     self._log_event("segment_complete", {"lap": self.lap, "lap_id": self.lap_id, "segment": self.segment})
                     self.segment += 1
+                    self._lap_max_segment = max(self._lap_max_segment, int(self.segment))
                     self.distance = np.inf
                     self.in_zone = False
         
         if lap != self.lap:
-            last_lap_time = parsed.get("last_lap", 0)
-            if last_lap_time and last_lap_time > 0:
+            try:
+                last_lap_time = float(parsed.get("last_lap", 0) or 0.0)
+            except Exception:
+                last_lap_time = 0.0
+            lap_completed = last_lap_time > 0
+            discard_reason = "lap_switch_without_completion"
+            if lap_completed and not self._is_lap_switch_completion_valid(lap):
+                lap_completed = False
+                discard_reason = "lap_switch_invalid_completion"
+            if lap_completed:
                 self.last_lap_time = last_lap_time
                 optimal_lap_time = None
                 if self.track_id is not None:
@@ -697,13 +998,22 @@ class Listener():
                         print(f"New lap record: {last_lap_time}")
                     self.best_lap_time = last_lap_time
                     self._log_event("lap_record", {"lap_id": self.lap_id, "lap": self.lap, "time": last_lap_time})
-            print(f'Start processing {self.segment}')
-            print('Queued model answer ...')
-            self._enqueue_model_run(self.lap_id, self.lap, self.segment)
-            self._log_event("lap_complete", {"lap_id": self.lap_id, "lap": self.lap, "time": last_lap_time})
+                print(f'Start processing {self.segment}')
+                print('Queued model answer ...')
+                self._enqueue_model_run(self.lap_id, self.lap, self.segment)
+                self._log_event("lap_complete", {"lap_id": self.lap_id, "lap": self.lap, "time": last_lap_time})
+            else:
+                self._delete_lap_samples(
+                    self.lap_id,
+                    reason=discard_reason,
+                    conn=conn,
+                )
             self.lap = lap
             self._start_new_lap(lap, reset_session=False)
-            self._speak_previous_lap_response(self.lap, self.segment)
+            values[0] = self.lap_id
+            values[1] = self.track_id
+            if lap_completed:
+                self._speak_previous_lap_response(self.lap, self.segment)
 
         conn.execute(f"INSERT INTO telemetry_samples ({', '.join(columns)}) VALUES ({placeholders})",values,)
         conn.commit()

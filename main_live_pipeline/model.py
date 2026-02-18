@@ -2,6 +2,8 @@ import pathlib
 import ollama
 import re
 import threading
+import json
+import ast
 
 from pathlib import Path
 
@@ -22,43 +24,35 @@ class Model():
         self.PROMPTS = (REPO_ROOT / "prompts/prompts.txt").as_posix()
         self.NON_PERSISTENT_PROMPTS = (REPO_ROOT / "prompts/non_persistent_prompts.txt").as_posix()
         self.SYSTEM_PROMPT = """
-        Role:
-        Experiences racing driver coach.
+        Rolle:
+        Erfahrener Rennfahrer-Coach.
 
-        Task:
-        Transform the tabular telemetry data into clear,
-        readable coaching feedback describing how this track segment was driven compared to an optimally driven reference lap. Each attribute contains two values: First value, driver; second value reference.
-        Explain how the segment unfolded in driving terms and identify errors if present.
+        Aufgabe:
+        Wandle tabellarische Telemetrie in klares, kurzes Coaching-Feedback um.
+        Beschreibe, wie dieser Streckenabschnitt im Vergleich zur optimalen Referenzrunde gefahren wurde.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
 
-        At the end, output a json object with the following structure, where status signals wether the message has to be read out (has only to be read out when significant improvements are necessary; status can be True or False) and the message states the improvement text:
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
         {
-            'status': ...,
-            'message': ...,
+            "status": true|false,
+            "message": "..."
         }
-        Only output the json!
 
-        Notes:
-        - Consider the units, but never mention them explicitly.
-        - Translate telemetry only into: throttle, braking, steering, speed, track position.
-        - Do not mention axes, telemetry terms, or timestamps.
-        - Think in track sections, not time.
-        - Focus on cause and effect.
-        - Do not speculate beyond the data.
-
-        Examples:
-        Good throttle use, speed carried well.
-        Clean line, no time lost here.
-        Brake earlier to stabilize the car.
-        Turn in earlier for better exit.
-        Strong exit, close to optimal.
-        Over-slowed entry cost exit speed.
-
-        Negative examples:
-        - The strongly negative acceleration_x (-34 vs. reference 0) together with a high Z value…
-        - From about 9 s onward you reach lateral accelerations of up to +20 m/s²…
-        - Excessive negative acceleration_x and incorrectly dosed yaw rotation dominate…
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - Verwende fuer status nur JSON-Booleans true oder false (nie True/False, nie Strings).
+        - Keine Markdown-Backticks und keine Erklaerung ausserhalb des JSON.
+        - Die message muss immer auf Deutsch (de-DE) sein.
+        - status ist nur true, wenn eine relevante Verbesserung noetig ist.
+        - Keine Achsenbegriffe oder Telemetrie-Feldnamen nennen.
+        - Keine Zeitstempel nennen.
+        - Fokus auf Gas, Bremse, Lenkung, Geschwindigkeit, Linie.
         """
-        self.USER_PROMPT = ""
+        self.USER_PROMPT = (
+            "Antworte ausschliesslich auf Deutsch (de-DE). "
+            "Antwortformat strikt: {\"status\": true|false, \"message\": \"...\"}"
+        )
         self._reset_non_persistent_once()
     
     
@@ -107,20 +101,110 @@ class Model():
         segment_info = self.get_segment_information(segment_rows, idx_map=idx_map)
 
         # --- LLM call ---
-        resp = ollama.chat(
-            # think=True,
-            model=self.MODEL_NAME,
-            messages=[
-                {"role": "system", "content": self.SYSTEM_PROMPT},
-                {"role": "user", "content": self.USER_PROMPT + f"\n```markdown\n{md_block}\n```" + f"\n\nSegment Summary:\n{segment_info}"},
-            ],
-        )
+        messages = [
+            {"role": "system", "content": self.SYSTEM_PROMPT},
+            {"role": "user", "content": self.USER_PROMPT + f"\n```markdown\n{md_block}\n```" + f"\n\nSegment Summary:\n{segment_info}"},
+        ]
+        resp = self._chat_model(messages)
+        raw_content = self._safe_get_response_content(resp)
+        normalized_content = self._normalize_response_content(raw_content)
+        if normalized_content is not None:
+            self._safe_set_response_content(resp, normalized_content)
         timestamps = [self.get_timestamp_md(r, idx_map=idx_map) for r in segment_rows]
         self.log_response(timestamps, lap, segment, self.SYSTEM_PROMPT, self.USER_PROMPT, resp, md_block, segment_info)
+        return normalized_content or raw_content
+
+    def _chat_model(self, messages: list[dict]) -> dict:
+        # Prefer strict JSON mode. If unavailable, fallback to normal chat call.
+        try:
+            return ollama.chat(
+                model=self.MODEL_NAME,
+                format="json",
+                messages=messages,
+            )
+        except Exception:
+            return ollama.chat(
+                model=self.MODEL_NAME,
+                messages=messages,
+            )
+
+    def _safe_get_response_content(self, resp: dict | None) -> str | None:
         try:
             return resp["message"]["content"]
         except Exception:
             return None
+
+    def _safe_set_response_content(self, resp: dict | None, content: str) -> None:
+        try:
+            if isinstance(resp, dict) and isinstance(resp.get("message"), dict):
+                resp["message"]["content"] = content
+        except Exception:
+            pass
+
+    def _normalize_response_content(self, response_text: str | None) -> str | None:
+        payload = self._parse_response_payload(response_text)
+        if payload is None:
+            return response_text
+        return json.dumps(payload, ensure_ascii=False)
+
+    def _parse_response_payload(self, response_text: str | None) -> dict | None:
+        if not response_text or not response_text.strip():
+            return None
+        text = response_text.strip()
+        candidates = [text]
+        fenced = re.findall(r"```(?:json)?\s*([\s\S]*?)```", text, flags=re.IGNORECASE)
+        candidates.extend(chunk.strip() for chunk in fenced if chunk and chunk.strip())
+        brace_candidate = self._extract_first_brace_block(text)
+        if brace_candidate:
+            candidates.append(brace_candidate)
+
+        seen = set()
+        for candidate in candidates:
+            if candidate in seen:
+                continue
+            seen.add(candidate)
+            for parser in (json.loads, ast.literal_eval):
+                try:
+                    parsed = parser(candidate)
+                except Exception:
+                    continue
+                if not isinstance(parsed, dict):
+                    continue
+                status = self._normalize_status(parsed.get("status"))
+                message = parsed.get("message")
+                message = "" if message is None else str(message).strip()
+                if status is None:
+                    status = False
+                return {"status": bool(status), "message": message}
+        return None
+
+    def _normalize_status(self, value) -> bool | None:
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, (int, float)):
+            return bool(value)
+        if isinstance(value, str):
+            normalized = value.strip().lower()
+            if normalized in ("true", "1", "yes", "y", "ja", "wahr"):
+                return True
+            if normalized in ("false", "0", "no", "n", "nein", "falsch"):
+                return False
+        return None
+
+    def _extract_first_brace_block(self, text: str) -> str | None:
+        start = text.find("{")
+        if start < 0:
+            return None
+        depth = 0
+        for idx in range(start, len(text)):
+            ch = text[idx]
+            if ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    return text[start : idx + 1].strip()
+        return None
     
     
     def log_response(self, timestamps, lap, segment, system_prompt, user_prompt, resp, md, segment_info):
@@ -289,3 +373,4 @@ class Model():
             ret += "No yaw data."
 
         return ret
+

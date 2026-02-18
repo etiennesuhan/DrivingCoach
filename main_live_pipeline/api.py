@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import mimetypes
 import queue
 import sqlite3
 import threading
@@ -11,7 +12,7 @@ from pathlib import Path
 
 from fastapi import Body, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse, StreamingResponse
+from fastapi.responses import FileResponse, PlainTextResponse, StreamingResponse
 
 from listener import Listener, resolve_repo_path
 
@@ -126,6 +127,7 @@ def create_app(listener: Listener) -> FastAPI:
         step: int = 1,
         limit: int | None = None,
         fields: list[str] | None = None,
+        track_id: str | None = None,
     ) -> list[dict]:
         conn = _open_db()
         try:
@@ -133,13 +135,18 @@ def create_app(listener: Listener) -> FastAPI:
             if not columns:
                 return []
             selected = fields if fields else [c for c in ["timestamp_utc", "position_x", "position_z", "speed", "yaw", "lap_number"] if c in columns]
+            where_clauses = ["lap_id = ?"]
+            params: list[object] = [lap_id]
+            if track_id is not None and "track_id" in columns:
+                where_clauses.append("track_id = ?")
+                params.append(track_id)
             query = (
                 f"SELECT {', '.join(selected)} "
                 "FROM telemetry_samples "
-                "WHERE lap_id = ? "
+                f"WHERE {' AND '.join(where_clauses)} "
                 "ORDER BY id ASC"
             )
-            rows = conn.execute(query, (lap_id,)).fetchall()
+            rows = conn.execute(query, params).fetchall()
         except sqlite3.Error as exc:
             raise HTTPException(status_code=500, detail=f"DB error: {exc}")
         finally:
@@ -150,6 +157,34 @@ def create_app(listener: Listener) -> FastAPI:
         if limit and limit > 0:
             items = items[:limit]
         return items
+
+    def _resolve_track_filter(track_id: str | None) -> str | None:
+        if track_id is not None:
+            normalized = str(track_id).strip()
+            return normalized if normalized else None
+        current = getattr(listener, "track_id", None)
+        if current is None:
+            return None
+        normalized = str(current).strip()
+        return normalized if normalized else None
+
+    def _fetch_lap_track_id(conn: sqlite3.Connection, lap_id: int) -> str | None:
+        columns = _get_columns(conn)
+        if "track_id" not in columns:
+            return None
+        row = conn.execute(
+            """
+            SELECT track_id
+            FROM telemetry_samples
+            WHERE lap_id = ? AND track_id IS NOT NULL AND track_id != ''
+            ORDER BY id ASC
+            LIMIT 1
+            """,
+            (lap_id,),
+        ).fetchone()
+        if row is None:
+            return None
+        return row["track_id"]
 
     @app.get("/health")
     def health() -> dict:
@@ -254,27 +289,43 @@ def create_app(listener: Listener) -> FastAPI:
         lap_id = tracks_data[track_id].get("lap")
         if lap_id is None:
             raise HTTPException(status_code=404, detail="optimal lap not set for track")
-        items = _fetch_lap_positions(int(lap_id), step=step, limit=limit)
+        items = _fetch_lap_positions(
+            int(lap_id),
+            step=step,
+            limit=limit,
+            track_id=track_id,
+        )
         return {"track_id": track_id, "lap_id": lap_id, "items": items}
 
     @app.get("/laps")
-    def laps() -> dict:
+    def laps(track_id: str | None = Query(None)) -> dict:
+        effective_track_id = _resolve_track_filter(track_id)
         conn = _open_db()
         try:
-            rows = conn.execute(
-                """
-                SELECT
-                    lap_id,
-                    MIN(lap_number) AS lap_number_min,
-                    MAX(lap_number) AS lap_number_max,
-                    MIN(timestamp_utc) AS start_utc,
-                    MAX(timestamp_utc) AS end_utc,
-                    COUNT(*) AS samples
-                FROM telemetry_samples
-                GROUP BY lap_id
-                ORDER BY lap_id
-                """
-            ).fetchall()
+            columns = _get_columns(conn)
+            has_track_id = "track_id" in columns
+            selected_track_col = "track_id" if has_track_id else "NULL AS track_id"
+            where_clause = ""
+            params: list[object] = []
+            if effective_track_id is not None and has_track_id:
+                where_clause = "WHERE track_id = ?"
+                params.append(effective_track_id)
+            group_by = "lap_id, track_id" if has_track_id else "lap_id"
+            query = (
+                "SELECT "
+                "lap_id, "
+                f"{selected_track_col}, "
+                "MIN(lap_number) AS lap_number_min, "
+                "MAX(lap_number) AS lap_number_max, "
+                "MIN(timestamp_utc) AS start_utc, "
+                "MAX(timestamp_utc) AS end_utc, "
+                "COUNT(*) AS samples "
+                "FROM telemetry_samples "
+                f"{where_clause} "
+                f"GROUP BY {group_by} "
+                "ORDER BY lap_id"
+            )
+            rows = conn.execute(query, params).fetchall()
         except sqlite3.Error as exc:
             raise HTTPException(status_code=500, detail=f"DB error: {exc}")
         finally:
@@ -284,6 +335,7 @@ def create_app(listener: Listener) -> FastAPI:
             laps_out.append(
                 {
                     "lap_id": row["lap_id"],
+                    "track_id": row["track_id"],
                     "lap_number_min": row["lap_number_min"],
                     "lap_number_max": row["lap_number_max"],
                     "start_utc": row["start_utc"],
@@ -337,6 +389,63 @@ def create_app(listener: Listener) -> FastAPI:
         items = _fetch_lap_positions(lap_id, step=step, limit=limit)
         return {"lap_id": lap_id, "items": items}
 
+    @app.delete("/laps/{lap_id}")
+    def delete_lap(lap_id: int) -> dict:
+        if getattr(listener, "_race_active", False) and getattr(listener, "lap_id", None) == lap_id:
+            raise HTTPException(
+                status_code=409,
+                detail="cannot delete active lap while race is running",
+            )
+
+        conn = _open_db()
+        deleted_samples = 0
+        track_id = None
+        try:
+            columns = _get_columns(conn)
+            if "track_id" in columns:
+                row = conn.execute(
+                    """
+                    SELECT track_id
+                    FROM telemetry_samples
+                    WHERE lap_id = ? AND track_id IS NOT NULL AND track_id != ''
+                    ORDER BY id ASC
+                    LIMIT 1
+                    """,
+                    (lap_id,),
+                ).fetchone()
+                if row is not None:
+                    track_id = row["track_id"]
+
+            cur = conn.execute("DELETE FROM telemetry_samples WHERE lap_id = ?", (lap_id,))
+            conn.commit()
+            deleted_samples = int(cur.rowcount or 0)
+        except sqlite3.Error as exc:
+            raise HTTPException(status_code=500, detail=f"DB error: {exc}")
+        finally:
+            conn.close()
+
+        if deleted_samples <= 0:
+            raise HTTPException(status_code=404, detail="lap not found")
+
+        if hasattr(listener, "_log_event"):
+            try:
+                listener._log_event(
+                    "lap_deleted",
+                    {
+                        "lap_id": lap_id,
+                        "track_id": track_id,
+                        "samples": deleted_samples,
+                    },
+                )
+            except Exception:
+                pass
+
+        return {
+            "lap_id": lap_id,
+            "track_id": track_id,
+            "deleted_samples": deleted_samples,
+        }
+
     @app.get("/feedback")
     def feedback(
         lap: int | None = None,
@@ -389,12 +498,44 @@ def create_app(listener: Listener) -> FastAPI:
     def compare_laps(
         lap_a: int = Query(...),
         lap_b: int = Query(...),
+        track_id: str | None = Query(None),
         step: int = Query(1, ge=1, le=100),
         limit: int | None = Query(None, ge=1, le=MAX_SAMPLE_LIMIT),
     ) -> dict:
-        items_a = _fetch_lap_positions(lap_a, step=step, limit=limit)
-        items_b = _fetch_lap_positions(lap_b, step=step, limit=limit)
-        return {"lap_a": {"lap_id": lap_a, "items": items_a}, "lap_b": {"lap_id": lap_b, "items": items_b}}
+        requested_track_id = _resolve_track_filter(track_id)
+        conn = _open_db()
+        try:
+            lap_a_track_id = _fetch_lap_track_id(conn, lap_a)
+            lap_b_track_id = _fetch_lap_track_id(conn, lap_b)
+        except sqlite3.Error as exc:
+            raise HTTPException(status_code=500, detail=f"DB error: {exc}")
+        finally:
+            conn.close()
+
+        if lap_a_track_id is None or lap_b_track_id is None:
+            raise HTTPException(
+                status_code=400,
+                detail="lap track assignment missing; record laps again with track mapping",
+            )
+        if lap_a_track_id != lap_b_track_id:
+            raise HTTPException(
+                status_code=400,
+                detail="laps from different tracks cannot be compared",
+            )
+        if requested_track_id is not None and requested_track_id != lap_a_track_id:
+            raise HTTPException(
+                status_code=400,
+                detail="laps do not belong to requested track",
+            )
+        compare_track_id = lap_a_track_id
+
+        items_a = _fetch_lap_positions(lap_a, step=step, limit=limit, track_id=compare_track_id)
+        items_b = _fetch_lap_positions(lap_b, step=step, limit=limit, track_id=compare_track_id)
+        return {
+            "track_id": compare_track_id,
+            "lap_a": {"lap_id": lap_a, "track_id": lap_a_track_id, "items": items_a},
+            "lap_b": {"lap_id": lap_b, "track_id": lap_b_track_id, "items": items_b},
+        }
 
     @app.get("/export/lap/{lap_id}")
     def export_lap(
@@ -487,6 +628,41 @@ def create_app(listener: Listener) -> FastAPI:
         if payload.get("clear_cache"):
             removed = listener.clear_tts_cache()
         return {"enabled": listener.tts_enabled, "cleared": removed}
+
+    @app.get("/tts/audio")
+    def tts_audio(
+        lap: int = Query(..., ge=0),
+        segment: int = Query(..., ge=0),
+    ):
+        wav_path = listener.get_tts_audio_path(
+            lap=lap,
+            segment=segment,
+            synthesize_if_missing=True,
+        )
+        if wav_path is None or not Path(wav_path).exists():
+            raise HTTPException(status_code=404, detail="tts audio not available")
+        media_type = mimetypes.guess_type(Path(wav_path).name)[0] or "application/octet-stream"
+        return FileResponse(
+            path=Path(wav_path).as_posix(),
+            media_type=media_type,
+            filename=Path(wav_path).name,
+            headers={"Cache-Control": "no-store"},
+        )
+
+    @app.get("/tts/preview")
+    def tts_preview(
+        text: str = Query(..., min_length=1, max_length=300),
+    ):
+        wav_path = listener.synthesize_preview_tts(text)
+        if wav_path is None or not Path(wav_path).exists():
+            raise HTTPException(status_code=500, detail="tts preview generation failed")
+        media_type = mimetypes.guess_type(Path(wav_path).name)[0] or "application/octet-stream"
+        return FileResponse(
+            path=Path(wav_path).as_posix(),
+            media_type=media_type,
+            filename=Path(wav_path).name,
+            headers={"Cache-Control": "no-store"},
+        )
 
     @app.get("/stream/telemetry")
     def stream_telemetry():

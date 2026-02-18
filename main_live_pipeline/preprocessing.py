@@ -15,7 +15,7 @@ def resolve_repo_path(path: str | Path) -> Path:
 
 
 class Preprocessing():
-    def __init__(self, database, lap_id, optimal_lap, segments):
+    def __init__(self, database, lap_id, optimal_lap, segments, track_id: str | None = None):
         current_path = resolve_repo_path(database)
         self.database = current_path.as_posix()
         self.OUTPUT = (REPO_ROOT / "data/output.txt").as_posix()
@@ -24,14 +24,29 @@ class Preprocessing():
         self.lap_id = lap_id
         self.optimal_lap = optimal_lap
         self.segments = segments
+        self.track_id = track_id
     
     def run(self):
         conn = sqlite3.connect(self.database)
-        df_slow = self.preprocess(pd.read_sql(self.query(self.lap_id), conn))
+        table_columns = self._table_columns(conn)
+        df_slow_raw = self._read_lap_df(
+            conn,
+            self.lap_id,
+            track_id=self.track_id,
+            table_columns=table_columns,
+        )
+        if df_slow_raw.empty:
+            return None
+        df_slow = self.preprocess(df_slow_raw)
         df_slow = df_slow.iloc[::int(5), :]
         df_slow["segment"] = self.segment_labels(df_slow)
         if self.optimal_lap is not None:
-            df_fast_raw = pd.read_sql(self.query(self.optimal_lap), conn)
+            df_fast_raw = self._read_lap_df(
+                conn,
+                self.optimal_lap,
+                track_id=self.track_id,
+                table_columns=table_columns,
+            )
             if not df_fast_raw.empty:
                 df_fast = self.preprocess(df_fast_raw)
                 df_slow = self.match_lines_by_euclid(df_slow, df_fast)
@@ -61,11 +76,29 @@ class Preprocessing():
             f.write(markdown)
         return markdown
     
-    def query(self, lap_id):
-        return f"""SELECT timestamp_utc AS timestamp, acceleration_x, acceleration_y, acceleration_z, yaw, position_x, position_y, position_z, speed, lap_number
-        FROM telemetry_samples
-        WHERE lap_id = {lap_id}
-        ORDER BY id"""
+    def _table_columns(self, conn: sqlite3.Connection) -> set[str]:
+        rows = conn.execute("PRAGMA table_info(telemetry_samples)").fetchall()
+        return {row[1] for row in rows}
+
+    def _read_lap_df(
+        self,
+        conn: sqlite3.Connection,
+        lap_id: int,
+        track_id: str | None,
+        table_columns: set[str],
+    ) -> DataFrame:
+        query = (
+            "SELECT timestamp_utc AS timestamp, acceleration_x, acceleration_y, acceleration_z, yaw, "
+            "position_x, position_y, position_z, speed, lap_number "
+            "FROM telemetry_samples "
+            "WHERE lap_id = ?"
+        )
+        params: list[object] = [lap_id]
+        if track_id is not None and "track_id" in table_columns:
+            query += " AND track_id = ?"
+            params.append(track_id)
+        query += " ORDER BY id"
+        return pd.read_sql_query(query, conn, params=params)
 
     def preprocess(self, df: DataFrame):
         df['timestamp'] = pd.to_datetime(df['timestamp'], utc=True)
