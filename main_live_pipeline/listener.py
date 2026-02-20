@@ -50,6 +50,9 @@ class Listener():
         self.lap_id = None
         self.model = Model()
         self.voice = Voice()
+        self.LLM_CONTEXT_PATH = resolve_repo_path("prompts/llm_context.txt")
+        self._llm_context_lock = threading.Lock()
+        self._llm_context_generation = 0
         self.driver_name = self._normalize_driver_name(os.getenv("FH5_DRIVER_NAME", "Etienne"))
         self.model_queue = queue.Queue()
         self.model_worker = threading.Thread(target=self._model_worker, name="ModelWorker", daemon=True)
@@ -387,6 +390,7 @@ class Listener():
             self._spoken_for_lap.clear()
             with self._responses_lock:
                 self._model_responses.clear()
+            self._reset_llm_context()
         if lap_number is not None and lap_number > 0:
             self.lap = lap_number
         elif reset_session:
@@ -403,16 +407,31 @@ class Listener():
         self.driver_name = self._normalize_driver_name(name)
 
 
-    def _enqueue_model_run(self, lap_id: int | None, lap: int, segment: int) -> None:
+    def _enqueue_model_run(
+        self,
+        lap_id: int | None,
+        lap: int,
+        segment: int,
+        persist_context: bool = False,
+    ) -> None:
         if lap_id is None or not self.model_enabled:
             return
-        self.model_queue.put((lap_id, lap, segment))
+        with self._llm_context_lock:
+            generation = self._llm_context_generation
+        self.model_queue.put((lap_id, lap, segment, persist_context, generation))
 
 
     def _model_worker(self) -> None:
         while True:
-            lap_id, lap, segment = self.model_queue.get()
+            item = self.model_queue.get()
             try:
+                if len(item) == 5:
+                    lap_id, lap, segment, persist_context, generation = item
+                else:
+                    lap_id, lap, segment = item
+                    persist_context = False
+                    with self._llm_context_lock:
+                        generation = self._llm_context_generation
                 self._worker_last_active["model"] = time.time()
                 preprocessing = Preprocessing(
                     self.DB_FILE,
@@ -425,12 +444,48 @@ class Listener():
                 if not md_text or not md_text.strip():
                     print("No markdown data available; skipping model run.")
                     continue
+                if persist_context:
+                    self._append_round_markdown_to_llm_context(
+                        lap_id=lap_id,
+                        lap=lap,
+                        segment=segment,
+                        markdown=md_text,
+                        generation=generation,
+                    )
                 response_text = self.model.run(lap, segment, md_text=md_text)
                 self._store_model_response(lap_id, lap, segment, response_text)
             except Exception as exc:
                 print(f"Model worker error: {exc}")
             finally:
                 self.model_queue.task_done()
+
+    def _reset_llm_context(self) -> None:
+        with self._llm_context_lock:
+            self._llm_context_generation += 1
+            self.LLM_CONTEXT_PATH.parent.mkdir(parents=True, exist_ok=True)
+            self.LLM_CONTEXT_PATH.write_text("", encoding="utf-8")
+
+    def _append_round_markdown_to_llm_context(
+        self,
+        lap_id: int,
+        lap: int,
+        segment: int,
+        markdown: str,
+        generation: int,
+    ) -> None:
+        with self._llm_context_lock:
+            if generation != self._llm_context_generation:
+                return
+            self.LLM_CONTEXT_PATH.parent.mkdir(parents=True, exist_ok=True)
+            with self.LLM_CONTEXT_PATH.open("a", encoding="utf-8") as f:
+                f.write("\n\n[Round Markdown]\n")
+                f.write(
+                    f"Lap ID: {lap_id} | Lap: {lap} | Segment: {segment} | "
+                    f"Track ID: {self.track_id} | Driver: {self.driver_name}\n"
+                )
+                f.write("```markdown\n")
+                f.write(markdown.strip())
+                f.write("\n```\n")
 
     def _enqueue_voice(self, text: str) -> None:
         if not text or not text.strip() or not self.voice_enabled:
@@ -736,6 +791,7 @@ class Listener():
 
     def reset_session(self) -> None:
         self._drop_current_lap_if_incomplete(reason="session_reset", conn=None)
+        self._reset_llm_context()
         self._race_active = False
         self._last_race_time = None
         self._last_race_lap_number = None
@@ -989,7 +1045,12 @@ class Listener():
                     print(f'Start processing {self.segment}')
                     self._speak_previous_lap_response(self.lap, self.segment)
                     print('Queued model answer ...')
-                    self._enqueue_model_run(self.lap_id, self.lap, self.segment)
+                    self._enqueue_model_run(
+                        self.lap_id,
+                        self.lap,
+                        self.segment,
+                        persist_context=False,
+                    )
                     self._log_event("segment_complete", {"lap": self.lap, "lap_id": self.lap_id, "segment": self.segment})
                     self.segment += 1
                     self._lap_max_segment = max(self._lap_max_segment, int(self.segment))
@@ -1023,7 +1084,12 @@ class Listener():
                     self._log_event("lap_record", {"lap_id": self.lap_id, "lap": self.lap, "time": last_lap_time})
                 print(f'Start processing {self.segment}')
                 print('Queued model answer ...')
-                self._enqueue_model_run(self.lap_id, self.lap, self.segment)
+                self._enqueue_model_run(
+                    self.lap_id,
+                    self.lap,
+                    self.segment,
+                    persist_context=True,
+                )
                 self._log_event("lap_complete", {"lap_id": self.lap_id, "lap": self.lap, "time": last_lap_time})
             else:
                 self._delete_lap_samples(

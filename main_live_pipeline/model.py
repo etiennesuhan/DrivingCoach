@@ -17,21 +17,20 @@ class Model():
     _non_persistent_reset = False
 
     def __init__(self):
-        # self.MODEL_NAME="glm-4.7-flash:q4_K_M",
-        # self.MODEL_NAME="nemotron-3-nano:30b",
         self.MODEL_NAME = "llama3.1"
         self.OUTPUT_MD = (REPO_ROOT / "data/output.md").as_posix()
         self.PROMPTS = (REPO_ROOT / "prompts/prompts.txt").as_posix()
         self.NON_PERSISTENT_PROMPTS = (REPO_ROOT / "prompts/non_persistent_prompts.txt").as_posix()
         self.SYSTEM_PROMPT = """
         Rolle: Erfahrener Rennfahrer-Coach.
+
         Aufgabe:
         Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
         Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
 
-        Self-Augmented (intern, NICHT ausgeben):
+        Selbst-augmentiert (intern, NICHT ausgeben):
         1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
-        2) Formuliere daraus eine einzige, klare Handlungsanweisung.
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
 
         Ausgabe:
         Gib exakt ein JSON-Objekt aus:
@@ -43,36 +42,44 @@ class Model():
         Regeln:
         - Gib nur JSON aus, keinen weiteren Text.
         - status nur true/false (JSON-Boolean).
-        - Keine Markdown-Backticks, keine Erklaerung ausserhalb des JSON.
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
         - message immer Deutsch (de-DE), Du-Form, Imperativ.
         - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
         - Keine Telemetrie-Feldnamen, keine Zeitstempel.
 
-        LAENGE (SEHR WICHTIG):
-        - message maximal 10 Woerter (Woerter = durch Leerzeichen getrennt).
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
         - Genau 1 Satz. Keine zweite Anweisung.
-        - Keine Fuellwoerter (z.B. "versuche", "einfach", "wirklich").
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
 
         WORTWAHL:
-        - VERBOTEN: Trigger, Stick, Controller, progressiv/progressiver, "ruhiger", "fluessiger", "Bogen".
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
         - Erlaubt (Beispiele, Stil genau so kurz halten):
-        * "Frueher bremsen."
-        * "Bremse frueher loesen."
+        * "Früher bremsen."
+        * "Bremse früher lösen."
         * "Sanfter bremsen."
-        * "Spaeter ans Gas."
+        * "Später ans Gas."
         * "Gas sanfter aufbauen."
-        * "Frueher einlenken."
-        * "Spaeter einlenken."
+        * "Früher einlenken."
+        * "Später einlenken."
         * "Weniger nachlenken."
         * "Weiter innen fahren." (nur wenn wirklich belegbar)
 
         STATUS:
-        - status=true nur, wenn mindestens eine klare Verbesserung noetig ist.
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
         - Wenn status=false: message = "Passt."
         """
+
         self.USER_PROMPT = (
-            "Antworte ausschliesslich auf Deutsch (de-DE). "
-            "Antwortformat strikt: {\"status\": true|false, \"message\": \"...\"}"
+        "Antworte ausschließlich auf Deutsch (de-DE). "
+        "Antwortformat strikt: {\"status\": true|false, \"message\": \"...\"}. "
+        "Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben."
         )
         self._reset_non_persistent_once()
     

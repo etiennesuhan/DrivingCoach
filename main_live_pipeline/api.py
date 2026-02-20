@@ -10,11 +10,13 @@ import csv
 import io
 from pathlib import Path
 
-from fastapi import Body, FastAPI, HTTPException, Query
+from fastapi import Body, FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, PlainTextResponse, StreamingResponse
 
 from listener import Listener, resolve_repo_path
+from post_race_chat import PostRaceChatService
+from ui_session import UiSessionQueue
 
 DEFAULT_SAMPLE_FIELDS = [
     "timestamp_utc",
@@ -40,6 +42,8 @@ def _resolve_ui_build_dir(ui_dir: str | None) -> Path | None:
 def create_app(listener: Listener, ui_dir: str | None = None) -> FastAPI:
     app = FastAPI(title="FH5 Live Pipeline API", version="0.1.0")
     app.state.listener = listener
+    post_race_chat = PostRaceChatService()
+    ui_sessions = UiSessionQueue(lease_seconds=20)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
@@ -48,6 +52,41 @@ def create_app(listener: Listener, ui_dir: str | None = None) -> FastAPI:
         allow_headers=["*"],
     )
     metadata_lock = threading.Lock()
+
+    def _read_client_id(request: Request, payload: dict | None = None) -> str:
+        raw = request.headers.get("x-client-id")
+        if (raw is None or not raw.strip()) and payload is not None:
+            value = payload.get("client_id")
+            if value is not None:
+                raw = str(value)
+        if raw is None or not raw.strip():
+            raw = request.query_params.get("client_id")
+        client_id = (raw or "").strip()
+        if not client_id:
+            raise HTTPException(status_code=400, detail="client_id missing")
+        if len(client_id) > 128:
+            raise HTTPException(status_code=400, detail="client_id too long")
+        return client_id
+
+    def _heartbeat_session(request: Request, payload: dict | None = None) -> tuple[str, dict]:
+        client_id = _read_client_id(request, payload)
+        remote_addr = request.client.host if request.client else None
+        user_agent = request.headers.get("user-agent")
+        snapshot = ui_sessions.heartbeat(
+            client_id=client_id,
+            remote_addr=remote_addr,
+            user_agent=user_agent,
+        )
+        return client_id, snapshot
+
+    def _require_controller(request: Request, payload: dict | None = None) -> tuple[str, dict]:
+        client_id, snapshot = _heartbeat_session(request, payload)
+        if snapshot.get("role") != "controller":
+            raise HTTPException(
+                status_code=403,
+                detail="read-only spectator session",
+            )
+        return client_id, snapshot
 
     def _db_path() -> Path:
         db_path = getattr(listener, "DB_FILE", None)
@@ -204,17 +243,85 @@ def create_app(listener: Listener, ui_dir: str | None = None) -> FastAPI:
     def status() -> dict:
         return listener.get_status()
 
+    @app.get("/ui/session")
+    def ui_session(request: Request) -> dict:
+        _, snapshot = _heartbeat_session(request)
+        return snapshot
+
+    @app.post("/ui/session/leave")
+    def ui_session_leave(request: Request) -> dict:
+        client_id = _read_client_id(request)
+        return ui_sessions.leave(client_id)
+
     @app.get("/driver")
     def driver() -> dict:
         return {"driver_name": getattr(listener, "driver_name", "Etienne")}
 
     @app.put("/driver")
-    def set_driver(payload: dict = Body(...)) -> dict:
+    def set_driver(request: Request, payload: dict = Body(...)) -> dict:
+        _require_controller(request, payload)
         if "driver_name" not in payload:
             raise HTTPException(status_code=400, detail="driver_name required")
         if hasattr(listener, "set_driver_name"):
             listener.set_driver_name(payload.get("driver_name"))
         return {"driver_name": getattr(listener, "driver_name", "Etienne")}
+
+    @app.get("/post-race/status")
+    def post_race_status() -> dict:
+        return post_race_chat.status()
+
+    @app.post("/post-race/open")
+    def post_race_open(request: Request, payload: dict | None = Body(default=None)) -> dict:
+        normalized_payload = payload if isinstance(payload, dict) else None
+        _, snapshot = _heartbeat_session(request, normalized_payload)
+        if snapshot.get("role") != "controller":
+            return {
+                "ok": True,
+                "activated": False,
+                "active_model": getattr(listener.model, "MODEL_NAME", None),
+            }
+        try:
+            post_race_chat.warmup_model()
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail=f"post race open failed: {exc}")
+        return {
+            "ok": True,
+            "activated": True,
+            "active_model": post_race_chat.model_name,
+        }
+
+    @app.post("/post-race/close")
+    def post_race_close(request: Request, payload: dict | None = Body(default=None)) -> dict:
+        normalized_payload = payload if isinstance(payload, dict) else None
+        _, snapshot = _heartbeat_session(request, normalized_payload)
+        if snapshot.get("role") != "controller":
+            return {
+                "ok": True,
+                "activated": False,
+                "active_model": getattr(listener.model, "MODEL_NAME", None),
+            }
+        try:
+            listener.model.warmup_model()
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail=f"post race close failed: {exc}")
+        return {
+            "ok": True,
+            "activated": True,
+            "active_model": getattr(listener.model, "MODEL_NAME", None),
+        }
+
+    @app.post("/post-race/chat")
+    def post_race_chat_query(request: Request, payload: dict = Body(...)) -> dict:
+        _require_controller(request, payload)
+        question = str(payload.get("question", "")).strip()
+        if not question:
+            raise HTTPException(status_code=400, detail="question required")
+        try:
+            return post_race_chat.ask(question)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc))
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail=f"post race chat failed: {exc}")
 
     @app.get("/tracks")
     def tracks() -> dict:
@@ -231,7 +338,8 @@ def create_app(listener: Listener, ui_dir: str | None = None) -> FastAPI:
         return {"track_id": track_id, "track": tracks_data[track_id]}
 
     @app.post("/tracks")
-    def create_track(payload: dict = Body(...)) -> dict:
+    def create_track(request: Request, payload: dict = Body(...)) -> dict:
+        _require_controller(request, payload)
         track_id = _normalize_track_id(payload)
         name = payload.get("name")
         lap = payload.get("lap")
@@ -253,7 +361,8 @@ def create_app(listener: Listener, ui_dir: str | None = None) -> FastAPI:
         return {"track_id": track_id, "track": tracks_data[track_id]}
 
     @app.put("/tracks/{track_id}")
-    def update_track(track_id: str, payload: dict = Body(...)) -> dict:
+    def update_track(track_id: str, request: Request, payload: dict = Body(...)) -> dict:
+        _require_controller(request, payload)
         with metadata_lock:
             data = _read_metadata()
             tracks_data = data.get("tracks", {})
@@ -274,7 +383,8 @@ def create_app(listener: Listener, ui_dir: str | None = None) -> FastAPI:
         return {"track_id": track_id, "track": track}
 
     @app.delete("/tracks/{track_id}")
-    def delete_track(track_id: str) -> dict:
+    def delete_track(track_id: str, request: Request) -> dict:
+        _require_controller(request)
         with metadata_lock:
             data = _read_metadata()
             tracks_data = data.get("tracks", {})
@@ -286,7 +396,8 @@ def create_app(listener: Listener, ui_dir: str | None = None) -> FastAPI:
         return {"track_id": track_id, "removed": removed}
 
     @app.post("/tracks/{track_id}/segments")
-    def update_track_segments(track_id: str, payload: dict = Body(...)) -> dict:
+    def update_track_segments(track_id: str, request: Request, payload: dict = Body(...)) -> dict:
+        _require_controller(request, payload)
         segments = _validate_segments(payload.get("segments"))
         with metadata_lock:
             data = _read_metadata()
@@ -420,7 +531,8 @@ def create_app(listener: Listener, ui_dir: str | None = None) -> FastAPI:
         return {"lap_id": lap_id, "items": items}
 
     @app.delete("/laps/{lap_id}")
-    def delete_lap(lap_id: int) -> dict:
+    def delete_lap(lap_id: int, request: Request) -> dict:
+        _require_controller(request)
         if getattr(listener, "_race_active", False) and getattr(listener, "lap_id", None) == lap_id:
             raise HTTPException(
                 status_code=409,
@@ -497,7 +609,8 @@ def create_app(listener: Listener, ui_dir: str | None = None) -> FastAPI:
         return items[0] if items else {}
 
     @app.post("/feedback/{feedback_id}/ack")
-    def feedback_ack(feedback_id: int) -> dict:
+    def feedback_ack(feedback_id: int, request: Request) -> dict:
+        _require_controller(request)
         ok = listener.ack_feedback(feedback_id)
         if not ok:
             raise HTTPException(status_code=404, detail="feedback not found")
@@ -617,22 +730,26 @@ def create_app(listener: Listener, ui_dir: str | None = None) -> FastAPI:
         }
 
     @app.post("/session/pause")
-    def session_pause() -> dict:
+    def session_pause(request: Request) -> dict:
+        _require_controller(request)
         listener.set_paused(True)
         return {"paused": True}
 
     @app.post("/session/resume")
-    def session_resume() -> dict:
+    def session_resume(request: Request) -> dict:
+        _require_controller(request)
         listener.set_paused(False)
         return {"paused": False}
 
     @app.post("/session/reset")
-    def session_reset() -> dict:
+    def session_reset(request: Request) -> dict:
+        _require_controller(request)
         listener.reset_session()
         return {"reset": True}
 
     @app.put("/model")
-    def model_control(payload: dict = Body(...)) -> dict:
+    def model_control(request: Request, payload: dict = Body(...)) -> dict:
+        _require_controller(request, payload)
         if "enabled" in payload:
             listener.set_model_enabled(bool(payload.get("enabled")))
         if "model_name" in payload and payload.get("model_name"):
@@ -645,13 +762,15 @@ def create_app(listener: Listener, ui_dir: str | None = None) -> FastAPI:
         }
 
     @app.put("/voice")
-    def voice_control(payload: dict = Body(...)) -> dict:
+    def voice_control(request: Request, payload: dict = Body(...)) -> dict:
+        _require_controller(request, payload)
         if "enabled" in payload:
             listener.set_voice_enabled(bool(payload.get("enabled")))
         return {"enabled": listener.voice_enabled}
 
     @app.put("/tts")
-    def tts_control(payload: dict = Body(...)) -> dict:
+    def tts_control(request: Request, payload: dict = Body(...)) -> dict:
+        _require_controller(request, payload)
         if "enabled" in payload:
             listener.set_tts_enabled(bool(payload.get("enabled")))
         removed = 0
@@ -746,10 +865,11 @@ def create_app(listener: Listener, ui_dir: str | None = None) -> FastAPI:
     if ui_build_dir is not None:
         index_html = (ui_build_dir / "index.html").resolve()
         ui_root = ui_build_dir.resolve()
+        no_store_headers = {"Cache-Control": "no-store"}
 
         @app.get("/", include_in_schema=False)
         def web_index():
-            return FileResponse(index_html.as_posix())
+            return FileResponse(index_html.as_posix(), headers=no_store_headers)
 
         @app.get("/{full_path:path}", include_in_schema=False)
         def web_fallback(full_path: str):
@@ -759,8 +879,8 @@ def create_app(listener: Listener, ui_dir: str | None = None) -> FastAPI:
             except ValueError:
                 raise HTTPException(status_code=404, detail="not found")
             if candidate.is_file():
-                return FileResponse(candidate.as_posix())
-            return FileResponse(index_html.as_posix())
+                return FileResponse(candidate.as_posix(), headers=no_store_headers)
+            return FileResponse(index_html.as_posix(), headers=no_store_headers)
 
     return app
 
