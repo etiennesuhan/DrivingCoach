@@ -16118,3 +16118,1217 @@ Lap: 4, Segment: 3, Sequence: 41.6 - 51.4
 Time — user: 9.800s, ref: 6.800s (Δ +3.000s). Max speed — user: 179.0 km/h, ref: 206.0 km/h; Min speed — user: 78.0 km/h, ref: 171.0 km/h. Max yaw (abs) — user: 2.010°, ref: 1.960°.
 Response: {"status": true, "message": "Sanfter bremsen."}
 
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 0, Sequence: 0.0 - 49.5
+Time — user: 49.500s, ref: 41.000s (Δ +8.500s). Max speed — user: 197.0 km/h, ref: 260.0 km/h; Min speed — user: 0.0 km/h, ref: 157.0 km/h. Max yaw (abs) — user: 2.560°, ref: 2.490°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 1, Sequence: 50.5 - 65.2
+Time — user: 14.700s, ref: 7.800s (Δ +6.900s). Max speed — user: 117.0 km/h, ref: 174.0 km/h; Min speed — user: 7.0 km/h, ref: 120.0 km/h. Max yaw (abs) — user: 1.720°, ref: 1.320°.
+Response: {"status": true, "message": "Früher einlenken."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 2, Sequence: 65.7 - 69.0
+Time — user: 3.300s, ref: 2.000s (Δ +1.300s). Max speed — user: 107.0 km/h, ref: 168.0 km/h; Min speed — user: 74.0 km/h, ref: 140.0 km/h. Max yaw (abs) — user: 1.390°, ref: 1.390°.
+Response: {"status": true, "message": "Früher ans Gas."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 3, Sequence: 89.6 - 107.1
+Time — user: 17.500s, ref: 6.700s (Δ +10.800s). Max speed — user: 155.0 km/h, ref: 207.0 km/h; Min speed — user: 0.0 km/h, ref: 171.0 km/h. Max yaw (abs) — user: 2.270°, ref: 1.990°.
+Response: {"status": true, "message": "Früher früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 4, Sequence: 108.2 - 119.8
+Time — user: 11.600s, ref: 6.400s (Δ +5.200s). Max speed — user: 173.0 km/h, ref: 220.0 km/h; Min speed — user: 1.0 km/h, ref: 104.0 km/h. Max yaw (abs) — user: 3.080°, ref: 3.050°.
+Response: {"status": true, "message": "Früher einlenken."}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 0, Sequence: 0.0 - 9.3
+Time — user: 9.300s, ref: 6.100s (Δ +3.200s). Max speed — user: 193.0 km/h, ref: 260.0 km/h; Min speed — user: 107.0 km/h, ref: 155.0 km/h. Max yaw (abs) — user: 2.540°, ref: 2.490°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 1, Sequence: 10.4 - 21.5
+Time — user: 11.100s, ref: 7.400s (Δ +3.700s). Max speed — user: 146.0 km/h, ref: 170.0 km/h; Min speed — user: 55.0 km/h, ref: 122.0 km/h. Max yaw (abs) — user: 1.170°, ref: 1.320°.
+Response: {"status": true, "message": "Früher früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 2, Sequence: 22.0 - 24.8
+Time — user: 2.800s, ref: 2.000s (Δ +0.800s). Max speed — user: 132.0 km/h, ref: 160.0 km/h; Min speed — user: 87.0 km/h, ref: 140.0 km/h. Max yaw (abs) — user: 1.340°, ref: 1.270°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 3, Sequence: 41.8 - 51.9
+Time — user: 10.100s, ref: 6.700s (Δ +3.400s). Max speed — user: 185.0 km/h, ref: 206.0 km/h; Min speed — user: 58.0 km/h, ref: 174.0 km/h. Max yaw (abs) — user: 2.060°, ref: 1.990°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 4, Sequence: 52.4 - 74.0
+Time — user: 21.600s, ref: 6.400s (Δ +15.200s). Max speed — user: 175.0 km/h, ref: 221.0 km/h; Min speed — user: 2.0 km/h, ref: 103.0 km/h. Max yaw (abs) — user: 3.140°, ref: 3.140°.
+Response: {"status": true, "message": "Früher einlenken."}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 0, Sequence: 0.0 - 7.7
+Time — user: 7.700s, ref: 6.000s (Δ +1.700s). Max speed — user: 212.0 km/h, ref: 257.0 km/h; Min speed — user: 87.0 km/h, ref: 157.0 km/h. Max yaw (abs) — user: 2.440°, ref: 2.490°.
+Response: {"status": true, "message": "Früher bremse früher lösen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 1, Sequence: 8.3 - 19.3
+Time — user: 11.000s, ref: 8.000s (Δ +3.000s). Max speed — user: 162.0 km/h, ref: 175.0 km/h; Min speed — user: 57.0 km/h, ref: 122.0 km/h. Max yaw (abs) — user: 1.190°, ref: 1.320°.
+Response: {"status": true, "message": "Sanfter bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 2, Sequence: 19.8 - 22.6
+Time — user: 2.800s, ref: 1.700s (Δ +1.100s). Max speed — user: 118.0 km/h, ref: 163.0 km/h; Min speed — user: 74.0 km/h, ref: 141.0 km/h. Max yaw (abs) — user: 1.360°, ref: 1.310°.
+Response: {"status": true, "message": "Sanfter bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 3, Sequence: 36.5 - 46.4
+Time — user: 9.900s, ref: 7.000s (Δ +2.900s). Max speed — user: 181.0 km/h, ref: 207.0 km/h; Min speed — user: 84.0 km/h, ref: 168.0 km/h. Max yaw (abs) — user: 1.950°, ref: 1.930°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 4, Sequence: 47.0 - 56.4
+Time — user: 9.400s, ref: 6.800s (Δ +2.600s). Max speed — user: 181.0 km/h, ref: 221.0 km/h; Min speed — user: 26.0 km/h, ref: 103.0 km/h. Max yaw (abs) — user: 2.980°, ref: 3.140°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 3, Segment: 0, Sequence: 0.0 - 7.7
+Time — user: 7.700s, ref: 6.100s (Δ +1.600s). Max speed — user: 245.0 km/h, ref: 260.0 km/h; Min speed — user: 67.0 km/h, ref: 155.0 km/h. Max yaw (abs) — user: 2.510°, ref: 2.490°.
+Response: {"status": true, "message": "Bremse früher lösen."}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 4, Segment: 0, Sequence: 0.0 - 8.8
+Time — user: 8.800s, ref: 5.900s (Δ +2.900s). Max speed — user: 225.0 km/h, ref: 259.0 km/h; Min speed — user: 106.0 km/h, ref: 159.0 km/h. Max yaw (abs) — user: 2.860°, ref: 2.490°.
+Response: {"status": true, "message": "Früher bremse früher lösen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 4, Segment: 1, Sequence: 9.3 - 18.7
+Time — user: 9.400s, ref: 7.900s (Δ +1.500s). Max speed — user: 172.0 km/h, ref: 175.0 km/h; Min speed — user: 73.0 km/h, ref: 120.0 km/h. Max yaw (abs) — user: 1.170°, ref: 1.320°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 4, Segment: 2, Sequence: 19.2 - 22.0
+Time — user: 2.800s, ref: 15.500s (Δ -12.700s). Max speed — user: 152.0 km/h, ref: 202.0 km/h; Min speed — user: 102.0 km/h, ref: 140.0 km/h. Max yaw (abs) — user: 1.400°, ref: 1.390°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 4, Segment: 3, Sequence: 41.4 - 51.4
+Time — user: 10.000s, ref: 18.000s (Δ -8.000s). Max speed — user: 216.0 km/h, ref: 202.0 km/h; Min speed — user: 57.0 km/h, ref: 152.0 km/h. Max yaw (abs) — user: 2.330°, ref: 1.990°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 0, Sequence: 0.0 - 10.5
+Time — user: 10.500s, ref: 55.200s (Δ -44.700s). Max speed — user: 210.0 km/h, ref: 297.0 km/h; Min speed — user: 0.0 km/h, ref: 263.0 km/h. Max yaw (abs) — user: 0.850°, ref: 0.870°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 1, Sequence: 11.0 - 42.4
+Time — user: 31.400s, ref: 8.800s (Δ +22.600s). Max speed — user: 240.0 km/h, ref: 327.0 km/h; Min speed — user: 0.0 km/h, ref: 296.0 km/h. Max yaw (abs) — user: 2.860°, ref: 0.550°.
+Response: {"status": true, "message": "Früher bremse früher lösen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 2, Sequence: 67.1 - 87.3
+Time — user: 20.200s, ref: 8.500s (Δ +11.700s). Max speed — user: 248.0 km/h, ref: 312.0 km/h; Min speed — user: 0.0 km/h, ref: 259.0 km/h. Max yaw (abs) — user: 3.130°, ref: 3.090°.
+Response: {"status": true, "message": "Früher einlenken."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 3, Sequence: 87.9 - 101.8
+Time — user: 13.900s, ref: 8.500s (Δ +5.400s). Max speed — user: 222.0 km/h, ref: 279.0 km/h; Min speed — user: 96.0 km/h, ref: 211.0 km/h. Max yaw (abs) — user: 3.130°, ref: 3.140°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 4, Sequence: 102.4 - 118.4
+Time — user: 16.000s, ref: 7.000s (Δ +9.000s). Max speed — user: 230.0 km/h, ref: 292.0 km/h; Min speed — user: 11.0 km/h, ref: 232.0 km/h. Max yaw (abs) — user: 2.780°, ref: 2.890°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 5, Sequence: 119.0 - 131.1
+Time — user: 12.100s, ref: 5.200s (Δ +6.900s). Max speed — user: 227.0 km/h, ref: 278.0 km/h; Min speed — user: 12.0 km/h, ref: 216.0 km/h. Max yaw (abs) — user: 1.010°, ref: 1.070°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 0, Sequence: 0.0 - 13.9
+Time — user: 13.900s, ref: 4.500s (Δ +9.400s). Max speed — user: 243.0 km/h, ref: 297.0 km/h; Min speed — user: 2.0 km/h, ref: 262.0 km/h. Max yaw (abs) — user: 1.260°, ref: 0.870°.
+Response: {"status": true, "message": "Früher bremse früher lösen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 1, Sequence: 14.4 - 29.3
+Time — user: 14.900s, ref: 9.100s (Δ +5.800s). Max speed — user: 232.0 km/h, ref: 328.0 km/h; Min speed — user: 147.0 km/h, ref: 296.0 km/h. Max yaw (abs) — user: 0.720°, ref: 0.550°.
+Response: {"status": true, "message": "Sanfter bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 2, Sequence: 46.5 - 60.8
+Time — user: 14.300s, ref: 8.500s (Δ +5.800s). Max speed — user: 209.0 km/h, ref: 312.0 km/h; Min speed — user: 107.0 km/h, ref: 256.0 km/h. Max yaw (abs) — user: 3.120°, ref: 3.120°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 3, Sequence: 61.3 - 73.5
+Time — user: 12.200s, ref: 8.500s (Δ +3.700s). Max speed — user: 222.0 km/h, ref: 278.0 km/h; Min speed — user: 122.0 km/h, ref: 211.0 km/h. Max yaw (abs) — user: 3.110°, ref: 3.130°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 4, Sequence: 74.0 - 84.0
+Time — user: 10.000s, ref: 7.100s (Δ +2.900s). Max speed — user: 237.0 km/h, ref: 291.0 km/h; Min speed — user: 118.0 km/h, ref: 232.0 km/h. Max yaw (abs) — user: 2.820°, ref: 2.890°.
+Response: {
+"status": true,
+"message": "Früher bremsen."
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 5, Sequence: 84.5 - 92.2
+Time — user: 7.700s, ref: 5.500s (Δ +2.200s). Max speed — user: 228.0 km/h, ref: 275.0 km/h; Min speed — user: 100.0 km/h, ref: 216.0 km/h. Max yaw (abs) — user: 1.160°, ref: 1.010°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 0, Sequence: 0.0 - 8.2
+Time — user: 8.200s, ref: 4.600s (Δ +3.600s). Max speed — user: 230.0 km/h, ref: 297.0 km/h; Min speed — user: 105.0 km/h, ref: 262.0 km/h. Max yaw (abs) — user: 0.960°, ref: 0.870°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 1, Sequence: 8.8 - 23.7
+Time — user: 14.900s, ref: 9.000s (Δ +5.900s). Max speed — user: 242.0 km/h, ref: 327.0 km/h; Min speed — user: 95.0 km/h, ref: 296.0 km/h. Max yaw (abs) — user: 0.630°, ref: 0.560°.
+Response: {
+    "status": true,
+    "message": "Früher bremsen."
+}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 2, Sequence: 40.2 - 61.2
+Time — user: 21.000s, ref: 8.200s (Δ +12.800s). Max speed — user: 233.0 km/h, ref: 312.0 km/h; Min speed — user: 0.0 km/h, ref: 256.0 km/h. Max yaw (abs) — user: 3.130°, ref: 3.140°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 3, Sequence: 61.8 - 83.6
+Time — user: 21.800s, ref: 8.700s (Δ +13.100s). Max speed — user: 234.0 km/h, ref: 278.0 km/h; Min speed — user: 15.0 km/h, ref: 211.0 km/h. Max yaw (abs) — user: 3.100°, ref: 3.140°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 4, Sequence: 84.2 - 95.0
+Time — user: 10.800s, ref: 7.000s (Δ +3.800s). Max speed — user: 221.0 km/h, ref: 290.0 km/h; Min speed — user: 98.0 km/h, ref: 232.0 km/h. Max yaw (abs) — user: 2.910°, ref: 2.890°.
+Response: {"status": true, "message": "Früher bremse."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 5, Sequence: 95.6 - 102.7
+Time — user: 7.100s, ref: 5.500s (Δ +1.600s). Max speed — user: 230.0 km/h, ref: 289.0 km/h; Min speed — user: 151.0 km/h, ref: 216.0 km/h. Max yaw (abs) — user: 0.980°, ref: 1.120°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 3, Segment: 0, Sequence: 0.0 - 6.0
+Time — user: 6.000s, ref: 4.600s (Δ +1.400s). Max speed — user: 249.0 km/h, ref: 297.0 km/h; Min speed — user: 195.0 km/h, ref: 262.0 km/h. Max yaw (abs) — user: 0.830°, ref: 0.870°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 3, Segment: 1, Sequence: 6.6 - 19.8
+Time — user: 13.200s, ref: 8.900s (Δ +4.300s). Max speed — user: 240.0 km/h, ref: 327.0 km/h; Min speed — user: 167.0 km/h, ref: 296.0 km/h. Max yaw (abs) — user: 0.620°, ref: 0.550°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 3, Segment: 2, Sequence: 34.6 - 46.8
+Time — user: 12.200s, ref: 8.000s (Δ +4.200s). Max speed — user: 239.0 km/h, ref: 312.0 km/h; Min speed — user: 153.0 km/h, ref: 257.0 km/h. Max yaw (abs) — user: 3.120°, ref: 3.140°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 3, Segment: 3, Sequence: 47.3 - 59.5
+Time — user: 12.200s, ref: 8.800s (Δ +3.400s). Max speed — user: 236.0 km/h, ref: 279.0 km/h; Min speed — user: 116.0 km/h, ref: 214.0 km/h. Max yaw (abs) — user: 3.130°, ref: 3.140°.
+Response: {"status": true, "message": "Früher ans Gas geben."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 3, Segment: 4, Sequence: 60.0 - 70.0
+Time — user: 10.000s, ref: 7.000s (Δ +3.000s). Max speed — user: 243.0 km/h, ref: 290.0 km/h; Min speed — user: 103.0 km/h, ref: 232.0 km/h. Max yaw (abs) — user: 2.860°, ref: 2.890°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 3, Segment: 5, Sequence: 70.5 - 80.4
+Time — user: 9.900s, ref: 5.600s (Δ +4.300s). Max speed — user: 212.0 km/h, ref: 289.0 km/h; Min speed — user: 26.0 km/h, ref: 216.0 km/h. Max yaw (abs) — user: 0.840°, ref: 1.120°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 4, Segment: 0, Sequence: 0.0 - 7.2
+Time — user: 7.200s, ref: 4.700s (Δ +2.500s). Max speed — user: 235.0 km/h, ref: 296.0 km/h; Min speed — user: 139.0 km/h, ref: 262.0 km/h. Max yaw (abs) — user: 0.960°, ref: 0.870°.
+Response: {"status": false, "message": "Passt."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 4, Segment: 1, Sequence: 7.7 - 22.1
+Time — user: 14.400s, ref: 9.000s (Δ +5.400s). Max speed — user: 257.0 km/h, ref: 327.0 km/h; Min speed — user: 141.0 km/h, ref: 296.0 km/h. Max yaw (abs) — user: 0.610°, ref: 0.550°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 4, Segment: 2, Sequence: 38.0 - 51.6
+Time — user: 13.600s, ref: 8.100s (Δ +5.500s). Max speed — user: 236.0 km/h, ref: 312.0 km/h; Min speed — user: 98.0 km/h, ref: 257.0 km/h. Max yaw (abs) — user: 3.140°, ref: 3.120°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 4, Segment: 3, Sequence: 52.7 - 78.3
+Time — user: 25.600s, ref: 8.400s (Δ +17.200s). Max speed — user: 237.0 km/h, ref: 279.0 km/h; Min speed — user: 4.0 km/h, ref: 213.0 km/h. Max yaw (abs) — user: 3.130°, ref: 3.130°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 4, Segment: 4, Sequence: 78.8 - 92.0
+Time — user: 13.200s, ref: 6.700s (Δ +6.500s). Max speed — user: 242.0 km/h, ref: 290.0 km/h; Min speed — user: 83.0 km/h, ref: 232.0 km/h. Max yaw (abs) — user: 2.870°, ref: 2.890°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 0, Sequence: 0.0 - 9.4
+Time — user: 9.400s, ref: 56.100s (Δ -46.700s). Max speed — user: 227.0 km/h, ref: 287.0 km/h; Min speed — user: 0.0 km/h, ref: 223.0 km/h. Max yaw (abs) — user: 2.910°, ref: 2.860°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 1, Sequence: 12.1 - 28.1
+Time — user: 16.000s, ref: 11.400s (Δ +4.600s). Max speed — user: 227.0 km/h, ref: 265.0 km/h; Min speed — user: 50.0 km/h, ref: 107.0 km/h. Max yaw (abs) — user: 3.050°, ref: 3.140°.
+Response: {"status": true, "message": "Früher zu viel Gas geben."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 2, Sequence: 28.6 - 62.5
+Time — user: 33.900s, ref: 14.800s (Δ +19.100s). Max speed — user: 222.0 km/h, ref: 279.0 km/h; Min speed — user: 0.0 km/h, ref: 138.0 km/h. Max yaw (abs) — user: 3.030°, ref: 3.070°.
+Response: {"status": true, "message": "Früher einlenken."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 3, Sequence: 63.1 - 79.9
+Time — user: 16.800s, ref: 13.800s (Δ +3.000s). Max speed — user: 249.0 km/h, ref: 274.0 km/h; Min speed — user: 91.0 km/h, ref: 150.0 km/h. Max yaw (abs) — user: 1.780°, ref: 1.750°.
+Response: {"status": true, "message": "Früher zu schnell nachlenken."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 0, Segment: 4, Sequence: 80.5 - 100.2
+Time — user: 19.700s, ref: 56.000s (Δ -36.300s). Max speed — user: 244.0 km/h, ref: 283.0 km/h; Min speed — user: 0.0 km/h, ref: 170.0 km/h. Max yaw (abs) — user: 2.130°, ref: 1.600°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 0, Sequence: 0.0 - 16.0
+Time — user: 16.000s, ref: 5.400s (Δ +10.600s). Max speed — user: 181.0 km/h, ref: 287.0 km/h; Min speed — user: 0.0 km/h, ref: 221.0 km/h. Max yaw (abs) — user: 3.130°, ref: 2.860°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 1, Sequence: 19.3 - 31.3
+Time — user: 12.000s, ref: 10.400s (Δ +1.600s). Max speed — user: 238.0 km/h, ref: 264.0 km/h; Min speed — user: 59.0 km/h, ref: 107.0 km/h. Max yaw (abs) — user: 3.090°, ref: 3.100°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 2, Sequence: 33.5 - 78.6
+Time — user: 45.100s, ref: 14.500s (Δ +30.600s). Max speed — user: 220.0 km/h, ref: 277.0 km/h; Min speed — user: 0.0 km/h, ref: 137.0 km/h. Max yaw (abs) — user: 3.120°, ref: 3.070°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 3, Sequence: 79.7 - 104.2
+Time — user: 24.500s, ref: 13.600s (Δ +10.900s). Max speed — user: 246.0 km/h, ref: 277.0 km/h; Min speed — user: 0.0 km/h, ref: 150.0 km/h. Max yaw (abs) — user: 1.760°, ref: 1.660°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 1, Segment: 4, Sequence: 104.7 - 123.3
+Time — user: 18.600s, ref: 7.500s (Δ +11.100s). Max speed — user: 231.0 km/h, ref: 285.0 km/h; Min speed — user: 0.0 km/h, ref: 221.0 km/h. Max yaw (abs) — user: 1.960°, ref: 1.610°.
+Response: {"status": true, "message": "Früher ans Gas."}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 0, Sequence: 0.0 - 7.6
+Time — user: 7.600s, ref: 5.200s (Δ +2.400s). Max speed — user: 234.0 km/h, ref: 287.0 km/h; Min speed — user: 125.0 km/h, ref: 222.0 km/h. Max yaw (abs) — user: 2.800°, ref: 2.860°.
+Response: {"status": true, "message": "Früher ans Gas."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 1, Sequence: 10.9 - 27.8
+Time — user: 16.900s, ref: 10.900s (Δ +6.000s). Max speed — user: 180.0 km/h, ref: 267.0 km/h; Min speed — user: 50.0 km/h, ref: 107.0 km/h. Max yaw (abs) — user: 3.020°, ref: 3.090°.
+Response: {"status": true, "message": "Früher einlenken."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 2, Sequence: 29.4 - 59.1
+Time — user: 29.700s, ref: 14.800s (Δ +14.900s). Max speed — user: 208.0 km/h, ref: 275.0 km/h; Min speed — user: 0.0 km/h, ref: 138.0 km/h. Max yaw (abs) — user: 3.120°, ref: 3.020°.
+Response: {"status": true, "message": "Früher bremse früher lösen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 3, Sequence: 59.6 - 76.0
+Time — user: 16.400s, ref: 13.600s (Δ +2.800s). Max speed — user: 266.0 km/h, ref: 277.0 km/h; Min speed — user: 80.0 km/h, ref: 152.0 km/h. Max yaw (abs) — user: 1.720°, ref: 1.660°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 2, Segment: 4, Sequence: 76.6 - 95.9
+Time — user: 19.300s, ref: 55.900s (Δ -36.600s). Max speed — user: 230.0 km/h, ref: 283.0 km/h; Min speed — user: 0.0 km/h, ref: 226.0 km/h. Max yaw (abs) — user: 1.710°, ref: 1.610°.
+Response: {
+    "status": false,
+    "message": "Passt."
+}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 3, Segment: 0, Sequence: 0.0 - 6.5
+Time — user: 6.500s, ref: 5.300s (Δ +1.200s). Max speed — user: 239.0 km/h, ref: 287.0 km/h; Min speed — user: 152.0 km/h, ref: 222.0 km/h. Max yaw (abs) — user: 2.880°, ref: 2.860°.
+Response: {"status": true, "message": "Früher einlenken."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 3, Segment: 1, Sequence: 9.9 - 23.0
+Time — user: 13.100s, ref: 10.800s (Δ +2.300s). Max speed — user: 228.0 km/h, ref: 265.0 km/h; Min speed — user: 52.0 km/h, ref: 106.0 km/h. Max yaw (abs) — user: 3.140°, ref: 3.100°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 3, Segment: 2, Sequence: 24.2 - 52.0
+Time — user: 27.800s, ref: 14.700s (Δ +13.100s). Max speed — user: 215.0 km/h, ref: 276.0 km/h; Min speed — user: 0.0 km/h, ref: 137.0 km/h. Max yaw (abs) — user: 3.100°, ref: 3.120°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 3, Segment: 3, Sequence: 52.5 - 79.7
+Time — user: 27.200s, ref: 14.100s (Δ +13.100s). Max speed — user: 249.0 km/h, ref: 277.0 km/h; Min speed — user: 0.0 km/h, ref: 152.0 km/h. Max yaw (abs) — user: 1.640°, ref: 1.810°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 3, Segment: 4, Sequence: 80.2 - 90.5
+Time — user: 10.300s, ref: 7.000s (Δ +3.300s). Max speed — user: 235.0 km/h, ref: 282.0 km/h; Min speed — user: 94.0 km/h, ref: 226.0 km/h. Max yaw (abs) — user: 1.590°, ref: 1.600°.
+Response: {"status": true, "message": "Früher schneller einlenken."}
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+System Prompt: 
+        Rolle: Erfahrener Rennfahrer-Coach.
+
+        Aufgabe:
+        Wandle tabellarische Telemetrie in extrem kurzes Coaching um.
+        Jedes Attribut hat zwei Werte: erster Wert Fahrer, zweiter Wert Referenz.
+
+        Selbst-augmentiert (intern, NICHT ausgeben):
+        1) Bestimme intern die wichtigste, sicher belegte Verbesserung (Fahrer vs. Referenz).
+        2) Formuliere daraus genau eine klare Handlungsanweisung.
+
+        Ausgabe:
+        Gib exakt ein JSON-Objekt aus:
+        {
+        "status": true|false,
+        "message": "..."
+        }
+
+        Regeln:
+        - Gib nur JSON aus, keinen weiteren Text.
+        - status nur true/false (JSON-Boolean).
+        - Keine Markdown-Backticks, keine Erklärung außerhalb des JSON.
+        - message immer Deutsch (de-DE), Du-Form, Imperativ.
+        - Nur Verbesserungen (keine Analyse, kein Vergleichstext).
+        - Keine Telemetrie-Feldnamen, keine Zeitstempel.
+
+        LÄNGE (SEHR WICHTIG):
+        - message maximal 10 Wörter (Wörter = durch Leerzeichen getrennt).
+        - Genau 1 Satz. Keine zweite Anweisung.
+        - Keine Füllwörter (z. B. "versuche", "einfach", "wirklich").
+
+        SCHREIBWEISE (SEHR WICHTIG FÜR TTS):
+        - Verwende echte Umlaute (ä, ö, ü, Ä, Ö, Ü) und ß, wenn passend.
+        - Schreibe Umlaute niemals als zwei Buchstaben.
+        - Ersetze ß nicht durch Doppel-s.
+        - Prüfe vor der Ausgabe: Wenn die message nicht natürliches Deutsch ist, korrigiere sie intern.
+
+        WORTWAHL:
+        - VERBOTEN: Trigger, Stick, Controller, progressiv, "ruhiger", "flüssiger", "Bogen".
+        - Erlaubt (Beispiele, Stil genau so kurz halten):
+        * "Früher bremsen."
+        * "Bremse früher lösen."
+        * "Sanfter bremsen."
+        * "Später ans Gas."
+        * "Gas sanfter aufbauen."
+        * "Früher einlenken."
+        * "Später einlenken."
+        * "Weniger nachlenken."
+        * "Weiter innen fahren." (nur wenn wirklich belegbar)
+
+        STATUS:
+        - status=true nur, wenn mindestens eine klare Verbesserung nötig ist.
+        - Wenn status=false: message = "Passt."
+        
+User Prompt: Antworte ausschließlich auf Deutsch (de-DE). Antwortformat strikt: {"status": true|false, "message": "..."}. Wichtig: Verwende echte Umlaute und ß, keine Umschrift mit zwei Buchstaben.
+________________________________________________________________________________________________________________________________________________________________
+Lap: 4, Segment: 0, Sequence: 0.0 - 6.6
+Time — user: 6.600s, ref: 5.000s (Δ +1.600s). Max speed — user: 238.0 km/h, ref: 287.0 km/h; Min speed — user: 139.0 km/h, ref: 223.0 km/h. Max yaw (abs) — user: 2.810°, ref: 2.840°.
+Response: {"status": true, "message": "Sanfter bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 4, Segment: 1, Sequence: 9.8 - 25.9
+Time — user: 16.100s, ref: 10.700s (Δ +5.400s). Max speed — user: 231.0 km/h, ref: 264.0 km/h; Min speed — user: 26.0 km/h, ref: 106.0 km/h. Max yaw (abs) — user: 3.100°, ref: 3.100°.
+Response: {"status": true, "message": "Früher bremsen."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 4, Segment: 2, Sequence: 27.5 - 48.8
+Time — user: 21.300s, ref: 14.700s (Δ +6.600s). Max speed — user: 215.0 km/h, ref: 276.0 km/h; Min speed — user: 65.0 km/h, ref: 137.0 km/h. Max yaw (abs) — user: 3.130°, ref: 3.120°.
+Response: {"status": true, "message": "Früher einlenken."}
+
+________________________________________________________________________________________________________________________________________________________________
+Lap: 4, Segment: 3, Sequence: 58.6 - 74.9
+Time — user: 16.300s, ref: 13.900s (Δ +2.400s). Max speed — user: 260.0 km/h, ref: 277.0 km/h; Min speed — user: 85.0 km/h, ref: 152.0 km/h. Max yaw (abs) — user: 1.710°, ref: 1.700°.
+Response: {"status": true, "message": "Früher nachlenken."}
+
