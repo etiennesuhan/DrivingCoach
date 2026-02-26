@@ -1,316 +1,316 @@
-name.1,id.1,duration,help_label,racetrack.1_2,racetrack.1_3,lap_2,lap_3,lap_4,lap_5,help.1_2,help.1_3,experience.1_2,experience.1_3,race_number.1_2.0,race_number.1_3.0
-AmL ID5,1,60.0,No Help,False,False,False,False,False,False,False,False,False,False,False,False
-AmL ID5,1,60.0,No Help,False,False,True,False,False,False,False,False,False,False,True,False
-AmL ID5,1,74.42,No Help,False,False,False,True,False,False,False,False,False,False,False,True
-AmL ID5,1,56.47,No Help,False,False,False,False,True,False,False,False,False,False,False,False
-AmL ID5,1,62.13,No Help,False,False,False,False,False,True,False,False,False,False,True,False
-AmL ID5,1,131.52,With Driving Coach,True,False,False,False,False,False,True,False,False,False,False,True
-AmL ID5,1,92.23,With Driving Coach,True,False,True,False,False,False,True,False,False,False,False,False
-AmL ID5,1,102.97,With Driving Coach,True,False,False,True,False,False,True,False,False,False,True,False
-AmL ID5,1,80.48,With Driving Coach,True,False,False,False,True,False,True,False,False,False,False,True
-AmL ID5,1,103.0,With Driving Coach,True,False,False,False,False,True,True,False,False,False,False,False
-AmL ID5,1,100.24,With Ideal Driving Line,False,True,False,False,False,False,False,True,False,False,True,False
-AmL ID5,1,123.33,With Ideal Driving Line,False,True,True,False,False,False,False,True,False,False,False,True
-AmL ID5,1,96.22,With Ideal Driving Line,False,True,False,True,False,False,False,True,False,False,False,False
-AmL ID5,1,90.83,With Ideal Driving Line,False,True,False,False,True,False,False,True,False,False,True,False
-AmL ID5,1,86.71,With Ideal Driving Line,False,True,False,False,False,True,False,True,False,False,False,True
-ML ID7,2,104.47,With Driving Coach,True,False,False,False,False,False,True,False,False,False,False,False
-ML ID7,2,84.65,With Driving Coach,True,False,True,False,False,False,True,False,False,False,True,False
-ML ID7,2,80.35,With Driving Coach,True,False,False,True,False,False,True,False,False,False,False,True
-ML ID7,2,82.16,With Driving Coach,True,False,False,False,True,False,True,False,False,False,False,False
-ML ID7,2,112.42,With Driving Coach,True,False,False,False,False,True,True,False,False,False,True,False
-ML ID7,2,95.34,With Ideal Driving Line,False,True,False,False,False,False,False,True,False,False,False,True
-ML ID7,2,112.21,With Ideal Driving Line,False,True,True,False,False,False,False,True,False,False,False,False
-ML ID7,2,86.4,With Ideal Driving Line,False,True,False,True,False,False,False,True,False,False,True,False
-ML ID7,2,97.75,With Ideal Driving Line,False,True,False,False,True,False,False,True,False,False,False,True
-ML ID7,2,84.55,With Ideal Driving Line,False,True,False,False,False,True,False,True,False,False,False,False
-ML ID7,2,62.06,No Help,False,False,False,False,False,False,False,False,False,False,True,False
-ML ID7,2,62.63,No Help,False,False,True,False,False,False,False,False,False,False,False,True
-ML ID7,2,63.09,No Help,False,False,False,True,False,False,False,False,False,False,False,False
-ML ID7,2,63.75,No Help,False,False,False,False,True,False,False,False,False,False,True,False
-ML ID7,2,56.37,No Help,False,False,False,False,False,True,False,False,False,False,False,True
-EL ID8,3,124.36,With Ideal Driving Line,False,True,False,False,False,False,False,True,False,False,False,False
-EL ID8,3,97.53,With Ideal Driving Line,False,True,True,False,False,False,False,True,False,False,True,False
-EL ID8,3,109.34,With Ideal Driving Line,False,True,False,True,False,False,False,True,False,False,False,True
-EL ID8,3,93.25,With Ideal Driving Line,False,True,False,False,True,False,False,True,False,False,False,False
-EL ID8,3,69.69,With Ideal Driving Line,False,True,False,False,False,True,False,True,False,False,True,False
-EL ID8,3,72.12,No Help,False,False,False,False,False,False,False,False,False,False,False,True
-EL ID8,3,63.04,No Help,False,False,True,False,False,False,False,False,False,False,False,False
-EL ID8,3,51.84,No Help,False,False,False,True,False,False,False,False,False,False,True,False
-EL ID8,3,54.28,No Help,False,False,False,False,True,False,False,False,False,False,False,True
-EL ID8,3,55.54,No Help,False,False,False,False,False,True,False,False,False,False,False,False
-EL ID8,3,106.94,With Driving Coach,True,False,False,False,False,False,True,False,False,False,True,False
-EL ID8,3,87.33,With Driving Coach,True,False,True,False,False,False,True,False,False,False,False,True
-EL ID8,3,87.44,With Driving Coach,True,False,False,True,False,False,True,False,False,False,False,False
-EL ID8,3,80.5,With Driving Coach,True,False,False,False,True,False,True,False,False,False,True,False
-EL ID8,3,80.5,With Driving Coach,True,False,False,False,False,True,True,False,False,False,False,True
-MK ID11,4,95.6,No Help,True,False,False,False,False,False,False,False,False,False,False,False
-MK ID11,4,78.76,No Help,True,False,True,False,False,False,False,False,False,False,True,False
-MK ID11,4,81.1,No Help,True,False,False,True,False,False,False,False,False,False,False,True
-MK ID11,4,72.49,No Help,True,False,False,False,True,False,False,False,False,False,False,False
-MK ID11,4,78.78,No Help,True,False,False,False,False,True,False,False,False,False,True,False
-MK ID11,4,73.51,With Driving Coach,False,True,False,False,False,False,True,False,False,False,False,True
-MK ID11,4,73.67,With Driving Coach,False,True,True,False,False,False,True,False,False,False,False,False
-MK ID11,4,71.82,With Driving Coach,False,True,False,True,False,False,True,False,False,False,True,False
-MK ID11,4,72.03,With Driving Coach,False,True,False,False,True,False,True,False,False,False,False,True
-MK ID11,4,68.17,With Driving Coach,False,True,False,False,False,True,True,False,False,False,False,False
-MK ID11,4,53.79,With Ideal Driving Line,False,False,False,False,False,False,False,True,False,False,True,False
-MK ID11,4,67.08,With Ideal Driving Line,False,False,True,False,False,False,False,True,False,False,False,True
-MK ID11,4,50.58,With Ideal Driving Line,False,False,False,True,False,False,False,True,False,False,False,False
-MK ID11,4,60.08,With Ideal Driving Line,False,False,False,False,True,False,False,True,False,False,True,False
-MK ID11,4,53.1,With Ideal Driving Line,False,False,False,False,False,True,False,True,False,False,False,True
-SS ID13,5,100.25,With Driving Coach,False,True,False,False,False,False,True,False,False,False,False,False
-SS ID13,5,91.99,With Driving Coach,False,True,True,False,False,False,True,False,False,False,True,False
-SS ID13,5,83.75,With Driving Coach,False,True,False,True,False,False,True,False,False,False,False,True
-SS ID13,5,102.53,With Driving Coach,False,True,False,False,True,False,True,False,False,False,False,False
-SS ID13,5,108.59,With Driving Coach,False,True,False,False,False,True,True,False,False,False,False,False
-SS ID13,5,76.21,With Ideal Driving Line,False,False,False,False,False,False,False,True,False,False,False,False
-SS ID13,5,61.1,With Ideal Driving Line,False,False,True,False,False,False,False,True,False,False,False,False
-SS ID13,5,59.02,With Ideal Driving Line,False,False,False,True,False,False,False,True,False,False,False,False
-SS ID13,5,79.07,With Ideal Driving Line,False,False,False,False,True,False,False,True,False,False,False,False
-SS ID13,5,56.8,With Ideal Driving Line,False,False,False,False,False,True,False,True,False,False,False,False
-SS ID13,5,81.1,No Help,True,False,False,False,False,False,False,False,False,False,False,False
-SS ID13,5,79.55,No Help,True,False,True,False,False,False,False,False,False,False,False,False
-SS ID13,5,75.52,No Help,True,False,False,True,False,False,False,False,False,False,False,False
-SS ID13,5,74.76,No Help,True,False,False,False,True,False,False,False,False,False,False,False
-SS ID13,5,81.65,No Help,True,False,False,False,False,True,False,False,False,False,False,False
-LM ID21,6,69.36,With Ideal Driving Line,False,False,False,False,False,False,False,True,False,False,False,False
-LM ID21,6,55.63,With Ideal Driving Line,False,False,True,False,False,False,False,True,False,False,False,False
-LM ID21,6,64.57,With Ideal Driving Line,False,False,False,True,False,False,False,True,False,False,False,False
-LM ID21,6,51.03,With Ideal Driving Line,False,False,False,False,True,False,False,True,False,False,False,False
-LM ID21,6,55.76,With Ideal Driving Line,False,False,False,False,False,True,False,True,False,False,False,False
-LM ID21,6,85.0,No Help,True,False,False,False,False,False,False,False,False,False,False,False
-LM ID21,6,94.19,No Help,True,False,True,False,False,False,False,False,False,False,False,False
-LM ID21,6,84.0,No Help,True,False,False,True,False,False,False,False,False,False,False,False
-LM ID21,6,92.41,No Help,True,False,False,False,True,False,False,False,False,False,False,False
-LM ID21,6,66.19,No Help,True,False,False,False,False,True,False,False,False,False,False,False
-LM ID21,6,74.36,With Driving Coach,False,True,False,False,False,False,True,False,False,False,False,False
-LM ID21,6,93.0,With Driving Coach,False,True,True,False,False,False,True,False,False,False,False,False
-LM ID21,6,87.63,With Driving Coach,False,True,False,True,False,False,True,False,False,False,False,False
-LM ID21,6,92.89,With Driving Coach,False,True,False,False,True,False,True,False,False,False,False,False
-LM ID21,6,73.0,With Driving Coach,False,True,False,False,False,True,True,False,False,False,False,False
-0,7,,No Help,False,True,False,False,False,False,False,False,False,False,False,False
-0,7,,No Help,False,True,True,False,False,False,False,False,False,False,False,False
-0,7,,No Help,False,True,False,True,False,False,False,False,False,False,False,False
-0,7,,No Help,False,True,False,False,True,False,False,False,False,False,False,False
-0,7,,No Help,False,True,False,False,False,True,False,False,False,False,False,False
-0,7,,With Driving Coach,False,False,False,False,False,False,True,False,False,False,False,False
-0,7,,With Driving Coach,False,False,True,False,False,False,True,False,False,False,False,False
-0,7,,With Driving Coach,False,False,False,True,False,False,True,False,False,False,False,False
-0,7,,With Driving Coach,False,False,False,False,True,False,True,False,False,False,False,False
-0,7,,With Driving Coach,False,False,False,False,False,True,True,False,False,False,False,False
-0,7,,With Ideal Driving Line,True,False,False,False,False,False,False,True,False,False,False,False
-0,7,,With Ideal Driving Line,True,False,True,False,False,False,False,True,False,False,False,False
-0,7,,With Ideal Driving Line,True,False,False,True,False,False,False,True,False,False,False,False
-0,7,,With Ideal Driving Line,True,False,False,False,True,False,False,True,False,False,False,False
-0,7,,With Ideal Driving Line,True,False,False,False,False,True,False,True,False,False,False,False
-LW ID1,8,58.04,With Driving Coach,False,False,False,False,False,False,True,False,True,False,False,False
-LW ID1,8,52.75,With Driving Coach,False,False,True,False,False,False,True,False,True,False,False,False
-LW ID1,8,51.5,With Driving Coach,False,False,False,True,False,False,True,False,True,False,False,False
-LW ID1,8,51.75,With Driving Coach,False,False,False,False,True,False,True,False,True,False,False,False
-LW ID1,8,55.44,With Driving Coach,False,False,False,False,False,True,True,False,True,False,False,False
-LW ID1,8,80.58,With Ideal Driving Line,True,False,False,False,False,False,False,True,True,False,False,False
-LW ID1,8,98.35,With Ideal Driving Line,True,False,True,False,False,False,False,True,True,False,False,False
-LW ID1,8,77.61,With Ideal Driving Line,True,False,False,True,False,False,False,True,True,False,False,False
-LW ID1,8,77.96,With Ideal Driving Line,True,False,False,False,True,False,False,True,True,False,False,False
-LW ID1,8,71.32,With Ideal Driving Line,True,False,False,False,False,True,False,True,True,False,False,False
-LW ID1,8,65.88,No Help,False,True,False,False,False,False,False,False,True,False,False,False
-LW ID1,8,62.23,No Help,False,True,True,False,False,False,False,False,True,False,False,False
-LW ID1,8,66.0,No Help,False,True,False,True,False,False,False,False,True,False,False,False
-LW ID1,8,61.18,No Help,False,True,False,False,True,False,False,False,True,False,False,False
-LW ID1,8,65.71,No Help,False,True,False,False,False,True,False,False,True,False,False,False
-JS ID2,9,90.22,With Ideal Driving Line,True,False,False,False,False,False,False,True,True,False,False,False
-JS ID2,9,81.08,With Ideal Driving Line,True,False,True,False,False,False,False,True,True,False,False,False
-JS ID2,9,74.01,With Ideal Driving Line,True,False,False,True,False,False,False,True,True,False,False,False
-JS ID2,9,72.37,With Ideal Driving Line,True,False,False,False,True,False,False,True,True,False,False,False
-JS ID2,9,89.44,With Ideal Driving Line,True,False,False,False,False,True,False,True,True,False,False,False
-JS ID2,9,65.7,No Help,False,True,False,False,False,False,False,False,True,False,False,False
-JS ID2,9,60.51,No Help,False,True,True,False,False,False,False,False,True,False,False,False
-JS ID2,9,71.82,No Help,False,True,False,True,False,False,False,False,True,False,False,False
-JS ID2,9,61.53,No Help,False,True,False,False,True,False,False,False,True,False,False,False
-JS ID2,9,63.02,No Help,False,True,False,False,False,True,False,False,True,False,False,False
-JS ID2,9,57.89,With Driving Coach,False,False,False,False,False,False,True,False,True,False,False,False
-JS ID2,9,49.75,With Driving Coach,False,False,True,False,False,False,True,False,True,False,False,False
-JS ID2,9,53.04,With Driving Coach,False,False,False,True,False,False,True,False,True,False,False,False
-JS ID2,9,45.62,With Driving Coach,False,False,False,False,True,False,True,False,True,False,False,False
-JS ID2,9,46.48,With Driving Coach,False,False,False,False,False,True,True,False,True,False,False,False
-MH ID13,10,99.46,No Help,False,False,False,False,False,False,False,False,True,False,False,False
-MH ID13,10,68.0,No Help,False,False,True,False,False,False,False,False,True,False,False,False
-MH ID13,10,76.96,No Help,False,False,False,True,False,False,False,False,True,False,False,False
-MH ID13,10,70.72,No Help,False,False,False,False,True,False,False,False,True,False,False,False
-MH ID13,10,87.25,No Help,False,False,False,False,False,True,False,False,True,False,False,False
-MH ID13,10,93.01,With Driving Coach,True,False,False,False,False,False,True,False,True,False,False,False
-MH ID13,10,110.65,With Driving Coach,True,False,True,False,False,False,True,False,True,False,False,False
-MH ID13,10,93.11,With Driving Coach,True,False,False,True,False,False,True,False,True,False,False,False
-MH ID13,10,99.13,With Driving Coach,True,False,False,False,True,False,True,False,True,False,False,False
-MH ID13,10,87.89,With Driving Coach,True,False,False,False,False,True,True,False,True,False,False,False
-MH ID13,10,76.01,With Ideal Driving Line,False,True,False,False,False,False,False,True,True,False,False,False
-MH ID13,10,111.12,With Ideal Driving Line,False,True,True,False,False,False,False,True,True,False,False,False
-MH ID13,10,87.73,With Ideal Driving Line,False,True,False,True,False,False,False,True,True,False,False,False
-MH ID13,10,73.52,With Ideal Driving Line,False,True,False,False,True,False,False,True,True,False,False,False
-MH ID13,10,94.78,With Ideal Driving Line,False,True,False,False,False,True,False,True,True,False,False,False
-NS ID4,11,91.19,With Driving Coach,True,False,False,False,False,False,True,False,True,False,False,False
-NS ID4,11,88.86,With Driving Coach,True,False,True,False,False,False,True,False,True,False,False,False
-NS ID4,11,91.21,With Driving Coach,True,False,False,True,False,False,True,False,True,False,False,False
-NS ID4,11,86.01,With Driving Coach,True,False,False,False,True,False,True,False,True,False,False,False
-NS ID4,11,72.65,With Driving Coach,True,False,False,False,False,True,True,False,True,False,False,False
-NS ID4,11,84.74,With Ideal Driving Line,False,True,False,False,False,False,False,True,True,False,False,False
-NS ID4,11,67.51,With Ideal Driving Line,False,True,True,False,False,False,False,True,True,False,False,False
-NS ID4,11,68.64,With Ideal Driving Line,False,True,False,True,False,False,False,True,True,False,False,False
-NS ID4,11,75.62,With Ideal Driving Line,False,True,False,False,True,False,False,True,True,False,False,False
-NS ID4,11,73.27,With Ideal Driving Line,False,True,False,False,False,True,False,True,True,False,False,False
-NS ID4,11,58.74,No Help,False,False,False,False,False,False,False,False,True,False,False,False
-NS ID4,11,64.46,No Help,False,False,True,False,False,False,False,False,True,False,False,False
-NS ID4,11,59.31,No Help,False,False,False,True,False,False,False,False,True,False,False,False
-NS ID4,11,61.3,No Help,False,False,False,False,True,False,False,False,True,False,False,False
-NS ID4,11,61.91,No Help,False,False,False,False,False,True,False,False,True,False,False,False
-VK ID14,12,70.78,With Ideal Driving Line,False,True,False,False,False,False,False,True,True,False,False,False
-VK ID14,12,65.68,With Ideal Driving Line,False,True,True,False,False,False,False,True,True,False,False,False
-VK ID14,12,66.3,With Ideal Driving Line,False,True,False,True,False,False,False,True,True,False,False,False
-VK ID14,12,72.59,With Ideal Driving Line,False,True,False,False,True,False,False,True,True,False,False,False
-VK ID14,12,62.11,With Ideal Driving Line,False,True,False,False,False,True,False,True,True,False,False,False
-VK ID14,12,54.88,No Help,False,False,False,False,False,False,False,False,True,False,False,False
-VK ID14,12,47.98,No Help,False,False,True,False,False,False,False,False,True,False,False,False
-VK ID14,12,49.79,No Help,False,False,False,True,False,False,False,False,True,False,False,False
-VK ID14,12,53.31,No Help,False,False,False,False,True,False,False,False,True,False,False,False
-VK ID14,12,47.59,No Help,False,False,False,False,False,True,False,False,True,False,False,False
-VK ID14,12,72.45,With Driving Coach,True,False,False,False,False,False,True,False,True,False,False,False
-VK ID14,12,78.7,With Driving Coach,True,False,True,False,False,False,True,False,True,False,False,False
-VK ID14,12,66.87,With Driving Coach,True,False,False,True,False,False,True,False,True,False,False,False
-VK ID14,12,81.46,With Driving Coach,True,False,False,False,True,False,True,False,True,False,False,False
-VK ID14,12,64.77,With Driving Coach,True,False,False,False,False,True,True,False,True,False,False,False
-AuL ID10,13,82.2,No Help,True,False,False,False,False,False,False,False,True,False,False,False
-AuL ID10,13,76.71,No Help,True,False,True,False,False,False,False,False,True,False,False,False
-AuL ID10,13,76.2,No Help,True,False,False,True,False,False,False,False,True,False,False,False
-AuL ID10,13,80.68,No Help,True,False,False,False,True,False,False,False,True,False,False,False
-AuL ID10,13,73.24,No Help,True,False,False,False,False,True,False,False,True,False,False,False
-AuL ID10,13,88.99,With Driving Coach,False,True,False,False,False,False,True,False,True,False,False,False
-AuL ID10,13,74.1,With Driving Coach,False,True,True,False,False,False,True,False,True,False,False,False
-AuL ID10,13,85.46,With Driving Coach,False,True,False,True,False,False,True,False,True,False,False,False
-AuL ID10,13,83.88,With Driving Coach,False,True,False,False,True,False,True,False,True,False,False,False
-AuL ID10,13,70.74,With Driving Coach,False,True,False,False,False,True,True,False,True,False,False,False
-AuL ID10,13,70.84,With Ideal Driving Line,False,False,False,False,False,False,False,True,True,False,False,False
-AuL ID10,13,57.39,With Ideal Driving Line,False,False,True,False,False,False,False,True,True,False,False,False
-AuL ID10,13,56.09,With Ideal Driving Line,False,False,False,True,False,False,False,True,True,False,False,False
-AuL ID10,13,52.68,With Ideal Driving Line,False,False,False,False,True,False,False,True,True,False,False,False
-AuL ID10,13,51.96,With Ideal Driving Line,False,False,False,False,False,True,False,True,True,False,False,False
-BS ID12,14,75.06,With Driving Coach,False,True,False,False,False,False,True,False,True,False,False,False
-BS ID12,14,76.69,With Driving Coach,False,True,True,False,False,False,True,False,True,False,False,False
-BS ID12,14,68.03,With Driving Coach,False,True,False,True,False,False,True,False,True,False,False,False
-BS ID12,14,65.16,With Driving Coach,False,True,False,False,True,False,True,False,True,False,False,False
-BS ID12,14,73.35,With Driving Coach,False,True,False,False,False,True,True,False,True,False,False,False
-BS ID12,14,50.14,With Ideal Driving Line,False,False,False,False,False,False,False,True,True,False,False,False
-BS ID12,14,49.65,With Ideal Driving Line,False,False,True,False,False,False,False,True,True,False,False,False
-BS ID12,14,48.16,With Ideal Driving Line,False,False,False,True,False,False,False,True,True,False,False,False
-BS ID12,14,56.64,With Ideal Driving Line,False,False,False,False,True,False,False,True,True,False,False,False
-BS ID12,14,53.8,With Ideal Driving Line,False,False,False,False,False,True,False,True,True,False,False,False
-BS ID12,14,93.1,No Help,True,False,False,False,False,False,False,False,True,False,False,False
-BS ID12,14,62.21,No Help,True,False,True,False,False,False,False,False,True,False,False,False
-BS ID12,14,62.55,No Help,True,False,False,True,False,False,False,False,True,False,False,False
-BS ID12,14,64.01,No Help,True,False,False,False,True,False,False,False,True,False,False,False
-BS ID12,14,71.38,No Help,True,False,False,False,False,True,False,False,True,False,False,False
-NB ID3,15,50.74,With Ideal Driving Line,False,False,False,False,False,False,False,True,False,True,False,False
-NB ID3,15,50.82,With Ideal Driving Line,False,False,True,False,False,False,False,True,False,True,False,False
-NB ID3,15,49.66,With Ideal Driving Line,False,False,False,True,False,False,False,True,False,True,False,False
-NB ID3,15,49.87,With Ideal Driving Line,False,False,False,False,True,False,False,True,False,True,False,False
-NB ID3,15,45.18,With Ideal Driving Line,False,False,False,False,False,True,False,True,False,True,False,False
-NB ID3,15,68.05,No Help,True,False,False,False,False,False,False,False,False,True,False,False
-NB ID3,15,60.38,No Help,True,False,True,False,False,False,False,False,False,True,False,False
-NB ID3,15,59.31,No Help,True,False,False,True,False,False,False,False,False,True,False,False
-NB ID3,15,65.85,No Help,True,False,False,False,True,False,False,False,False,True,False,False
-NB ID3,15,62.58,No Help,True,False,False,False,False,True,False,False,False,True,False,False
-NB ID3,15,74.59,With Driving Coach,False,True,False,False,False,False,True,False,False,True,False,False
-NB ID3,15,62.07,With Driving Coach,False,True,True,False,False,False,True,False,False,True,False,False
-NB ID3,15,60.93,With Driving Coach,False,True,False,True,False,False,True,False,False,True,False,False
-NB ID3,15,61.43,With Driving Coach,False,True,False,False,True,False,True,False,False,True,False,False
-NB ID3,15,64.3,With Driving Coach,False,True,False,False,False,True,True,False,False,True,False,False
-AS ID6,16,69.44,No Help,False,True,False,False,False,False,False,False,False,True,False,False
-AS ID6,16,59.19,No Help,False,True,True,False,False,False,False,False,False,True,False,False
-AS ID6,16,60.08,No Help,False,True,False,True,False,False,False,False,False,True,False,False
-AS ID6,16,59.64,No Help,False,True,False,False,True,False,False,False,False,True,False,False
-AS ID6,16,60.08,No Help,False,True,False,False,False,True,False,False,False,True,False,False
-AS ID6,16,47.79,With Driving Coach,False,False,False,False,False,False,True,False,False,True,False,False
-AS ID6,16,43.56,With Driving Coach,False,False,True,False,False,False,True,False,False,True,False,False
-AS ID6,16,44.25,With Driving Coach,False,False,False,True,False,False,True,False,False,True,False,False
-AS ID6,16,43.61,With Driving Coach,False,False,False,False,True,False,True,False,False,True,False,False
-AS ID6,16,44.65,With Driving Coach,False,False,False,False,False,True,True,False,False,True,False,False
-AS ID6,16,,With Ideal Driving Line,True,False,False,False,False,False,False,True,False,True,False,False
-AS ID6,16,,With Ideal Driving Line,True,False,True,False,False,False,False,True,False,True,False,False
-AS ID6,16,,With Ideal Driving Line,True,False,False,True,False,False,False,True,False,True,False,False
-AS ID6,16,,With Ideal Driving Line,True,False,False,False,True,False,False,True,False,True,False,False
-AS ID6,16,,With Ideal Driving Line,True,False,False,False,False,True,False,True,False,True,False,False
-IA ID16,17,49.82,With Driving Coach,False,False,False,False,False,False,True,False,False,True,False,False
-IA ID16,17,46.03,With Driving Coach,False,False,True,False,False,False,True,False,False,True,False,False
-IA ID16,17,42.73,With Driving Coach,False,False,False,True,False,False,True,False,False,True,False,False
-IA ID16,17,44.59,With Driving Coach,False,False,False,False,True,False,True,False,False,True,False,False
-IA ID16,17,43.89,With Driving Coach,False,False,False,False,False,True,True,False,False,True,False,False
-IA ID16,17,60.04,With Ideal Driving Line,True,False,False,False,False,False,False,True,False,True,False,False
-IA ID16,17,55.78,With Ideal Driving Line,True,False,True,False,False,False,False,True,False,True,False,False
-IA ID16,17,65.0,With Ideal Driving Line,True,False,False,True,False,False,False,True,False,True,False,False
-IA ID16,17,55.56,With Ideal Driving Line,True,False,False,False,True,False,False,True,False,True,False,False
-IA ID16,17,54.2,With Ideal Driving Line,True,False,False,False,False,True,False,True,False,True,False,False
-IA ID16,17,60.52,No Help,False,True,False,False,False,False,False,False,False,True,False,False
-IA ID16,17,56.38,No Help,False,True,True,False,False,False,False,False,False,True,False,False
-IA ID16,17,56.54,No Help,False,True,False,True,False,False,False,False,False,True,False,False
-IA ID16,17,55.03,No Help,False,True,False,False,True,False,False,False,False,True,False,False
-IA ID16,17,56.02,No Help,False,True,False,False,False,True,False,False,False,True,False,False
-MaL ID19,18,70.0,With Ideal Driving Line,True,False,False,False,False,False,False,True,False,True,False,False
-MaL ID19,18,70.0,With Ideal Driving Line,True,False,True,False,False,False,False,True,False,True,False,False
-MaL ID19,18,74.95,With Ideal Driving Line,True,False,False,True,False,False,False,True,False,True,False,False
-MaL ID19,18,63.85,With Ideal Driving Line,True,False,False,False,True,False,False,True,False,True,False,False
-MaL ID19,18,64.85,With Ideal Driving Line,True,False,False,False,False,True,False,True,False,True,False,False
-MaL ID19,18,76.91,No Help,False,True,False,False,False,False,False,False,False,True,False,False
-MaL ID19,18,64.11,No Help,False,True,True,False,False,False,False,False,False,True,False,False
-MaL ID19,18,68.04,No Help,False,True,False,True,False,False,False,False,False,True,False,False
-MaL ID19,18,64.88,No Help,False,True,False,False,True,False,False,False,False,True,False,False
-MaL ID19,18,64.4,No Help,False,True,False,False,False,True,False,False,False,True,False,False
-MaL ID19,18,51.76,With Driving Coach,False,False,False,False,False,False,True,False,False,True,False,False
-MaL ID19,18,48.45,With Driving Coach,False,False,True,False,False,False,True,False,False,True,False,False
-MaL ID19,18,48.12,With Driving Coach,False,False,False,True,False,False,True,False,False,True,False,False
-MaL ID19,18,47.78,With Driving Coach,False,False,False,False,True,False,True,False,False,True,False,False
-MaL ID19,18,45.45,With Driving Coach,False,False,False,False,False,True,True,False,False,True,False,False
-NP ID20,19,64.0,No Help,False,False,False,False,False,False,False,False,False,True,False,False
-NP ID20,19,51.63,No Help,False,False,True,False,False,False,False,False,False,True,False,False
-NP ID20,19,54.36,No Help,False,False,False,True,False,False,False,False,False,True,False,False
-NP ID20,19,52.93,No Help,False,False,False,False,True,False,False,False,False,True,False,False
-NP ID20,19,51.12,No Help,False,False,False,False,False,True,False,False,False,True,False,False
-NP ID20,19,85.88,With Driving Coach,True,False,False,False,False,False,True,False,False,True,False,False
-NP ID20,19,70.98,With Driving Coach,True,False,True,False,False,False,True,False,False,True,False,False
-NP ID20,19,71.72,With Driving Coach,True,False,False,True,False,False,True,False,False,True,False,False
-NP ID20,19,72.09,With Driving Coach,True,False,False,False,True,False,True,False,False,True,False,False
-NP ID20,19,71.82,With Driving Coach,True,False,False,False,False,True,True,False,False,True,False,False
-NP ID20,19,72.04,With Ideal Driving Line,False,True,False,False,False,False,False,True,False,True,False,False
-NP ID20,19,68.48,With Ideal Driving Line,False,True,True,False,False,False,False,True,False,True,False,False
-NP ID20,19,66.21,With Ideal Driving Line,False,True,False,True,False,False,False,True,False,True,False,False
-NP ID20,19,66.42,With Ideal Driving Line,False,True,False,False,True,False,False,True,False,True,False,False
-NP ID20,19,67.44,With Ideal Driving Line,False,True,False,False,False,True,False,True,False,True,False,False
-FW ID22,20,62.25,With Driving Coach,True,False,False,False,False,False,True,False,False,True,False,False
-FW ID22,20,59.29,With Driving Coach,True,False,True,False,False,False,True,False,False,True,False,False
-FW ID22,20,59.1,With Driving Coach,True,False,False,True,False,False,True,False,False,True,False,False
-FW ID22,20,58.8,With Driving Coach,True,False,False,False,True,False,True,False,False,True,False,False
-FW ID22,20,58.69,With Driving Coach,True,False,False,False,False,True,True,False,False,True,False,False
-FW ID22,20,61.12,With Ideal Driving Line,False,True,False,False,False,False,False,True,False,True,False,False
-FW ID22,20,59.87,With Ideal Driving Line,False,True,True,False,False,False,False,True,False,True,False,False
-FW ID22,20,57.7,With Ideal Driving Line,False,True,False,True,False,False,False,True,False,True,False,False
-FW ID22,20,58.65,With Ideal Driving Line,False,True,False,False,True,False,False,True,False,True,False,False
-FW ID22,20,57.7,With Ideal Driving Line,False,True,False,False,False,True,False,True,False,True,False,False
-FW ID22,20,46.18,No Help,False,False,False,False,False,False,False,False,False,True,False,False
-FW ID22,20,42.67,No Help,False,False,True,False,False,False,False,False,False,True,False,False
-FW ID22,20,43.4,No Help,False,False,False,True,False,False,False,False,False,True,False,False
-FW ID22,20,42.46,No Help,False,False,False,False,True,False,False,False,False,True,False,False
-FW ID22,20,43.76,No Help,False,False,False,False,False,True,False,False,False,True,False,False
-0,21,,With Ideal Driving Line,True,False,False,False,False,False,False,True,False,True,False,False
-0,21,,With Ideal Driving Line,True,False,True,False,False,False,False,True,False,True,False,False
-0,21,,With Ideal Driving Line,True,False,False,True,False,False,False,True,False,True,False,False
-0,21,,With Ideal Driving Line,True,False,False,False,True,False,False,True,False,True,False,False
-0,21,,With Ideal Driving Line,True,False,False,False,False,True,False,True,False,True,False,False
-0,21,,No Help,False,True,False,False,False,False,False,False,False,True,False,False
-0,21,,No Help,False,True,True,False,False,False,False,False,False,True,False,False
-0,21,,No Help,False,True,False,True,False,False,False,False,False,True,False,False
-0,21,,No Help,False,True,False,False,True,False,False,False,False,True,False,False
-0,21,,No Help,False,True,False,False,False,True,False,False,False,True,False,False
-0,21,,With Driving Coach,False,False,False,False,False,False,True,False,False,True,False,False
-0,21,,With Driving Coach,False,False,True,False,False,False,True,False,False,True,False,False
-0,21,,With Driving Coach,False,False,False,True,False,False,True,False,False,True,False,False
-0,21,,With Driving Coach,False,False,False,False,True,False,True,False,False,True,False,False
-0,21,,With Driving Coach,False,False,False,False,False,True,True,False,False,True,False,False
+name.1,id.1,duration,three_race_duration,help_label,racetrack.1_2,racetrack.1_3,lap_2,lap_3,lap_4,lap_5,help.1_2,help.1_3,experience.1_2,experience.1_3,race_number.1_2.0,race_number.1_3.0
+AmL ID5,1,60.0,1320.55,No Help,False,False,False,False,False,False,False,False,False,False,False,False
+AmL ID5,1,60.0,1320.55,No Help,False,False,True,False,False,False,False,False,False,False,True,False
+AmL ID5,1,74.42,1320.55,No Help,False,False,False,True,False,False,False,False,False,False,False,True
+AmL ID5,1,56.47,1320.55,No Help,False,False,False,False,True,False,False,False,False,False,False,False
+AmL ID5,1,62.13,1320.55,No Help,False,False,False,False,False,True,False,False,False,False,True,False
+AmL ID5,1,131.52,1320.55,With Driving Coach,True,False,False,False,False,False,True,False,False,False,False,True
+AmL ID5,1,92.23,1320.55,With Driving Coach,True,False,True,False,False,False,True,False,False,False,False,False
+AmL ID5,1,102.97,1320.55,With Driving Coach,True,False,False,True,False,False,True,False,False,False,True,False
+AmL ID5,1,80.48,1320.55,With Driving Coach,True,False,False,False,True,False,True,False,False,False,False,True
+AmL ID5,1,103.0,1320.55,With Driving Coach,True,False,False,False,False,True,True,False,False,False,False,False
+AmL ID5,1,100.24,1320.55,With Ideal Driving Line,False,True,False,False,False,False,False,True,False,False,True,False
+AmL ID5,1,123.33,1320.55,With Ideal Driving Line,False,True,True,False,False,False,False,True,False,False,False,True
+AmL ID5,1,96.22,1320.55,With Ideal Driving Line,False,True,False,True,False,False,False,True,False,False,False,False
+AmL ID5,1,90.83,1320.55,With Ideal Driving Line,False,True,False,False,True,False,False,True,False,False,True,False
+AmL ID5,1,86.71,1320.55,With Ideal Driving Line,False,True,False,False,False,True,False,True,False,False,False,True
+ML ID7,2,104.47,1248.2,With Driving Coach,True,False,False,False,False,False,True,False,False,False,False,False
+ML ID7,2,84.65,1248.2,With Driving Coach,True,False,True,False,False,False,True,False,False,False,True,False
+ML ID7,2,80.35,1248.2,With Driving Coach,True,False,False,True,False,False,True,False,False,False,False,True
+ML ID7,2,82.16,1248.2,With Driving Coach,True,False,False,False,True,False,True,False,False,False,False,False
+ML ID7,2,112.42,1248.2,With Driving Coach,True,False,False,False,False,True,True,False,False,False,True,False
+ML ID7,2,95.34,1248.2,With Ideal Driving Line,False,True,False,False,False,False,False,True,False,False,False,True
+ML ID7,2,112.21,1248.2,With Ideal Driving Line,False,True,True,False,False,False,False,True,False,False,False,False
+ML ID7,2,86.4,1248.2,With Ideal Driving Line,False,True,False,True,False,False,False,True,False,False,True,False
+ML ID7,2,97.75,1248.2,With Ideal Driving Line,False,True,False,False,True,False,False,True,False,False,False,True
+ML ID7,2,84.55,1248.2,With Ideal Driving Line,False,True,False,False,False,True,False,True,False,False,False,False
+ML ID7,2,62.06,1248.2,No Help,False,False,False,False,False,False,False,False,False,False,True,False
+ML ID7,2,62.63,1248.2,No Help,False,False,True,False,False,False,False,False,False,False,False,True
+ML ID7,2,63.09,1248.2,No Help,False,False,False,True,False,False,False,False,False,False,False,False
+ML ID7,2,63.75,1248.2,No Help,False,False,False,False,True,False,False,False,False,False,True,False
+ML ID7,2,56.37,1248.2,No Help,False,False,False,False,False,True,False,False,False,False,False,True
+EL ID8,3,124.36,1233.7,With Ideal Driving Line,False,True,False,False,False,False,False,True,False,False,False,False
+EL ID8,3,97.53,1233.7,With Ideal Driving Line,False,True,True,False,False,False,False,True,False,False,True,False
+EL ID8,3,109.34,1233.7,With Ideal Driving Line,False,True,False,True,False,False,False,True,False,False,False,True
+EL ID8,3,93.25,1233.7,With Ideal Driving Line,False,True,False,False,True,False,False,True,False,False,False,False
+EL ID8,3,69.69,1233.7,With Ideal Driving Line,False,True,False,False,False,True,False,True,False,False,True,False
+EL ID8,3,72.12,1233.7,No Help,False,False,False,False,False,False,False,False,False,False,False,True
+EL ID8,3,63.04,1233.7,No Help,False,False,True,False,False,False,False,False,False,False,False,False
+EL ID8,3,51.84,1233.7,No Help,False,False,False,True,False,False,False,False,False,False,True,False
+EL ID8,3,54.28,1233.7,No Help,False,False,False,False,True,False,False,False,False,False,False,True
+EL ID8,3,55.54,1233.7,No Help,False,False,False,False,False,True,False,False,False,False,False,False
+EL ID8,3,106.94,1233.7,With Driving Coach,True,False,False,False,False,False,True,False,False,False,True,False
+EL ID8,3,87.33,1233.7,With Driving Coach,True,False,True,False,False,False,True,False,False,False,False,True
+EL ID8,3,87.44,1233.7,With Driving Coach,True,False,False,True,False,False,True,False,False,False,False,False
+EL ID8,3,80.5,1233.7,With Driving Coach,True,False,False,False,True,False,True,False,False,False,True,False
+EL ID8,3,80.5,1233.7,With Driving Coach,True,False,False,False,False,True,True,False,False,False,False,True
+MK ID11,4,95.6,1050.56,No Help,True,False,False,False,False,False,False,False,False,False,False,False
+MK ID11,4,78.76,1050.56,No Help,True,False,True,False,False,False,False,False,False,False,True,False
+MK ID11,4,81.1,1050.56,No Help,True,False,False,True,False,False,False,False,False,False,False,True
+MK ID11,4,72.49,1050.56,No Help,True,False,False,False,True,False,False,False,False,False,False,False
+MK ID11,4,78.78,1050.56,No Help,True,False,False,False,False,True,False,False,False,False,True,False
+MK ID11,4,73.51,1050.56,With Driving Coach,False,True,False,False,False,False,True,False,False,False,False,True
+MK ID11,4,73.67,1050.56,With Driving Coach,False,True,True,False,False,False,True,False,False,False,False,False
+MK ID11,4,71.82,1050.56,With Driving Coach,False,True,False,True,False,False,True,False,False,False,True,False
+MK ID11,4,72.03,1050.56,With Driving Coach,False,True,False,False,True,False,True,False,False,False,False,True
+MK ID11,4,68.17,1050.56,With Driving Coach,False,True,False,False,False,True,True,False,False,False,False,False
+MK ID11,4,53.79,1050.56,With Ideal Driving Line,False,False,False,False,False,False,False,True,False,False,True,False
+MK ID11,4,67.08,1050.56,With Ideal Driving Line,False,False,True,False,False,False,False,True,False,False,False,True
+MK ID11,4,50.58,1050.56,With Ideal Driving Line,False,False,False,True,False,False,False,True,False,False,False,False
+MK ID11,4,60.08,1050.56,With Ideal Driving Line,False,False,False,False,True,False,False,True,False,False,True,False
+MK ID11,4,53.1,1050.56,With Ideal Driving Line,False,False,False,False,False,True,False,True,False,False,False,True
+SS ID13,5,100.25,1211.8899999999999,With Driving Coach,False,True,False,False,False,False,True,False,False,False,False,False
+SS ID13,5,91.99,1211.8899999999999,With Driving Coach,False,True,True,False,False,False,True,False,False,False,True,False
+SS ID13,5,83.75,1211.8899999999999,With Driving Coach,False,True,False,True,False,False,True,False,False,False,False,True
+SS ID13,5,102.53,1211.8899999999999,With Driving Coach,False,True,False,False,True,False,True,False,False,False,False,False
+SS ID13,5,108.59,1211.8899999999999,With Driving Coach,False,True,False,False,False,True,True,False,False,False,False,False
+SS ID13,5,76.21,1211.8899999999999,With Ideal Driving Line,False,False,False,False,False,False,False,True,False,False,False,False
+SS ID13,5,61.1,1211.8899999999999,With Ideal Driving Line,False,False,True,False,False,False,False,True,False,False,False,False
+SS ID13,5,59.02,1211.8899999999999,With Ideal Driving Line,False,False,False,True,False,False,False,True,False,False,False,False
+SS ID13,5,79.07,1211.8899999999999,With Ideal Driving Line,False,False,False,False,True,False,False,True,False,False,False,False
+SS ID13,5,56.8,1211.8899999999999,With Ideal Driving Line,False,False,False,False,False,True,False,True,False,False,False,False
+SS ID13,5,81.1,1211.8899999999999,No Help,True,False,False,False,False,False,False,False,False,False,False,False
+SS ID13,5,79.55,1211.8899999999999,No Help,True,False,True,False,False,False,False,False,False,False,False,False
+SS ID13,5,75.52,1211.8899999999999,No Help,True,False,False,True,False,False,False,False,False,False,False,False
+SS ID13,5,74.76,1211.8899999999999,No Help,True,False,False,False,True,False,False,False,False,False,False,False
+SS ID13,5,81.65,1211.8899999999999,No Help,True,False,False,False,False,True,False,False,False,False,False,False
+LM ID21,6,69.36,1139.02,With Ideal Driving Line,False,False,False,False,False,False,False,True,False,False,False,False
+LM ID21,6,55.63,1139.02,With Ideal Driving Line,False,False,True,False,False,False,False,True,False,False,False,False
+LM ID21,6,64.57,1139.02,With Ideal Driving Line,False,False,False,True,False,False,False,True,False,False,False,False
+LM ID21,6,51.03,1139.02,With Ideal Driving Line,False,False,False,False,True,False,False,True,False,False,False,False
+LM ID21,6,55.76,1139.02,With Ideal Driving Line,False,False,False,False,False,True,False,True,False,False,False,False
+LM ID21,6,85.0,1139.02,No Help,True,False,False,False,False,False,False,False,False,False,False,False
+LM ID21,6,94.19,1139.02,No Help,True,False,True,False,False,False,False,False,False,False,False,False
+LM ID21,6,84.0,1139.02,No Help,True,False,False,True,False,False,False,False,False,False,False,False
+LM ID21,6,92.41,1139.02,No Help,True,False,False,False,True,False,False,False,False,False,False,False
+LM ID21,6,66.19,1139.02,No Help,True,False,False,False,False,True,False,False,False,False,False,False
+LM ID21,6,74.36,1139.02,With Driving Coach,False,True,False,False,False,False,True,False,False,False,False,False
+LM ID21,6,93.0,1139.02,With Driving Coach,False,True,True,False,False,False,True,False,False,False,False,False
+LM ID21,6,87.63,1139.02,With Driving Coach,False,True,False,True,False,False,True,False,False,False,False,False
+LM ID21,6,92.89,1139.02,With Driving Coach,False,True,False,False,True,False,True,False,False,False,False,False
+LM ID21,6,73.0,1139.02,With Driving Coach,False,True,False,False,False,True,True,False,False,False,False,False
+0,7,,0.0,No Help,False,True,False,False,False,False,False,False,False,False,False,False
+0,7,,0.0,No Help,False,True,True,False,False,False,False,False,False,False,False,False
+0,7,,0.0,No Help,False,True,False,True,False,False,False,False,False,False,False,False
+0,7,,0.0,No Help,False,True,False,False,True,False,False,False,False,False,False,False
+0,7,,0.0,No Help,False,True,False,False,False,True,False,False,False,False,False,False
+0,7,,0.0,With Driving Coach,False,False,False,False,False,False,True,False,False,False,False,False
+0,7,,0.0,With Driving Coach,False,False,True,False,False,False,True,False,False,False,False,False
+0,7,,0.0,With Driving Coach,False,False,False,True,False,False,True,False,False,False,False,False
+0,7,,0.0,With Driving Coach,False,False,False,False,True,False,True,False,False,False,False,False
+0,7,,0.0,With Driving Coach,False,False,False,False,False,True,True,False,False,False,False,False
+0,7,,0.0,With Ideal Driving Line,True,False,False,False,False,False,False,True,False,False,False,False
+0,7,,0.0,With Ideal Driving Line,True,False,True,False,False,False,False,True,False,False,False,False
+0,7,,0.0,With Ideal Driving Line,True,False,False,True,False,False,False,True,False,False,False,False
+0,7,,0.0,With Ideal Driving Line,True,False,False,False,True,False,False,True,False,False,False,False
+0,7,,0.0,With Ideal Driving Line,True,False,False,False,False,True,False,True,False,False,False,False
+LW ID1,8,58.04,996.3,With Driving Coach,False,False,False,False,False,False,True,False,True,False,False,False
+LW ID1,8,52.75,996.3,With Driving Coach,False,False,True,False,False,False,True,False,True,False,False,False
+LW ID1,8,51.5,996.3,With Driving Coach,False,False,False,True,False,False,True,False,True,False,False,False
+LW ID1,8,51.75,996.3,With Driving Coach,False,False,False,False,True,False,True,False,True,False,False,False
+LW ID1,8,55.44,996.3,With Driving Coach,False,False,False,False,False,True,True,False,True,False,False,False
+LW ID1,8,80.58,996.3,With Ideal Driving Line,True,False,False,False,False,False,False,True,True,False,False,False
+LW ID1,8,98.35,996.3,With Ideal Driving Line,True,False,True,False,False,False,False,True,True,False,False,False
+LW ID1,8,77.61,996.3,With Ideal Driving Line,True,False,False,True,False,False,False,True,True,False,False,False
+LW ID1,8,77.96,996.3,With Ideal Driving Line,True,False,False,False,True,False,False,True,True,False,False,False
+LW ID1,8,71.32,996.3,With Ideal Driving Line,True,False,False,False,False,True,False,True,True,False,False,False
+LW ID1,8,65.88,996.3,No Help,False,True,False,False,False,False,False,False,True,False,False,False
+LW ID1,8,62.23,996.3,No Help,False,True,True,False,False,False,False,False,True,False,False,False
+LW ID1,8,66.0,996.3,No Help,False,True,False,True,False,False,False,False,True,False,False,False
+LW ID1,8,61.18,996.3,No Help,False,True,False,False,True,False,False,False,True,False,False,False
+LW ID1,8,65.71,996.3,No Help,False,True,False,False,False,True,False,False,True,False,False,False
+JS ID2,9,90.22,982.48,With Ideal Driving Line,True,False,False,False,False,False,False,True,True,False,False,False
+JS ID2,9,81.08,982.48,With Ideal Driving Line,True,False,True,False,False,False,False,True,True,False,False,False
+JS ID2,9,74.01,982.48,With Ideal Driving Line,True,False,False,True,False,False,False,True,True,False,False,False
+JS ID2,9,72.37,982.48,With Ideal Driving Line,True,False,False,False,True,False,False,True,True,False,False,False
+JS ID2,9,89.44,982.48,With Ideal Driving Line,True,False,False,False,False,True,False,True,True,False,False,False
+JS ID2,9,65.7,982.48,No Help,False,True,False,False,False,False,False,False,True,False,False,False
+JS ID2,9,60.51,982.48,No Help,False,True,True,False,False,False,False,False,True,False,False,False
+JS ID2,9,71.82,982.48,No Help,False,True,False,True,False,False,False,False,True,False,False,False
+JS ID2,9,61.53,982.48,No Help,False,True,False,False,True,False,False,False,True,False,False,False
+JS ID2,9,63.02,982.48,No Help,False,True,False,False,False,True,False,False,True,False,False,False
+JS ID2,9,57.89,982.48,With Driving Coach,False,False,False,False,False,False,True,False,True,False,False,False
+JS ID2,9,49.75,982.48,With Driving Coach,False,False,True,False,False,False,True,False,True,False,False,False
+JS ID2,9,53.04,982.48,With Driving Coach,False,False,False,True,False,False,True,False,True,False,False,False
+JS ID2,9,45.62,982.48,With Driving Coach,False,False,False,False,True,False,True,False,True,False,False,False
+JS ID2,9,46.48,982.48,With Driving Coach,False,False,False,False,False,True,True,False,True,False,False,False
+MH ID13,10,99.46,1329.34,No Help,False,False,False,False,False,False,False,False,True,False,False,False
+MH ID13,10,68.0,1329.34,No Help,False,False,True,False,False,False,False,False,True,False,False,False
+MH ID13,10,76.96,1329.34,No Help,False,False,False,True,False,False,False,False,True,False,False,False
+MH ID13,10,70.72,1329.34,No Help,False,False,False,False,True,False,False,False,True,False,False,False
+MH ID13,10,87.25,1329.34,No Help,False,False,False,False,False,True,False,False,True,False,False,False
+MH ID13,10,93.01,1329.34,With Driving Coach,True,False,False,False,False,False,True,False,True,False,False,False
+MH ID13,10,110.65,1329.34,With Driving Coach,True,False,True,False,False,False,True,False,True,False,False,False
+MH ID13,10,93.11,1329.34,With Driving Coach,True,False,False,True,False,False,True,False,True,False,False,False
+MH ID13,10,99.13,1329.34,With Driving Coach,True,False,False,False,True,False,True,False,True,False,False,False
+MH ID13,10,87.89,1329.34,With Driving Coach,True,False,False,False,False,True,True,False,True,False,False,False
+MH ID13,10,76.01,1329.34,With Ideal Driving Line,False,True,False,False,False,False,False,True,True,False,False,False
+MH ID13,10,111.12,1329.34,With Ideal Driving Line,False,True,True,False,False,False,False,True,True,False,False,False
+MH ID13,10,87.73,1329.34,With Ideal Driving Line,False,True,False,True,False,False,False,True,True,False,False,False
+MH ID13,10,73.52,1329.34,With Ideal Driving Line,False,True,False,False,True,False,False,True,True,False,False,False
+MH ID13,10,94.78,1329.34,With Ideal Driving Line,False,True,False,False,False,True,False,True,True,False,False,False
+NS ID4,11,91.19,1105.42,With Driving Coach,True,False,False,False,False,False,True,False,True,False,False,False
+NS ID4,11,88.86,1105.42,With Driving Coach,True,False,True,False,False,False,True,False,True,False,False,False
+NS ID4,11,91.21,1105.42,With Driving Coach,True,False,False,True,False,False,True,False,True,False,False,False
+NS ID4,11,86.01,1105.42,With Driving Coach,True,False,False,False,True,False,True,False,True,False,False,False
+NS ID4,11,72.65,1105.42,With Driving Coach,True,False,False,False,False,True,True,False,True,False,False,False
+NS ID4,11,84.74,1105.42,With Ideal Driving Line,False,True,False,False,False,False,False,True,True,False,False,False
+NS ID4,11,67.51,1105.42,With Ideal Driving Line,False,True,True,False,False,False,False,True,True,False,False,False
+NS ID4,11,68.64,1105.42,With Ideal Driving Line,False,True,False,True,False,False,False,True,True,False,False,False
+NS ID4,11,75.62,1105.42,With Ideal Driving Line,False,True,False,False,True,False,False,True,True,False,False,False
+NS ID4,11,73.27,1105.42,With Ideal Driving Line,False,True,False,False,False,True,False,True,True,False,False,False
+NS ID4,11,58.74,1105.42,No Help,False,False,False,False,False,False,False,False,True,False,False,False
+NS ID4,11,64.46,1105.42,No Help,False,False,True,False,False,False,False,False,True,False,False,False
+NS ID4,11,59.31,1105.42,No Help,False,False,False,True,False,False,False,False,True,False,False,False
+NS ID4,11,61.3,1105.42,No Help,False,False,False,False,True,False,False,False,True,False,False,False
+NS ID4,11,61.91,1105.42,No Help,False,False,False,False,False,True,False,False,True,False,False,False
+VK ID14,12,70.78,955.26,With Ideal Driving Line,False,True,False,False,False,False,False,True,True,False,False,False
+VK ID14,12,65.68,955.26,With Ideal Driving Line,False,True,True,False,False,False,False,True,True,False,False,False
+VK ID14,12,66.3,955.26,With Ideal Driving Line,False,True,False,True,False,False,False,True,True,False,False,False
+VK ID14,12,72.59,955.26,With Ideal Driving Line,False,True,False,False,True,False,False,True,True,False,False,False
+VK ID14,12,62.11,955.26,With Ideal Driving Line,False,True,False,False,False,True,False,True,True,False,False,False
+VK ID14,12,54.88,955.26,No Help,False,False,False,False,False,False,False,False,True,False,False,False
+VK ID14,12,47.98,955.26,No Help,False,False,True,False,False,False,False,False,True,False,False,False
+VK ID14,12,49.79,955.26,No Help,False,False,False,True,False,False,False,False,True,False,False,False
+VK ID14,12,53.31,955.26,No Help,False,False,False,False,True,False,False,False,True,False,False,False
+VK ID14,12,47.59,955.26,No Help,False,False,False,False,False,True,False,False,True,False,False,False
+VK ID14,12,72.45,955.26,With Driving Coach,True,False,False,False,False,False,True,False,True,False,False,False
+VK ID14,12,78.7,955.26,With Driving Coach,True,False,True,False,False,False,True,False,True,False,False,False
+VK ID14,12,66.87,955.26,With Driving Coach,True,False,False,True,False,False,True,False,True,False,False,False
+VK ID14,12,81.46,955.26,With Driving Coach,True,False,False,False,True,False,True,False,True,False,False,False
+VK ID14,12,64.77,955.26,With Driving Coach,True,False,False,False,False,True,True,False,True,False,False,False
+AuL ID10,13,82.2,1081.16,No Help,True,False,False,False,False,False,False,False,True,False,False,False
+AuL ID10,13,76.71,1081.16,No Help,True,False,True,False,False,False,False,False,True,False,False,False
+AuL ID10,13,76.2,1081.16,No Help,True,False,False,True,False,False,False,False,True,False,False,False
+AuL ID10,13,80.68,1081.16,No Help,True,False,False,False,True,False,False,False,True,False,False,False
+AuL ID10,13,73.24,1081.16,No Help,True,False,False,False,False,True,False,False,True,False,False,False
+AuL ID10,13,88.99,1081.16,With Driving Coach,False,True,False,False,False,False,True,False,True,False,False,False
+AuL ID10,13,74.1,1081.16,With Driving Coach,False,True,True,False,False,False,True,False,True,False,False,False
+AuL ID10,13,85.46,1081.16,With Driving Coach,False,True,False,True,False,False,True,False,True,False,False,False
+AuL ID10,13,83.88,1081.16,With Driving Coach,False,True,False,False,True,False,True,False,True,False,False,False
+AuL ID10,13,70.74,1081.16,With Driving Coach,False,True,False,False,False,True,True,False,True,False,False,False
+AuL ID10,13,70.84,1081.16,With Ideal Driving Line,False,False,False,False,False,False,False,True,True,False,False,False
+AuL ID10,13,57.39,1081.16,With Ideal Driving Line,False,False,True,False,False,False,False,True,True,False,False,False
+AuL ID10,13,56.09,1081.16,With Ideal Driving Line,False,False,False,True,False,False,False,True,True,False,False,False
+AuL ID10,13,52.68,1081.16,With Ideal Driving Line,False,False,False,False,True,False,False,True,True,False,False,False
+AuL ID10,13,51.96,1081.16,With Ideal Driving Line,False,False,False,False,False,True,False,True,True,False,False,False
+BS ID12,14,75.06,969.93,With Driving Coach,False,True,False,False,False,False,True,False,True,False,False,False
+BS ID12,14,76.69,969.93,With Driving Coach,False,True,True,False,False,False,True,False,True,False,False,False
+BS ID12,14,68.03,969.93,With Driving Coach,False,True,False,True,False,False,True,False,True,False,False,False
+BS ID12,14,65.16,969.93,With Driving Coach,False,True,False,False,True,False,True,False,True,False,False,False
+BS ID12,14,73.35,969.93,With Driving Coach,False,True,False,False,False,True,True,False,True,False,False,False
+BS ID12,14,50.14,969.93,With Ideal Driving Line,False,False,False,False,False,False,False,True,True,False,False,False
+BS ID12,14,49.65,969.93,With Ideal Driving Line,False,False,True,False,False,False,False,True,True,False,False,False
+BS ID12,14,48.16,969.93,With Ideal Driving Line,False,False,False,True,False,False,False,True,True,False,False,False
+BS ID12,14,56.64,969.93,With Ideal Driving Line,False,False,False,False,True,False,False,True,True,False,False,False
+BS ID12,14,53.8,969.93,With Ideal Driving Line,False,False,False,False,False,True,False,True,True,False,False,False
+BS ID12,14,93.1,969.93,No Help,True,False,False,False,False,False,False,False,True,False,False,False
+BS ID12,14,62.21,969.93,No Help,True,False,True,False,False,False,False,False,True,False,False,False
+BS ID12,14,62.55,969.93,No Help,True,False,False,True,False,False,False,False,True,False,False,False
+BS ID12,14,64.01,969.93,No Help,True,False,False,False,True,False,False,False,True,False,False,False
+BS ID12,14,71.38,969.93,No Help,True,False,False,False,False,True,False,False,True,False,False,False
+NB ID3,15,50.74,885.76,With Ideal Driving Line,False,False,False,False,False,False,False,True,False,True,False,False
+NB ID3,15,50.82,885.76,With Ideal Driving Line,False,False,True,False,False,False,False,True,False,True,False,False
+NB ID3,15,49.66,885.76,With Ideal Driving Line,False,False,False,True,False,False,False,True,False,True,False,False
+NB ID3,15,49.87,885.76,With Ideal Driving Line,False,False,False,False,True,False,False,True,False,True,False,False
+NB ID3,15,45.18,885.76,With Ideal Driving Line,False,False,False,False,False,True,False,True,False,True,False,False
+NB ID3,15,68.05,885.76,No Help,True,False,False,False,False,False,False,False,False,True,False,False
+NB ID3,15,60.38,885.76,No Help,True,False,True,False,False,False,False,False,False,True,False,False
+NB ID3,15,59.31,885.76,No Help,True,False,False,True,False,False,False,False,False,True,False,False
+NB ID3,15,65.85,885.76,No Help,True,False,False,False,True,False,False,False,False,True,False,False
+NB ID3,15,62.58,885.76,No Help,True,False,False,False,False,True,False,False,False,True,False,False
+NB ID3,15,74.59,885.76,With Driving Coach,False,True,False,False,False,False,True,False,False,True,False,False
+NB ID3,15,62.07,885.76,With Driving Coach,False,True,True,False,False,False,True,False,False,True,False,False
+NB ID3,15,60.93,885.76,With Driving Coach,False,True,False,True,False,False,True,False,False,True,False,False
+NB ID3,15,61.43,885.76,With Driving Coach,False,True,False,False,True,False,True,False,False,True,False,False
+NB ID3,15,64.3,885.76,With Driving Coach,False,True,False,False,False,True,True,False,False,True,False,False
+AS ID6,16,69.44,532.29,No Help,False,True,False,False,False,False,False,False,False,True,False,False
+AS ID6,16,59.19,532.29,No Help,False,True,True,False,False,False,False,False,False,True,False,False
+AS ID6,16,60.08,532.29,No Help,False,True,False,True,False,False,False,False,False,True,False,False
+AS ID6,16,59.64,532.29,No Help,False,True,False,False,True,False,False,False,False,True,False,False
+AS ID6,16,60.08,532.29,No Help,False,True,False,False,False,True,False,False,False,True,False,False
+AS ID6,16,47.79,532.29,With Driving Coach,False,False,False,False,False,False,True,False,False,True,False,False
+AS ID6,16,43.56,532.29,With Driving Coach,False,False,True,False,False,False,True,False,False,True,False,False
+AS ID6,16,44.25,532.29,With Driving Coach,False,False,False,True,False,False,True,False,False,True,False,False
+AS ID6,16,43.61,532.29,With Driving Coach,False,False,False,False,True,False,True,False,False,True,False,False
+AS ID6,16,44.65,532.29,With Driving Coach,False,False,False,False,False,True,True,False,False,True,False,False
+AS ID6,16,,532.29,With Ideal Driving Line,True,False,False,False,False,False,False,True,False,True,False,False
+AS ID6,16,,532.29,With Ideal Driving Line,True,False,True,False,False,False,False,True,False,True,False,False
+AS ID6,16,,532.29,With Ideal Driving Line,True,False,False,True,False,False,False,True,False,True,False,False
+AS ID6,16,,532.29,With Ideal Driving Line,True,False,False,False,True,False,False,True,False,True,False,False
+AS ID6,16,,532.29,With Ideal Driving Line,True,False,False,False,False,True,False,True,False,True,False,False
+IA ID16,17,49.82,802.13,With Driving Coach,False,False,False,False,False,False,True,False,False,True,False,False
+IA ID16,17,46.03,802.13,With Driving Coach,False,False,True,False,False,False,True,False,False,True,False,False
+IA ID16,17,42.73,802.13,With Driving Coach,False,False,False,True,False,False,True,False,False,True,False,False
+IA ID16,17,44.59,802.13,With Driving Coach,False,False,False,False,True,False,True,False,False,True,False,False
+IA ID16,17,43.89,802.13,With Driving Coach,False,False,False,False,False,True,True,False,False,True,False,False
+IA ID16,17,60.04,802.13,With Ideal Driving Line,True,False,False,False,False,False,False,True,False,True,False,False
+IA ID16,17,55.78,802.13,With Ideal Driving Line,True,False,True,False,False,False,False,True,False,True,False,False
+IA ID16,17,65.0,802.13,With Ideal Driving Line,True,False,False,True,False,False,False,True,False,True,False,False
+IA ID16,17,55.56,802.13,With Ideal Driving Line,True,False,False,False,True,False,False,True,False,True,False,False
+IA ID16,17,54.2,802.13,With Ideal Driving Line,True,False,False,False,False,True,False,True,False,True,False,False
+IA ID16,17,60.52,802.13,No Help,False,True,False,False,False,False,False,False,False,True,False,False
+IA ID16,17,56.38,802.13,No Help,False,True,True,False,False,False,False,False,False,True,False,False
+IA ID16,17,56.54,802.13,No Help,False,True,False,True,False,False,False,False,False,True,False,False
+IA ID16,17,55.03,802.13,No Help,False,True,False,False,True,False,False,False,False,True,False,False
+IA ID16,17,56.02,802.13,No Help,False,True,False,False,False,True,False,False,False,True,False,False
+MaL ID19,18,70.0,923.55,With Ideal Driving Line,True,False,False,False,False,False,False,True,False,True,False,False
+MaL ID19,18,70.0,923.55,With Ideal Driving Line,True,False,True,False,False,False,False,True,False,True,False,False
+MaL ID19,18,74.95,923.55,With Ideal Driving Line,True,False,False,True,False,False,False,True,False,True,False,False
+MaL ID19,18,63.85,923.55,With Ideal Driving Line,True,False,False,False,True,False,False,True,False,True,False,False
+MaL ID19,18,64.85,923.55,With Ideal Driving Line,True,False,False,False,False,True,False,True,False,True,False,False
+MaL ID19,18,76.91,923.55,No Help,False,True,False,False,False,False,False,False,False,True,False,False
+MaL ID19,18,64.11,923.55,No Help,False,True,True,False,False,False,False,False,False,True,False,False
+MaL ID19,18,68.04,923.55,No Help,False,True,False,True,False,False,False,False,False,True,False,False
+MaL ID19,18,64.88,923.55,No Help,False,True,False,False,True,False,False,False,False,True,False,False
+MaL ID19,18,64.4,923.55,No Help,False,True,False,False,False,True,False,False,False,True,False,False
+MaL ID19,18,51.76,923.55,With Driving Coach,False,False,False,False,False,False,True,False,False,True,False,False
+MaL ID19,18,48.45,923.55,With Driving Coach,False,False,True,False,False,False,True,False,False,True,False,False
+MaL ID19,18,48.12,923.55,With Driving Coach,False,False,False,True,False,False,True,False,False,True,False,False
+MaL ID19,18,47.78,923.55,With Driving Coach,False,False,False,False,True,False,True,False,False,True,False,False
+MaL ID19,18,45.45,923.55,With Driving Coach,False,False,False,False,False,True,True,False,False,True,False,False
+NP ID20,19,64.0,987.12,No Help,False,False,False,False,False,False,False,False,False,True,False,False
+NP ID20,19,51.63,987.12,No Help,False,False,True,False,False,False,False,False,False,True,False,False
+NP ID20,19,54.36,987.12,No Help,False,False,False,True,False,False,False,False,False,True,False,False
+NP ID20,19,52.93,987.12,No Help,False,False,False,False,True,False,False,False,False,True,False,False
+NP ID20,19,51.12,987.12,No Help,False,False,False,False,False,True,False,False,False,True,False,False
+NP ID20,19,85.88,987.12,With Driving Coach,True,False,False,False,False,False,True,False,False,True,False,False
+NP ID20,19,70.98,987.12,With Driving Coach,True,False,True,False,False,False,True,False,False,True,False,False
+NP ID20,19,71.72,987.12,With Driving Coach,True,False,False,True,False,False,True,False,False,True,False,False
+NP ID20,19,72.09,987.12,With Driving Coach,True,False,False,False,True,False,True,False,False,True,False,False
+NP ID20,19,71.82,987.12,With Driving Coach,True,False,False,False,False,True,True,False,False,True,False,False
+NP ID20,19,72.04,987.12,With Ideal Driving Line,False,True,False,False,False,False,False,True,False,True,False,False
+NP ID20,19,68.48,987.12,With Ideal Driving Line,False,True,True,False,False,False,False,True,False,True,False,False
+NP ID20,19,66.21,987.12,With Ideal Driving Line,False,True,False,True,False,False,False,True,False,True,False,False
+NP ID20,19,66.42,987.12,With Ideal Driving Line,False,True,False,False,True,False,False,True,False,True,False,False
+NP ID20,19,67.44,987.12,With Ideal Driving Line,False,True,False,False,False,True,False,True,False,True,False,False
+FW ID22,20,62.25,811.64,With Driving Coach,True,False,False,False,False,False,True,False,False,True,False,False
+FW ID22,20,59.29,811.64,With Driving Coach,True,False,True,False,False,False,True,False,False,True,False,False
+FW ID22,20,59.1,811.64,With Driving Coach,True,False,False,True,False,False,True,False,False,True,False,False
+FW ID22,20,58.8,811.64,With Driving Coach,True,False,False,False,True,False,True,False,False,True,False,False
+FW ID22,20,58.69,811.64,With Driving Coach,True,False,False,False,False,True,True,False,False,True,False,False
+FW ID22,20,61.12,811.64,With Ideal Driving Line,False,True,False,False,False,False,False,True,False,True,False,False
+FW ID22,20,59.87,811.64,With Ideal Driving Line,False,True,True,False,False,False,False,True,False,True,False,False
+FW ID22,20,57.7,811.64,With Ideal Driving Line,False,True,False,True,False,False,False,True,False,True,False,False
+FW ID22,20,58.65,811.64,With Ideal Driving Line,False,True,False,False,True,False,False,True,False,True,False,False
+FW ID22,20,57.7,811.64,With Ideal Driving Line,False,True,False,False,False,True,False,True,False,True,False,False
+FW ID22,20,46.18,811.64,No Help,False,False,False,False,False,False,False,False,False,True,False,False
+FW ID22,20,42.67,811.64,No Help,False,False,True,False,False,False,False,False,False,True,False,False
+FW ID22,20,43.4,811.64,No Help,False,False,False,True,False,False,False,False,False,True,False,False
+FW ID22,20,42.46,811.64,No Help,False,False,False,False,True,False,False,False,False,True,False,False
+FW ID22,20,43.76,811.64,No Help,False,False,False,False,False,True,False,False,False,True,False,False
+0,21,,0.0,With Ideal Driving Line,True,False,False,False,False,False,False,True,False,True,False,False
+0,21,,0.0,With Ideal Driving Line,True,False,True,False,False,False,False,True,False,True,False,False
+0,21,,0.0,With Ideal Driving Line,True,False,False,True,False,False,False,True,False,True,False,False
+0,21,,0.0,With Ideal Driving Line,True,False,False,False,True,False,False,True,False,True,False,False
+0,21,,0.0,With Ideal Driving Line,True,False,False,False,False,True,False,True,False,True,False,False
+0,21,,0.0,No Help,False,True,False,False,False,False,False,False,False,True,False,False
+0,21,,0.0,No Help,False,True,True,False,False,False,False,False,False,True,False,False
+0,21,,0.0,No Help,False,True,False,True,False,False,False,False,False,True,False,False
+0,21,,0.0,No Help,False,True,False,False,True,False,False,False,False,True,False,False
+0,21,,0.0,No Help,False,True,False,False,False,True,False,False,False,True,False,False
+0,21,,0.0,With Driving Coach,False,False,False,False,False,False,True,False,False,True,False,False
+0,21,,0.0,With Driving Coach,False,False,True,False,False,False,True,False,False,True,False,False
+0,21,,0.0,With Driving Coach,False,False,False,True,False,False,True,False,False,True,False,False
+0,21,,0.0,With Driving Coach,False,False,False,False,True,False,True,False,False,True,False,False
+0,21,,0.0,With Driving Coach,False,False,False,False,False,True,True,False,False,True,False,False
