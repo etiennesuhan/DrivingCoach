@@ -1,4 +1,4 @@
-name,id,total_duration,three_race_duration,help_label,racetrack_2.0,racetrack_3.0,help_2.0,help_3.0,experience_2.0,experience_3.0,race_number_2.0,race_number_3.0
+name,id,total_duration,three_race_duration,help_label,racetrack_2,racetrack_3,help_2,help_3,experience_2,experience_3,race_number_2,race_number_3
 AmL ID5,1.0,313.02000000000004,1320.55,No Help,False,False,False,False,False,False,False,False
 AmL ID5,1.0,510.20000000000005,1320.55,With Driving Coach,True,False,True,False,False,False,True,False
 AmL ID5,1.0,497.3299999999999,1320.55,With Ideal Driving Line,False,True,False,True,False,False,False,True
@@ -17,9 +17,9 @@ SS ID13,5.0,392.5799999999999,1211.8899999999999,No Help,True,False,False,False,
 LM ID21,6.0,296.35,1139.02,With Ideal Driving Line,False,False,False,True,False,False,False,False
 LM ID21,6.0,421.79,1139.02,No Help,True,False,False,False,False,False,True,False
 LM ID21,6.0,420.88,1139.02,With Driving Coach,False,True,True,False,False,False,False,True
-0,7.0,0.0,0.0,No Help,False,True,False,False,False,False,False,False
-0,7.0,0.0,0.0,With Driving Coach,False,False,True,False,False,False,True,False
-0,7.0,0.0,0.0,With Ideal Driving Line,True,False,False,True,False,False,False,True
+VG ID23,7.0,589.68,1534.25,No Help,False,True,False,False,False,False,False,False
+VG ID23,7.0,419.93999999999994,1534.25,With Driving Coach,False,False,True,False,False,False,True,False
+VG ID23,7.0,524.63,1534.25,With Ideal Driving Line,True,False,False,True,False,False,False,True
 LW ID1,8.0,269.48,996.3,With Driving Coach,False,False,True,False,True,False,False,False
 LW ID1,8.0,405.82,996.3,With Ideal Driving Line,True,False,False,True,True,False,True,False
 LW ID1,8.0,321.0,996.3,No Help,False,True,False,False,True,False,False,True
@@ -44,9 +44,9 @@ BS ID12,14.0,353.25,969.93,No Help,True,False,False,False,True,False,False,True
 NB ID3,15.0,246.27,885.76,With Ideal Driving Line,False,False,False,True,False,True,False,False
 NB ID3,15.0,316.17,885.76,No Help,True,False,False,False,False,True,True,False
 NB ID3,15.0,323.32,885.76,With Driving Coach,False,True,True,False,False,True,False,True
-AS ID6,16.0,308.42999999999995,532.29,No Help,False,True,False,False,False,True,False,False
-AS ID6,16.0,223.85999999999999,532.29,With Driving Coach,False,False,True,False,False,True,True,False
-AS ID6,16.0,0.0,532.29,With Ideal Driving Line,True,False,False,True,False,True,False,True
+AS ID6,16.0,308.42999999999995,826.1299999999999,No Help,False,True,False,False,False,True,False,False
+AS ID6,16.0,223.85999999999999,826.1299999999999,With Driving Coach,False,False,True,False,False,True,True,False
+AS ID6,16.0,293.84,826.1299999999999,With Ideal Driving Line,True,False,False,True,False,True,False,True
 IA ID16,17.0,227.06,802.13,With Driving Coach,False,False,True,False,False,True,False,False
 IA ID16,17.0,290.58,802.13,With Ideal Driving Line,True,False,False,True,False,True,True,False
 IA ID16,17.0,284.49,802.13,No Help,False,True,False,False,False,True,False,True
@@ -59,6 +59,6 @@ NP ID20,19.0,340.59000000000003,987.1200000000001,With Ideal Driving Line,False,
 FW ID22,20.0,298.13,811.64,With Driving Coach,True,False,True,False,False,True,False,False
 FW ID22,20.0,295.04,811.64,With Ideal Driving Line,False,True,False,True,False,True,True,False
 FW ID22,20.0,218.47,811.64,No Help,False,False,False,False,False,True,False,True
-0,21.0,0.0,0.0,With Ideal Driving Line,True,False,False,True,False,True,False,False
-0,21.0,0.0,0.0,No Help,False,True,False,False,False,True,True,False
-0,21.0,0.0,0.0,With Driving Coach,False,False,True,False,False,True,False,True
+ES,21.0,308.28,804.06,With Ideal Driving Line,True,False,False,True,False,True,False,False
+ES,21.0,283.51000000000005,804.06,No Help,False,True,False,False,False,True,True,False
+ES,21.0,212.26999999999998,804.06,With Driving Coach,False,False,True,False,False,True,False,True
