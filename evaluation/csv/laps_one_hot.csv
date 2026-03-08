@@ -1,6 +1,6 @@
 name,id,duration,three_race_duration,help_label,racetrack_2,racetrack_3,lap_2,lap_3,lap_4,lap_5,help_2,help_3,experience_2,experience_3,race_number_2,race_number_3
-AmL ID5,1,60.0,1320.55,No Assistance,False,False,False,False,False,False,False,False,False,False,False,False
-AmL ID5,1,60.0,1320.55,No Assistance,False,False,True,False,False,False,False,False,False,False,False,False
+AmL ID5,1,61.03,1320.55,No Assistance,False,False,False,False,False,False,False,False,False,False,False,False
+AmL ID5,1,58.97,1320.55,No Assistance,False,False,True,False,False,False,False,False,False,False,False,False
 AmL ID5,1,74.42,1320.55,No Assistance,False,False,False,True,False,False,False,False,False,False,False,False
 AmL ID5,1,56.47,1320.55,No Assistance,False,False,False,False,True,False,False,False,False,False,False,False
 AmL ID5,1,62.13,1320.55,No Assistance,False,False,False,False,False,True,False,False,False,False,False,False
@@ -59,21 +59,21 @@ MK ID11,4,67.08,1050.56,With Ideal Driving Line,False,False,True,False,False,Fal
 MK ID11,4,50.58,1050.56,With Ideal Driving Line,False,False,False,True,False,False,False,True,False,False,False,True
 MK ID11,4,60.08,1050.56,With Ideal Driving Line,False,False,False,False,True,False,False,True,False,False,False,True
 MK ID11,4,53.1,1050.56,With Ideal Driving Line,False,False,False,False,False,True,False,True,False,False,False,True
-SS ID13,5,100.25,1211.8899999999999,With Driving Coach,False,True,False,False,False,False,True,False,False,False,False,False
-SS ID13,5,91.99,1211.8899999999999,With Driving Coach,False,True,True,False,False,False,True,False,False,False,False,False
-SS ID13,5,83.75,1211.8899999999999,With Driving Coach,False,True,False,True,False,False,True,False,False,False,False,False
-SS ID13,5,102.53,1211.8899999999999,With Driving Coach,False,True,False,False,True,False,True,False,False,False,False,False
-SS ID13,5,108.59,1211.8899999999999,With Driving Coach,False,True,False,False,False,True,True,False,False,False,False,False
-SS ID13,5,76.21,1211.8899999999999,With Ideal Driving Line,False,False,False,False,False,False,False,True,False,False,True,False
-SS ID13,5,61.1,1211.8899999999999,With Ideal Driving Line,False,False,True,False,False,False,False,True,False,False,True,False
-SS ID13,5,59.02,1211.8899999999999,With Ideal Driving Line,False,False,False,True,False,False,False,True,False,False,True,False
-SS ID13,5,79.07,1211.8899999999999,With Ideal Driving Line,False,False,False,False,True,False,False,True,False,False,True,False
-SS ID13,5,56.8,1211.8899999999999,With Ideal Driving Line,False,False,False,False,False,True,False,True,False,False,True,False
-SS ID13,5,81.1,1211.8899999999999,No Assistance,True,False,False,False,False,False,False,False,False,False,False,True
-SS ID13,5,79.55,1211.8899999999999,No Assistance,True,False,True,False,False,False,False,False,False,False,False,True
-SS ID13,5,75.52,1211.8899999999999,No Assistance,True,False,False,True,False,False,False,False,False,False,False,True
-SS ID13,5,74.76,1211.8899999999999,No Assistance,True,False,False,False,True,False,False,False,False,False,False,True
-SS ID13,5,81.65,1211.8899999999999,No Assistance,True,False,False,False,False,True,False,False,False,False,False,True
+SS ID13,5,100.25,1211.89,With Driving Coach,False,True,False,False,False,False,True,False,False,False,False,False
+SS ID13,5,91.99,1211.89,With Driving Coach,False,True,True,False,False,False,True,False,False,False,False,False
+SS ID13,5,83.75,1211.89,With Driving Coach,False,True,False,True,False,False,True,False,False,False,False,False
+SS ID13,5,102.53,1211.89,With Driving Coach,False,True,False,False,True,False,True,False,False,False,False,False
+SS ID13,5,108.59,1211.89,With Driving Coach,False,True,False,False,False,True,True,False,False,False,False,False
+SS ID13,5,76.21,1211.89,With Ideal Driving Line,False,False,False,False,False,False,False,True,False,False,True,False
+SS ID13,5,61.1,1211.89,With Ideal Driving Line,False,False,True,False,False,False,False,True,False,False,True,False
+SS ID13,5,59.02,1211.89,With Ideal Driving Line,False,False,False,True,False,False,False,True,False,False,True,False
+SS ID13,5,79.07,1211.89,With Ideal Driving Line,False,False,False,False,True,False,False,True,False,False,True,False
+SS ID13,5,56.8,1211.89,With Ideal Driving Line,False,False,False,False,False,True,False,True,False,False,True,False
+SS ID13,5,81.1,1211.89,No Assistance,True,False,False,False,False,False,False,False,False,False,False,True
+SS ID13,5,79.55,1211.89,No Assistance,True,False,True,False,False,False,False,False,False,False,False,True
+SS ID13,5,75.52,1211.89,No Assistance,True,False,False,True,False,False,False,False,False,False,False,True
+SS ID13,5,74.76,1211.89,No Assistance,True,False,False,False,True,False,False,False,False,False,False,True
+SS ID13,5,81.65,1211.89,No Assistance,True,False,False,False,False,True,False,False,False,False,False,True
 LM ID21,6,69.36,1139.02,With Ideal Driving Line,False,False,False,False,False,False,False,True,False,False,False,False
 LM ID21,6,55.63,1139.02,With Ideal Driving Line,False,False,True,False,False,False,False,True,False,False,False,False
 LM ID21,6,64.57,1139.02,With Ideal Driving Line,False,False,False,True,False,False,False,True,False,False,False,False
