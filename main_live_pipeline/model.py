@@ -143,7 +143,6 @@ class Model():
         return normalized_content or raw_content
 
     def _chat_model(self, messages: list[dict]) -> dict:
-        # Prefer strict JSON mode. If unavailable, fallback to normal chat call.
         try:
             return ollama.chat(
                 model=self.MODEL_NAME,
@@ -338,19 +337,16 @@ class Model():
                 yaw_cell = cells[6] if len(cells) > 6 else ""
                 speed_cell = cells[10] if len(cells) > 10 else ""
 
-            # timestamp usually in column index 2
             m = pair_re.search(ts_cell)
             if m:
                 timestamps_user.append(float(m.group(1)))
                 timestamps_opt.append(float(m.group(2)))
 
-            # yaw usually in column index 6
             m = pair_re.search(yaw_cell)
             if m:
                 yaws_user.append(float(m.group(1)))
                 yaws_opt.append(float(m.group(2)))
 
-            # speed usually in column index 10
             m = pair_re.search(speed_cell)
             if m:
                 speeds_user.append(float(m.group(1)))
