@@ -132,7 +132,6 @@ class PostRaceChatService:
         try:
             return ollama.chat(**kwargs)
         except Exception:
-            # Fallback to plain chat if tool calling is not available.
             if with_tools:
                 kwargs.pop("tools", None)
                 return ollama.chat(**kwargs)

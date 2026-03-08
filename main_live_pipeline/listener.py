@@ -83,8 +83,6 @@ class Listener():
         self._response_log_max = 1000
         self.paused = False
         self.model_enabled = True
-        # Browser clients handle playback; backend voice playback can still be
-        # enabled via /voice when explicitly requested.
         self.voice_enabled = False
         self.tts_enabled = True
         self.last_position = None

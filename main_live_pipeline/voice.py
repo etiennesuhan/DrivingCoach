@@ -12,14 +12,14 @@ from scipy.io import wavfile
 import sounddevice as sd
 
 try:
-    import edge_tts  # type: ignore
-except Exception:  # pragma: no cover - optional dependency
+    import edge_tts  
+except Exception:
     edge_tts = None
 
 try:
-    from soprano.utils.streaming import play_stream  # type: ignore
-    from soprano import SopranoTTS  # type: ignore
-except Exception:  # pragma: no cover - optional dependency
+    from soprano.utils.streaming import play_stream
+    from soprano import SopranoTTS
+except Exception:
     play_stream = None
     SopranoTTS = None
 
@@ -83,33 +83,33 @@ class Voice():
 
     def _sapi_synthesize(self, text_to_read_out: str, out_path: Path) -> None:
         script = r"""
-Add-Type -AssemblyName System.Speech
-$s = New-Object System.Speech.Synthesis.SpeechSynthesizer
-try {
-  $text = $env:FH5_SAPI_TEXT
-  $outPath = $env:FH5_SAPI_OUT_PATH
-  $preferred = $env:FH5_SAPI_VOICE
-  $voices = $s.GetInstalledVoices() | ForEach-Object { $_.VoiceInfo }
-  $selected = $null
-  if ($preferred) {
-    $selected = $voices | Where-Object { $_.Name -eq $preferred -or $_.Culture.Name -eq $preferred } | Select-Object -First 1
-  }
-  if (-not $selected) {
-    $selected = $voices | Where-Object { $_.Culture.Name -like 'de-*' } | Select-Object -First 1
-  }
-  if (-not $selected) {
-    $selected = $voices | Select-Object -First 1
-  }
-  if ($selected) {
-    $s.SelectVoice($selected.Name)
-  }
-  $s.SetOutputToWaveFile($outPath)
-  $s.Speak($text)
-}
-finally {
-  $s.Dispose()
-}
-"""
+            Add-Type -AssemblyName System.Speech
+            $s = New-Object System.Speech.Synthesis.SpeechSynthesizer
+            try {
+            $text = $env:FH5_SAPI_TEXT
+            $outPath = $env:FH5_SAPI_OUT_PATH
+            $preferred = $env:FH5_SAPI_VOICE
+            $voices = $s.GetInstalledVoices() | ForEach-Object { $_.VoiceInfo }
+            $selected = $null
+            if ($preferred) {
+                $selected = $voices | Where-Object { $_.Name -eq $preferred -or $_.Culture.Name -eq $preferred } | Select-Object -First 1
+            }
+            if (-not $selected) {
+                $selected = $voices | Where-Object { $_.Culture.Name -like 'de-*' } | Select-Object -First 1
+            }
+            if (-not $selected) {
+                $selected = $voices | Select-Object -First 1
+            }
+            if ($selected) {
+                $s.SelectVoice($selected.Name)
+            }
+            $s.SetOutputToWaveFile($outPath)
+            $s.Speak($text)
+            }
+            finally {
+            $s.Dispose()
+            }
+        """
         env = os.environ.copy()
         env["FH5_SAPI_TEXT"] = text_to_read_out
         env["FH5_SAPI_OUT_PATH"] = out_path.as_posix()
